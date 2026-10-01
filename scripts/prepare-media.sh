@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# Builds web sized media in public/media/ from the owner's originals.
+# Originals are never modified. Re-run after swapping a source file.
+# Needs: sips (macOS), ffmpeg and exiftool.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+SRGB="/System/Library/ColorSync/Profiles/sRGB Profile.icc"
+SRC_IMG=public/media/images
+SRC_VID=public/media/videos
+OUT=public/media
+
+# photo <source> <output name> [long edge px] [rotate degrees]
+# Rotation is explicit per file: some sources carry a rotate tag over landscape pixels (rotate),
+# others carry the same tag over pixels that are already upright (do not rotate).
+photo() {
+  # Convert iPhone Display P3 to sRGB first, so colours stay right once the profile is stripped
+  sips -s format jpeg -s formatOptions 78 -Z "${3:-2000}" --matchTo "$SRGB" "$SRC_IMG/$1" --out "$OUT/$2" >/dev/null
+  if [ -n "${4:-}" ]; then sips -r "$4" "$OUT/$2" >/dev/null; fi
+  # Strip all metadata: removes GPS location and camera data before publishing, and drops
+  # stale orientation tags (IMG_8363 is stored upright but tagged "rotate 90", which browsers obey).
+  exiftool -q -q -overwrite_original -all= "$OUT/$2"
+  echo "  $2 ($(du -h "$OUT/$2" | cut -f1))"
+}
+
+echo "Hero"
+# Drone orbit of the yacht at anchor (1001.mp4, landscape 2560x1440, 36 s, 136 MB).
+# First 16 s only (the orbit around the boat), 1600 wide, 30 fps, no audio: a light loop.
+ffmpeg -loglevel error -y -t 16 -i "$SRC_VID/1001.mp4" \
+  -vf "scale=1600:-2,fps=30" -map_metadata -1 -an -c:v libx264 -preset slow -crf 28 -pix_fmt yuv420p -movflags +faststart "$OUT/hero.mp4"
+# Poster is the first frame, so the swap from still to video is invisible.
+ffmpeg -loglevel error -y -i "$OUT/hero.mp4" -frames:v 1 -q:v 3 "$OUT/hero.jpg"
+echo "  hero.mp4 ($(du -h "$OUT/hero.mp4" | cut -f1)), hero.jpg"
+
+echo "Comparison, yacht side (a day on board)"
+photo IMG_3523.jpg yacht-cove.jpg 1600
+photo IMG_8363.jpg yacht-swim.jpg 1600
+photo IMG_8684.jpg yacht-anchorage.jpg 1600
+photo IMG_8445.jpg yacht-sail.jpg 1600
+photo IMG_8549.jpg yacht-sunset.jpg 1600
+photo IMG_8734.HEIC yacht-night.jpg 1600
+
+echo "Gallery"
+photo IMG_8679.jpg gallery-cove.jpg 2400
+photo IMG_8364.jpg gallery-cockpit.jpg 1600
+photo IMG_8561.jpg gallery-helm.jpg 1600
+photo IMG_8770.HEIC gallery-dinner.jpg 1600
+# Trimmed to the stretch with dolphins in frame; played only when the visitor taps it
+ffmpeg -loglevel error -y -ss 5 -t 12 -i "$SRC_VID/moments-dolphins.mp4" \
+  -vf "scale=540:-2,fps=30" -map_metadata -1 -an -c:v libx264 -preset slow -crf 31 -pix_fmt yuv420p -movflags +faststart \
+  "$OUT/gallery-dolphins.mp4"
+# Poster at the moment a dolphin is in frame
+ffmpeg -loglevel error -y -ss 6 -i "$OUT/gallery-dolphins.mp4" -frames:v 1 -q:v 3 "$OUT/gallery-dolphins.jpg"
+echo "  gallery-dolphins.mp4 ($(du -h "$OUT/gallery-dolphins.mp4" | cut -f1)), gallery-dolphins.jpg"
+
+echo "Occasions"
+# Portrait clip for the bachelor party panel (4:5 frame); autoplays muted only while in view
+ffmpeg -loglevel error -y -i "$SRC_VID/bachelor-party.mp4" \
+  -vf "scale=720:-2,fps=30" -map_metadata -1 -an -c:v libx264 -preset slow -crf 29 -pix_fmt yuv420p -movflags +faststart \
+  "$OUT/occasion-bachelor.mp4"
+ffmpeg -loglevel error -y -i "$OUT/occasion-bachelor.mp4" -frames:v 1 -q:v 3 "$OUT/occasion-bachelor.jpg"
+echo "  occasion-bachelor.mp4 ($(du -h "$OUT/occasion-bachelor.mp4" | cut -f1)), occasion-bachelor.jpg"
+
+echo "Deck plan (real layout, Bavaria 46)"
+# Trim the white margin around the drawing (measured content box 150,221 → 650,379, plus 12px)
+sips --cropOffset 209 138 --cropToHeightWidth 182 524 "$OUT/bavaria-46-cabins.jpg" --out "$OUT/deck-plan.jpg" >/dev/null
+exiftool -q -q -overwrite_original -all= "$OUT/deck-plan.jpg"
+echo "  deck-plan.jpg"
+
+echo "Shared by our guests"
+# Guest photos (second batch, dropped straight into public/media)
+# These HEICs are tagged "rotate 90" over landscape pixels
+SRC_IMG=$OUT photo IMG_3594.HEIC guest-sunset-anchor.jpg 1400 90
+SRC_IMG=$OUT photo IMG_3669.HEIC guest-helm.jpg 1400 90
+SRC_IMG=$OUT photo IMG_3704.HEIC guest-sunset-sea.jpg 1400 90
+# Screenshot from a guest's video: crop the dark gradient bars (photo rows 540 → 2256)
+ffmpeg -loglevel error -y -i "$OUT/IMG_3874.PNG" -vf "crop=1290:1716:0:540,scale=720:-2" -q:v 3 "$OUT/guest-dolphins.jpg"
+echo "  guest-dolphins.jpg"
+# guest_clip <source> <name> <poster time s>: portrait, 540 wide, muted, no metadata.
+# ffmpeg applies the phone's rotation flag, so the clips come out upright.
+guest_clip() {
+  ffmpeg -loglevel error -y -i "$OUT/$1" -vf "scale=540:-2,fps=30" -map_metadata -1 -an \
+    -c:v libx264 -preset slow -crf 30 -pix_fmt yuv420p -movflags +faststart "$OUT/$2.mp4"
+  ffmpeg -loglevel error -y -ss "$3" -i "$OUT/$2.mp4" -frames:v 1 -q:v 3 "$OUT/$2.jpg"
+  echo "  $2.mp4 ($(du -h "$OUT/$2.mp4" | cut -f1)), $2.jpg"
+}
+guest_clip IMG_3412.MOV guest-dive 1
+guest_clip IMG_3601.MOV guest-sup 6
+guest_clip IMG_8615.MOV guest-anchorage 1
+guest_clip IMG_8750.MOV guest-harbour 1
+
+echo "Social sharing image"
+sips -s format jpeg -s formatOptions 80 --resampleWidth 1200 --matchTo "$SRGB" "$SRC_IMG/IMG_8679.jpg" --out "$OUT/og.jpg" >/dev/null
+sips --cropToHeightWidth 630 1200 "$OUT/og.jpg" >/dev/null
+exiftool -q -q -overwrite_original -all= "$OUT/og.jpg"
+echo "  og.jpg"

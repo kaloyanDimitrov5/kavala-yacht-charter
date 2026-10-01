@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens: see DESIGN.md section 3. Channels only, so Tailwind opacity modifiers work. */
+:root {
+  --aegean: 14 42 59; /* #0E2A3B */
+  --aegean-soft: 62 86 100; /* #3E5664 */
+  --limestone: 232 237 239; /* #E8EDEF */
+  --shoal: 43 154 168; /* #2B9AA8 */
+  --shoal-deep: 31 117 128; /* #1F7580 */
+  --teak: 180 130 83; /* #B48253 */
+  --teak-deep: 138 90 43; /* #8A5A2B, derived from teak: form errors only (5.87:1 on white) */
+  --night: 19 18 9; /* #131209, permitted dark background: bachelor section */
+  --driftwood: 179 173 162; /* #B3ADA2, secondary text on night (8.42:1) */
+  --white: 255 255 255;
+
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-press: cubic-bezier(0.23, 1, 0.32, 1);
+
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-limestone text-aegean antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  /* One visible focus style everywhere: shoal-deep passes 3:1 on limestone and white. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--shoal-deep));
+    outline-offset: 2px;
+  }
+
+  /* On the night surface the ring turns white for a clearer edge (shoal-deep is only 3.47:1 there) */
+  [data-surface="night"] :focus-visible,
+  [data-surface="accent"] :focus-visible {
+    outline-color: rgb(var(--white));
+  }
+
+  ::selection {
+    background: rgb(var(--shoal) / 0.25);
+  }
+}
+
+@layer components {
+  /* B5: the only gradient on the site, on hero heading text only. */
+  .text-hero-gradient {
+    background-image: linear-gradient(to right, #000000, #666666);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  @media (forced-colors: active) {
+    .text-hero-gradient {
+      background-image: none;
+      color: CanvasText;
+    }
+  }
+
+  /* Hero entrance: CSS so it runs off the main thread and without waiting for hydration. */
+  .hero-rise {
+    animation: hero-rise 900ms var(--ease-fluid) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+  }
+
+  .hero-unveil {
+    animation: hero-unveil 1100ms var(--ease-fluid) both;
+    animation-delay: 320ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .hero-rise,
+    .hero-unveil {
+      animation: hero-fade 400ms ease both;
+      animation-delay: 0ms;
+    }
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-unveil {
+  from {
+    clip-path: inset(12% 0 0 0 round var(--frame-radius, 24px));
+    transform: translateY(24px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round var(--frame-radius, 24px));
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Anchored sections land below the floating nav pill */
+section[id],
+[id="request"] {
+  scroll-margin-top: 6rem;
+}
+
+/*
+ * Full bleed scroll track whose first card lines up with the page container
+ * (max-w-7xl plus the page gutters). Not a new spacing value: it resolves to the
+ * container's own left edge at every width.
+ */
+.track-gutter {
+  padding-inline: 1rem;
+  scroll-padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .track-gutter {
+    padding-inline: 1.5rem;
+    scroll-padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .track-gutter {
+    padding-inline: max(2rem, calc((100vw - 80rem) / 2 + 2rem));
+    scroll-padding-inline: max(2rem, calc((100vw - 80rem) / 2 + 2rem));
+  }
+}
+.track-gutter {
+  scrollbar-width: none;
+}
+.track-gutter::-webkit-scrollbar {
+  display: none;
+}
