@@ -29,7 +29,7 @@ export function HowItWorks({ t, locale }: { t: Dictionary; locale: Locale }) {
           </ol>
         </div>
         <div className="lg:col-span-7">
-          <RequestPanel locale={locale} number={site.whatsappNumber} maxGuests={site.facts.maxGuests} routes={site.routes} />
+          <RequestPanel locale={locale} number={site.whatsappNumber} maxGuests={site.facts.maxGuests} />
         </div>
       </div>
     </section>

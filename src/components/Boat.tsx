@@ -6,7 +6,8 @@ import { media } from "@/config/media";
 import { resolveMedia } from "@/lib/media.server";
 import { SectionHeading } from "./SectionHeading";
 
-export function Boat({ t }: { t: Dictionary }) {
+/** showHeading: false on the /boat page, where the page header carries the h1 and the section sits on the page ground */
+export function Boat({ t, showHeading = true }: { t: Dictionary; showHeading?: boolean }) {
   const { facts, boat } = site;
   const b = t.boat;
   const plan = resolveMedia(media.deckPlan.file);
@@ -26,12 +27,12 @@ export function Boat({ t }: { t: Dictionary }) {
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
-    <section id="boat" aria-labelledby="boat-title" className="bg-white px-4 py-24 sm:px-6 lg:px-8">
+    <section id="boat" aria-labelledby={showHeading ? "boat-title" : undefined} className={`px-4 sm:px-6 lg:px-8 ${showHeading ? "bg-white py-24" : "pb-24"}`}>
       <div className="mx-auto max-w-7xl">
-        <SectionHeading id="boat-title" title={boat.name || b.title} lead={b.lead} />
+        {showHeading && <SectionHeading id="boat-title" title={boat.name || b.title} lead={b.lead} />}
 
         {plan && (
-          <figure className="mt-12 lg:mt-16">
+          <figure className={showHeading ? "mt-12 lg:mt-16" : ""}>
             {/* The owner's real deck plan, on white so the drawing's own white ground blends in */}
             <div className="rounded-3xl bg-white p-4 ring-1 ring-inset ring-aegean/10 sm:p-8">
               <Image

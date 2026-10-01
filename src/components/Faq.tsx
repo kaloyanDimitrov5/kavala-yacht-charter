@@ -6,7 +6,8 @@ import { SectionHeading } from "./SectionHeading";
  * Native details/summary: keyboard and screen reader support for free, opens instantly
  * (motion is reserved for other sections). FAQPage JSON-LD mirrors the visible text.
  */
-export function Faq({ t }: { t: Dictionary }) {
+/** showHeading: false on the /faq page, where the page header carries the h1 */
+export function Faq({ t, showHeading = true }: { t: Dictionary; showHeading?: boolean }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -18,11 +19,11 @@ export function Faq({ t }: { t: Dictionary }) {
   };
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="px-4 py-24 sm:px-6 lg:px-8">
+    <section id="faq" aria-labelledby={showHeading ? "faq-title" : undefined} className={`px-4 sm:px-6 lg:px-8 ${showHeading ? "py-24" : "pb-24"}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12">
-        <SectionHeading id="faq-title" title={t.faq.title} className="lg:col-span-5" />
-        <ul className="flex flex-col gap-2 lg:col-span-7">
+        {showHeading && <SectionHeading id="faq-title" title={t.faq.title} className="lg:col-span-5" />}
+        <ul className={`flex flex-col gap-2 ${showHeading ? "lg:col-span-7" : "lg:col-span-8"}`}>
           {t.faq.items.map((item) => (
             <li key={item.q}>
               <details className="group rounded-2xl bg-white">

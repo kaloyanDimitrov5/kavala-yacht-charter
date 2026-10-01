@@ -13,6 +13,8 @@
   --teak-deep: 138 90 43; /* #8A5A2B, derived from teak: form errors only (5.87:1 on white) */
   --night: 19 18 9; /* #131209, permitted dark background: bachelor section */
   --driftwood: 179 173 162; /* #B3ADA2, secondary text on night (8.42:1) */
+  --mist: 163 184 196; /* #A3B8C4, secondary text on the aegean footer (7.23:1) */
+  --shoal-light: 95 192 204; /* #5FC0CC, accent on the aegean footer (7.01:1) */
   --white: 255 255 255;
 
   --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);

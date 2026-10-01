@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, CaretDown, PencilSimpleLine } from "@phosphor-icons/react";
+import { ArrowRight, CaretDown, PencilSimpleLine } from "@phosphor-icons/react";
 import type { RouteId } from "@/config/site";
-import { requestRoute } from "@/lib/requestRoute";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 
 /*
@@ -41,7 +40,10 @@ const geo: Record<RouteId, Geo> = {
 };
 
 type Props = {
+  locale: string;
   routes: RouteId[];
+  /** Cruise slug each island belongs to; the list links to that cruise page */
+  cruiseFor: Record<RouteId, string>;
   labels: {
     mapLabel: string;
     mapNote: string;
@@ -57,7 +59,7 @@ type Props = {
 
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
 
-export function Routes({ routes, labels }: Props) {
+export function Routes({ locale, routes, cruiseFor, labels }: Props) {
   const [selected, setSelected] = useState<RouteId>(routes[0]);
   const reduce = useReducedMotionSafe();
 
@@ -201,12 +203,11 @@ export function Routes({ routes, labels }: Props) {
                 <div id={panelId} hidden={!open} className="px-4 pb-4">
                   <p className="text-base text-aegean-soft">{labels.notes[id]}</p>
                   <a
-                    href="#request"
-                    onClick={() => requestRoute(id)}
+                    href={`/${locale}/cruises/${cruiseFor[id]}`}
                     className="mt-4 inline-flex items-center gap-2 rounded-lg text-base font-semibold text-shoal-deep underline decoration-shoal-deep/30 underline-offset-4 transition-colors duration-160 ease-press hover:decoration-shoal-deep"
                   >
                     {labels.ask}
-                    <ArrowDown size={16} aria-hidden />
+                    <ArrowRight size={16} aria-hidden />
                   </a>
                 </div>
               </li>
@@ -221,12 +222,11 @@ export function Routes({ routes, labels }: Props) {
           </h3>
           <p className="mt-2 text-base text-aegean-soft">{labels.customBody}</p>
           <a
-            href="#request"
-            onClick={() => requestRoute("other")}
+            href={`/${locale}/book?cruise=other#request`}
             className="mt-4 inline-flex items-center gap-2 rounded-lg text-base font-semibold text-shoal-deep underline decoration-shoal-deep/30 underline-offset-4 transition-colors duration-160 ease-press hover:decoration-shoal-deep"
           >
             {labels.customCta}
-            <ArrowDown size={16} aria-hidden />
+            <ArrowRight size={16} aria-hidden />
           </a>
         </div>
       </div>

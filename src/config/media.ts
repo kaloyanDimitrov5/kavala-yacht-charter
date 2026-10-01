@@ -94,6 +94,14 @@ export const media = {
     { key: "sunsetSea", file: "guest-sunset-sea.jpg" },
   ] satisfies { key: GuestKey; file: string; video?: string }[],
 
+  /** Thumbnails for the home "Plan your trip" rows (reuse existing web sized files) */
+  explore: {
+    cruises: "yacht-sail.jpg",
+    courses: "guest-helm.jpg",
+    boat: "gallery-cockpit.jpg",
+    experiences: "occasion-bachelor.jpg",
+  },
+
   /** 1200 x 630 social sharing image */
   og: { file: "og.jpg" },
 } as const;

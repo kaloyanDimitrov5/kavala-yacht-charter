@@ -42,7 +42,9 @@ const config: Config = {
         shoal: {
           DEFAULT: "rgb(var(--shoal) / <alpha-value>)",
           deep: "rgb(var(--shoal-deep) / <alpha-value>)",
+          light: "rgb(var(--shoal-light) / <alpha-value>)",
         },
+        mist: "rgb(var(--mist) / <alpha-value>)",
         teak: {
           DEFAULT: "rgb(var(--teak) / <alpha-value>)",
           deep: "rgb(var(--teak-deep) / <alpha-value>)",
@@ -59,8 +61,14 @@ const config: Config = {
         // Guest gallery cards (portrait 9:16)
         story: "15rem",
         "story-lg": "18rem",
+        // Thumbnail in the home "Plan your trip" rows
+        thumb: "12rem",
       },
-      height: { 5: "1.25rem" },
+      height: {
+        5: "1.25rem",
+        // Footer yacht on phones (the SVG slices to this height and keeps the yacht centred)
+        yacht: "10rem",
+      },
       transitionTimingFunction: {
         // B7 fluid curve, also the iOS drawer curve
         fluid: "cubic-bezier(0.32, 0.72, 0, 1)",

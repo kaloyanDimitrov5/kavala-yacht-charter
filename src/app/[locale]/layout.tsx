@@ -26,12 +26,14 @@ export const viewport: Viewport = {
 export function generateMetadata({ params }: Params): Metadata {
   const locale = toLocale(params.locale);
   const t = getDictionary(locale);
+  const brand = site.brandName || t.nav.brandFallback;
   const title = site.brandName ? `${t.meta.title} | ${site.brandName}` : t.meta.title;
   const ogImage = resolveMedia(media.og.file);
 
   return {
     metadataBase: new URL(site.url || "http://localhost:3000"),
-    title,
+    // Inner pages set their own title; the template appends the brand
+    title: { default: title, template: `%s | ${brand}` },
     description: t.meta.description,
     alternates: {
       canonical: `/${locale}`,

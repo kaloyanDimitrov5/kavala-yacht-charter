@@ -15,8 +15,8 @@ type Props = {
   href: string | null;
   labels: WhatsAppLabels;
   className?: string;
-  /** "night" for the dark bachelor section: teak fill, night label (5.60:1) */
-  tone?: "default" | "night";
+  /** "night": bachelor section (teak fill, night label 5.60:1). "light": aegean footer (white fill, aegean label 14.86:1) */
+  tone?: "default" | "night" | "light";
 };
 
 const base =
@@ -34,6 +34,11 @@ const tones = {
     idle: "bg-teak text-night hover:bg-teak/90 data-[state=opening]:bg-teak/80",
     disabled: "bg-white/10 text-driftwood",
     note: "text-driftwood",
+  },
+  light: {
+    idle: "bg-white text-aegean hover:bg-limestone data-[state=opening]:bg-limestone",
+    disabled: "bg-white/10 text-mist",
+    note: "text-mist",
   },
 };
 

@@ -1,23 +1,14 @@
 import { defaultLocale, isLocale } from "@/i18n";
 import { getDictionary } from "@/content";
-import { site } from "@/config/site";
 import { media } from "@/config/media";
 import { resolveMedia } from "@/lib/media.server";
 import { Hero } from "@/components/Hero";
 import { TaglineReveal } from "@/components/TaglineReveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Comparison } from "@/components/Comparison";
-import { Routes } from "@/components/Routes";
 import { GuestGallery } from "@/components/GuestGallery";
-import { Boat } from "@/components/Boat";
-import { Bachelor } from "@/components/Bachelor";
-import { Pilates } from "@/components/Pilates";
-import { whatsappHref } from "@/lib/whatsapp";
-import { HowItWorks } from "@/components/HowItWorks";
-import { Gallery } from "@/components/Gallery";
 import { Reviews } from "@/components/Reviews";
-import { Faq } from "@/components/Faq";
-import { FinalCta } from "@/components/FinalCta";
+import { ExploreIndex } from "@/components/ExploreIndex";
 
 export default function Home({ params }: { params: { locale: string } }) {
   const locale = isLocale(params.locale) ? params.locale : defaultLocale;
@@ -80,65 +71,18 @@ export default function Home({ params }: { params: { locale: string } }) {
         }))}
       />
 
-      <section id="routes" aria-labelledby="routes-title" className="px-4 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading id="routes-title" title={t.routes.title} lead={t.routes.lead} />
-          <div className="mt-12 lg:mt-16">
-            <Routes
-              routes={site.routes}
-              labels={{
-                mapLabel: t.routes.mapLabel,
-                mapNote: t.routes.mapNote,
-                kavala: t.routes.kavala,
-                names: t.routes.names,
-                notes: t.routes.notes,
-                ask: t.routes.ask,
-                customTitle: t.routes.customTitle,
-                customBody: t.routes.customBody,
-                customCta: t.routes.customCta,
-              }}
-            />
-          </div>
-        </div>
-      </section>
-
-      <Boat t={t} />
-
-      <Bachelor
-        title={t.bachelor.title}
-        body={t.bachelor.body}
-        points={t.bachelor.points}
-        banner={t.bachelor.banner}
-        media={{
-          image: resolveMedia(media.bachelor.file),
-          video: resolveMedia(media.bachelor.video),
-          alt: t.bachelor.alt,
-          file: media.bachelor.file,
-        }}
-        labels={{ play: t.bachelor.playVideo, pause: t.bachelor.pauseVideo }}
-        whatsapp={{ href: whatsappHref(t.bachelor.message), labels: { ...t.whatsapp, cta: t.bachelor.cta } }}
+      <ExploreIndex
+        title={t.explore.title}
+        rows={(["cruises", "courses", "boat", "experiences"] as const).map((key) => ({
+          href: `/${locale}/${key}`,
+          label: t.explore.items[key].label,
+          detail: t.explore.items[key].detail,
+          image: resolveMedia(media.explore[key]),
+          alt: t.explore.alts[key],
+        }))}
       />
 
-      <Pilates
-        title={t.pilates.title}
-        body={t.pilates.body}
-        stepsLabel={t.pilates.stepsLabel}
-        steps={t.pilates.steps}
-        points={t.pilates.points}
-        media={{
-          image: resolveMedia(media.pilates.file),
-          video: resolveMedia(media.pilates.video),
-          alt: t.pilates.alt,
-          file: media.pilates.file,
-        }}
-        labels={{ play: t.bachelor.playVideo, pause: t.bachelor.pauseVideo }}
-        whatsapp={{ href: whatsappHref(t.pilates.message), labels: { ...t.whatsapp, cta: t.pilates.cta } }}
-      />
-      <HowItWorks t={t} locale={locale} />
-      <Gallery t={t} />
       <Reviews t={t} locale={locale} />
-      <Faq t={t} />
-      <FinalCta t={t} />
     </main>
   );
 }

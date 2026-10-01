@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "@/i18n";
 import { locales } from "@/i18n";
-import { sections, type SectionKey } from "@/config/sections";
+import { pages, type PageKey } from "@/config/pages";
 import { WhatsAppButton, type WhatsAppLabels } from "./WhatsAppButton";
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
     menuTitle: string;
     mainNav: string;
     languageNav: string;
-    links: Record<SectionKey, string>;
+    links: Record<PageKey, string>;
     languages: Record<Locale, string>;
   };
   whatsapp: { href: string | null; labels: WhatsAppLabels };
@@ -36,9 +36,10 @@ const focusableSelector =
 export function IslandNav({ locale, brand, labels, whatsapp }: Props) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  /** Path after the locale, e.g. "/routes" ("" on home) */
+  const current = pathname.replace(/^\/[^/]+/, "");
   /** Same page in the other language: swap the first path segment */
   const localized = (l: Locale) => `/${l}${pathname.replace(/^\/[^/]+/, "")}`;
-  const [activeId, setActiveId] = useState<string | null>(null);
   const pillRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -46,23 +47,6 @@ export function IslandNav({ locale, brand, labels, whatsapp }: Props) {
   const close = useCallback((restoreFocus = true) => {
     setOpen(false);
     if (restoreFocus) buttonRef.current?.focus();
-  }, []);
-
-  // Current section for the overlay: the one crossing the middle of the viewport
-  useEffect(() => {
-    const els = sections.map((s) => document.getElementById(s.id)).filter((el): el is HTMLElement => !!el);
-    if (!els.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
-          else setActiveId((prev) => (prev === entry.target.id ? null : prev));
-        }
-      },
-      { rootMargin: "-50% 0px -50% 0px" },
-    );
-    els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -184,27 +168,31 @@ export function IslandNav({ locale, brand, labels, whatsapp }: Props) {
       >
         <div className="mx-auto flex min-h-full max-w-7xl flex-col justify-between gap-12 pt-12">
           <ul className="flex flex-col gap-2">
-            {sections.map((s, i) => (
-              <li key={s.id} className="overflow-hidden">
-                <div
-                  style={{ transitionDelay: open ? `${100 + i * 50}ms` : "0ms" }}
-                  className="translate-y-12 opacity-0 transition-[transform,opacity] duration-700 ease-fluid group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100 motion-reduce:translate-y-0"
-                >
-                  <a
-                    href={`/${locale}#${s.id}`}
-                    onClick={() => close(false)}
-                    aria-current={activeId === s.id ? "location" : undefined}
-                    className="inline-flex items-center gap-4 rounded-lg py-1 text-4xl font-medium tracking-tight text-aegean transition-colors duration-160 ease-press hover:text-shoal-deep aria-[current=location]:text-shoal-deep sm:text-5xl"
+            {pages.map((page, i) => {
+              // Detail pages (e.g. /cruises/sporades-cruise) count as their section
+              const here = page.path === "" ? current === "" : current === page.path || current.startsWith(`${page.path}/`);
+              return (
+                <li key={page.key} className="overflow-hidden">
+                  <div
+                    style={{ transitionDelay: open ? `${100 + i * 50}ms` : "0ms" }}
+                    className="translate-y-12 opacity-0 transition-[transform,opacity] duration-700 ease-fluid group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100 motion-reduce:translate-y-0"
                   >
-                    {labels.links[s.key]}
-                  </a>
-                </div>
-              </li>
-            ))}
+                    <Link
+                      href={`/${locale}${page.path}`}
+                      onClick={() => close(false)}
+                      aria-current={here ? "page" : undefined}
+                      className="inline-flex items-center gap-4 rounded-lg py-1 text-4xl font-medium tracking-tight text-aegean transition-colors duration-160 ease-press hover:text-shoal-deep aria-[current=page]:text-shoal-deep sm:text-5xl"
+                    >
+                      {labels.links[page.key]}
+                    </Link>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
 
           <div
-            style={{ transitionDelay: open ? `${100 + sections.length * 50}ms` : "0ms" }}
+            style={{ transitionDelay: open ? `${100 + pages.length * 50}ms` : "0ms" }}
             className="translate-y-12 opacity-0 transition-[transform,opacity] duration-700 ease-fluid group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100 motion-reduce:translate-y-0"
           >
             <WhatsAppButton href={whatsapp.href} labels={whatsapp.labels} />

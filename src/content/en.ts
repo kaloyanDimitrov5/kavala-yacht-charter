@@ -1,3 +1,5 @@
+import { catalogueEn, type Catalogue } from "./catalogue.en";
+
 /**
  * English copy. This file defines the dictionary shape; bg.ts must match it.
  * Rules: sentence case, active voice, no hyphens in copy, no invented facts.
@@ -22,13 +24,12 @@ export const en = {
     closeMenu: "Close menu",
     menuTitle: "Sections",
     links: {
-      compare: "Beach or yacht",
-      guests: "Guest photos",
-      routes: "Routes",
+      home: "Home",
+      cruises: "Cruises",
+      courses: "Courses",
       boat: "The boat",
-      bachelor: "Bachelor parties",
-      pilates: "Pilates on board",
-      how: "How it works",
+      experiences: "Experiences",
+      book: "Book",
       faq: "Questions",
     },
     languages: { en: "English", bg: "Български" },
@@ -101,6 +102,48 @@ export const en = {
       "A different harbour each night",
     ],
     progressLabel: "Along the way",
+  },
+  /** Inner pages: browser title, meta description, page heading and lead */
+  pages: {
+    boat: {
+      title: "The boat",
+      description: "A sailing yacht with four cabins, two berths in each, two bathrooms with showers, SUP boards and your own skipper.",
+      heading: "The boat",
+      lead: "Room for eight guests to sleep, shower on board and spend the day in the water.",
+    },
+    experiences: {
+      title: "Bachelor parties and pilates on board",
+      description: "Celebrate a bachelor party at sea or start the day with pilates on deck, on a private skippered yacht from Kavala.",
+      heading: "Experiences on board",
+      lead: "The same private yacht and skipper, set up for a party or for a calm morning on deck.",
+    },
+    book: {
+      title: "Book your dates",
+      description: "Choose a route and dates, we confirm availability on WhatsApp, and you board in Kavala with your skipper.",
+      heading: "Book your dates",
+      lead: "Three steps. Nothing is booked until we confirm it with you on WhatsApp.",
+    },
+    faq: {
+      title: "Questions",
+      description: "Answers about the skipper, cabins, bathrooms, cruises, what to bring, weather and how to book.",
+      heading: "Questions before you book",
+      lead: "Still unsure about something? Ask us on WhatsApp.",
+    },
+  },
+  explore: {
+    title: "Plan your trip",
+    items: {
+      cruises: { label: "Cruises", detail: "Day trips, island cruises and fishing trips, planned for you" },
+      courses: { label: "Courses", detail: "Captain and yachting courses on our yacht" },
+      boat: { label: "The boat", detail: "Four cabins, two bathrooms and the real deck plan" },
+      experiences: { label: "Experiences", detail: "Bachelor parties and pilates on deck" },
+    },
+    alts: {
+      cruises: "The yacht under sail with an island ahead",
+      courses: "The helm and the Greek flag above a green bay",
+      boat: "View from the cockpit across a green bay",
+      experiences: "The yacht at anchor in a pine lined bay with guests on deck",
+    },
   },
   guests: {
     title: "Shared by our guests",
@@ -209,8 +252,8 @@ export const en = {
     title: "How it works",
     steps: [
       {
-        title: "Choose a route and dates",
-        body: "Pick an island or two and the dates you have in mind. Not sure yet? Say so and we will suggest options.",
+        title: "Choose a cruise and dates",
+        body: "Pick a cruise and the dates you have in mind. Not sure which one? Say so and we will suggest one.",
       },
       {
         title: "We confirm availability",
@@ -231,7 +274,7 @@ export const en = {
     guestsHint: "Up to 8 guests",
     decrease: "One guest fewer",
     increase: "One guest more",
-    route: "Route",
+    route: "Cruise",
     routeOther: "Other or not sure yet",
     submit: "Send request on WhatsApp",
     opening: "Opening WhatsApp",
@@ -249,7 +292,7 @@ export const en = {
         "Hello, we would like to check free dates for a skippered yacht holiday from Kavala.",
         `Dates: ${d.from} to ${d.to}`,
         `Guests: ${d.guests}`,
-        `Route: ${d.route}`,
+        `Cruise: ${d.route}`,
       ].join("\n"),
   },
   gallery: {
@@ -288,11 +331,11 @@ export const en = {
       },
       {
         q: "Where can we sail?",
-        a: "Our standard routes from Kavala go to Thasos, Samothraki, Skopelos, Skiathos, Alonissos and Kyra Panagia.",
+        a: "We run day cruises to the bays of Thasos and along the Kavala coast, cruises of several days to Thasos, the Sporades and Halkidiki, and tuna fishing trips between Thasos and Samothraki. See them all on the Cruises page.",
       },
       {
-        q: "Can we plan our own route?",
-        a: "Yes. Tell us where you would like to go and we will check what is possible for your dates.",
+        q: "Do we have to plan the route ourselves?",
+        a: "No. Every cruise comes with a plan from us, day by day. It is a proposal rather than a fixed route, so we change it on request, and the skipper adjusts it to the weather.",
       },
       {
         q: "What should we bring?",
@@ -320,6 +363,10 @@ export const en = {
     body: "One message on WhatsApp is enough. We reply with the free dates for your group.",
   },
   footer: {
+    pagesTitle: "Pages",
+    contactTitle: "Contact",
+    legalTitle: "Legal",
+    whatsapp: "WhatsApp",
     tagline: "Private skippered yacht holidays from Kavala, Greece.",
     privacy: "Privacy",
     terms: "Terms",
@@ -344,10 +391,11 @@ export const en = {
       // TODO(owner): replace with the real charter terms.
       body: [
         "Charter terms, including payment, cancellation and weather, are agreed with you in writing before you book.",
-        "Information on this website describes the yacht and our standard routes. Your written charter agreement is what counts.",
+        "Information on this website describes the yacht and the cruises we propose. Your written charter agreement is what counts.",
       ],
     },
   },
+  catalogue: catalogueEn,
   notFound: {
     title: "This bay is not on our chart",
     body: "The page you opened does not exist or has moved. Head back and start from the harbour.",
@@ -364,4 +412,5 @@ type Widen<T> = T extends string
       ? Widen<U>[]
       : { [K in keyof T]: Widen<T[K]> };
 
-export type Dictionary = Widen<typeof en>;
+/** The catalogue keeps its own type (timeline steps have an optional note) */
+export type Dictionary = Omit<Widen<typeof en>, "catalogue"> & { catalogue: Catalogue };

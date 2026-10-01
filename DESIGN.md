@@ -485,3 +485,125 @@ the deck, (diving photo) and a bay (drone photo) with no one else in it.
 - Plan review: a separate row of three "benefit cards" under the tagline was the first instinct (card kit tell, and it repeats the comparison). Rejected in favour of putting the evidence inside the sentence.
 - **Review pass on the tagline:** at 0.8em the chips read as coloured dots and the desktop right half stayed empty ("only text"). Chips grew to 0.85em × 2em (the dive photo gets a crop focus on the diver), and on desktop a 4:5 frame beside the sentence shows the last chip reached: an umbrella panel ("Same sunbed, same view") first, then the cove, the dive and the drone bay, each with a short label. The frame is decorative (`aria-hidden`); mobile keeps the inline chips only.
 - **Mobile review (owner feedback: "does not look good on mobile"):** at phone sizes the inline chips shrank to about 30px blobs and broke the line rhythm. Below `lg` the chips are now hidden (the sentence reads as clean type) and the same reveal driven frame sits under the sentence at 4:3, switching umbrella → cove → dive → bay as the words light up. Desktop is unchanged: inline chips plus the 4:5 frame beside the sentence.
+
+---
+
+## 13. Multi page structure (owner request: "too much for only one page")
+
+The owner asked to split the single page into separate pages. This overrides the single landing page structure of section 7; the one offer and the one primary action (WhatsApp) stay the same on every page.
+
+| Route | Purpose | Content |
+|---|---|---|
+| `/{locale}` Home | The argument | Hero (drone video, CTA) · tagline reveal · beach vs yacht comparison · guest gallery (accent) · "Plan your trip" index linking to the pages below · reviews (hidden until real) |
+| `/{locale}/routes` | Where we sail | Page header · routes map and list. "Ask about this route" goes to `/book?route=<id>` and preselects it |
+| `/{locale}/boat` | What you get | Page header · real deck plan · cabins, bathrooms, SUP, skipper · specs when set · "On board and at anchor" gallery |
+| `/{locale}/experiences` | Occasions | Page header · bachelor party (night section) · pilates (light section) |
+| `/{locale}/book` | Convert | Page header · how it works (3 steps) · request panel |
+| `/{locale}/faq` | Objections | Page header · 10 questions · FAQPage JSON-LD |
+| `/{locale}/privacy`, `/terms` | Legal | unchanged |
+
+- **Nav:** the menu lists pages (Home, Routes, The boat, Experiences, Book, Questions). The current page carries `aria-current="page"` and the shoal-deep colour.
+- **Page header:** every inner page opens with the same quiet header: h1 in the B5 heading gradient (as on the hero, 404 and legal pages) plus a lead. One h1 per page; sections below use h2.
+- **Home "Plan your trip" index:** editorial rows (big label, one line of detail, a photo, an arrow), not a card grid, so the home page hands off to the inner pages.
+- **Per page metadata:** title, description, canonical and hreflang for every page and locale.
+
+### Footer (owner request: bigger, dark blue, with an SVG yacht)
+
+- **Colour exception, recorded:** landing-page-design limits dark sections to six near blacks. The owner explicitly asked for dark blue, and that skill says the user's explicit prompt wins, so the footer uses `aegean #0E2A3B`. It is the only aegean surface on the site.
+- New tokens for the aegean surface: `mist #A3B8C4` secondary text (7.23:1), `shoal-light #5FC0CC` accent and link hover (7.01:1). White text 14.86:1. Focus ring white (`data-surface="night"` rule).
+- Layout, top to bottom: the closing CTA (big heading, line of detail, WhatsApp button in a light tone), so every page ends on the primary action and the separate final CTA section is retired · four columns (brand and tagline, pages, contact, legal) · a full width SVG yacht under sail on line drawn swells · copyright bar.
+- The yacht is a simple geometric mark (hull, cabin, mast, mainsail, jib), drawn with the palette, not an illustration of a real boat. It is still and decorative (`aria-hidden`).
+
+```
+┌──────────────────────────────────────────────────────────────────────┐ aegean
+│  Tell us your dates and we will                                      │
+│  tell you what is free                    (text-6xl, white)          │
+│  One message on WhatsApp is enough…       (mist)                     │
+│  [ Check free dates on WhatsApp ]         (white button, aegean text)│
+│                                                                      │
+│  Yacht charter Kavala   Pages        Contact         Legal           │
+│  Private skippered…     Routes       WhatsApp        Privacy         │
+│                         The boat     email (if set)  Terms           │
+│                         Experiences                                  │
+│                                                                      │
+│                    ▲                                                 │
+│                   ╱│╲          (yacht, limestone sails, white hull)  │
+│      ~~~~~~~~~~~~▔▔▔▔▔▔~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (shoal swells)    │
+│  © 2026 Yacht charter Kavala                                         │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 14. Cruises and courses (owner request)
+
+Goal from the owner: guests have never been on a boat, so **we plan the trip, they do not**. "Routes" becomes **Cruises**: ready made, named trips, each with a detailed page and a day by day timeline. Every cruise page states that the plan is a proposal and can change on request.
+
+### Catalogue (facts from the owner)
+
+| Slug | Kind | Duration | Owner's itinerary |
+|---|---|---|---|
+| `thasos-bays-day-cruise` | Day cruise | 1 day | Kavala, bays of Thasos, Kavala |
+| `kavala-day-cruise` | Day cruise | 1 day | Along the Kavala coast |
+| `thasos-cruise` | Multi day | 2 to 4 days | D1 Kavala → Limenas (bay stop if weather and time allow) · D2 Vahti · D3 Golden Beach · D4 back to Kavala |
+| `sporades-cruise` | Multi day | 6 days | Kavala, Thasos, Kyra Panagia, Alonissos, Skopelos, Skiathos, Thasos, Kavala |
+| `halkidiki-cruise` | Multi day | 6 days | Kavala, Thasos, Halkidiki (different bays for the middle days), Thasos, Kavala |
+| `tuna-fishing-trip` | Fishing | 4 to 5 days or more on request | On the tuna route between Thasos and Samothraki |
+| `captain-course` | Course | TODO | Owner offers captain courses |
+| `yachting-course` | Course | TODO | Owner offers yachting courses |
+
+Day by day mapping where the owner listed more stops than days (Sporades: eight places over six days) is our proposal and is flagged for the owner to confirm. Day cruise steps use sequence labels, not clock times (no times were given).
+
+### Pages
+
+| Route | Content |
+|---|---|
+| `/{locale}/cruises` | Header ("You do not plan anything") · day cruises · multi day cruises · fishing · "a proposal, not a fixed route" note · courses teaser · map of the waters we sail (each island links to the cruise that goes there) |
+| `/{locale}/cruises/{slug}` | Header (h1, lead) · facts strip (duration, departs Kavala, up to 8 guests, skipper included) · proposal note · **day by day timeline** · gallery (placeholders until photos) · CTA "Ask about this cruise" (WhatsApp with the cruise named) · other cruises |
+| `/{locale}/courses` | Header · the two courses |
+| `/{locale}/courses/{slug}` | Header · what you practise · format (TODO) · gallery · CTA |
+| `/{locale}/routes` | Permanent redirect to `/cruises` |
+
+- Menu: Home, Cruises, Courses, The boat, Experiences, Book, Questions.
+- Booking form: "Route" becomes "Cruise" (the six cruises, the two courses, "Other or not sure yet"); `?cruise=<slug>` preselects it.
+
+### Timeline (the motion moment on detail pages)
+
+A vertical line with one stop per day. Each stop: "Day 1" (a real sequence, so numbering is honest), the leg ("Kavala → Limenas"), what we do, and an optional condition ("If the weather and time allow"). The line fills as the visitor scrolls through the days (scroll linked, `useScroll`), and each day's dot fills when the line reaches it. Reduced motion: drawn and filled from the start.
+
+```
+  ●  Day 1   Kavala → Limenas
+  │          We sail from Kavala to Limenas…   [ If weather and time allow ]
+  │
+  ●  Day 2   Vahti
+  │          …
+  ○  Day 3   Golden Beach
+  ┆
+  ○  Day 4   Back to Kavala
+```
+
+### Galleries
+
+Every cruise and course page has a five slot gallery (one large, four small), with flat placeholders and filenames from `media.ts` until the owner sends photos: `cruise-<slug>-1.jpg` … `-5.jpg`, `course-<slug>-1.jpg` … `-5.jpg`.
+
+#### Built (section 14)
+
+- `config/catalogue.ts` lists the six cruises and two courses; copy in `content/catalogue.{en,bg}.ts` (typed, Bulgarian checked for hyphen dependent forms).
+- `/cruises` groups day cruises, cruises of several days and fishing trips as link rows, opens with the "proposal, not a fixed route" note, then courses, then the map (each island links to its cruise).
+- `/cruises/{slug}`: page header, facts strip (duration, departs Kavala, up to 8 guests, skipper included) with "Ask about this cruise" (WhatsApp names the cruise) and "Send your dates" (`/book?cruise=<slug>`), scroll filled timeline with the proposal note pinned beside it, five slot gallery, other cruises.
+- `/courses` and `/courses/{slug}`: what you practise, dates and format (TODO), gallery, the other course.
+- Menu: Home, Cruises, Courses, The boat, Experiences, Book, Questions; detail pages mark their section as current. `/routes` redirects permanently to `/cruises`.
+- Booking form: "Cruise" list of all cruises and courses plus "Other or not sure yet".
+
+Open for the owner: spelling of **Vahti** (EN and BG), the **Sporades day mapping** (eight places over six days), fishing **gear and permits**, course **duration, certificate and syllabus**, and the gallery photos below.
+
+Photo slots (drop into `public/media/` with these exact names; until then flat placeholders):
+- Cruise `thasos-bays-day-cruise`: `cruise-thasos-bays-day-cruise-1.jpg`, `cruise-thasos-bays-day-cruise-2.jpg`, `cruise-thasos-bays-day-cruise-3.jpg`, `cruise-thasos-bays-day-cruise-4.jpg`, `cruise-thasos-bays-day-cruise-5.jpg`
+- Cruise `kavala-day-cruise`: `cruise-kavala-day-cruise-1.jpg`, `cruise-kavala-day-cruise-2.jpg`, `cruise-kavala-day-cruise-3.jpg`, `cruise-kavala-day-cruise-4.jpg`, `cruise-kavala-day-cruise-5.jpg`
+- Cruise `thasos-cruise`: `cruise-thasos-cruise-1.jpg`, `cruise-thasos-cruise-2.jpg`, `cruise-thasos-cruise-3.jpg`, `cruise-thasos-cruise-4.jpg`, `cruise-thasos-cruise-5.jpg`
+- Cruise `sporades-cruise`: `cruise-sporades-cruise-1.jpg`, `cruise-sporades-cruise-2.jpg`, `cruise-sporades-cruise-3.jpg`, `cruise-sporades-cruise-4.jpg`, `cruise-sporades-cruise-5.jpg`
+- Cruise `halkidiki-cruise`: `cruise-halkidiki-cruise-1.jpg`, `cruise-halkidiki-cruise-2.jpg`, `cruise-halkidiki-cruise-3.jpg`, `cruise-halkidiki-cruise-4.jpg`, `cruise-halkidiki-cruise-5.jpg`
+- Cruise `tuna-fishing-trip`: `cruise-tuna-fishing-trip-1.jpg`, `cruise-tuna-fishing-trip-2.jpg`, `cruise-tuna-fishing-trip-3.jpg`, `cruise-tuna-fishing-trip-4.jpg`, `cruise-tuna-fishing-trip-5.jpg`
+- Course `captain-course`: `course-captain-course-1.jpg`, `course-captain-course-2.jpg`, `course-captain-course-3.jpg`, `course-captain-course-4.jpg`, `course-captain-course-5.jpg`
+- Course `yachting-course`: `course-yachting-course-1.jpg`, `course-yachting-course-2.jpg`, `course-yachting-course-3.jpg`, `course-yachting-course-4.jpg`, `course-yachting-course-5.jpg`
+- The first photo of each is also its thumbnail in the cruise and course lists.

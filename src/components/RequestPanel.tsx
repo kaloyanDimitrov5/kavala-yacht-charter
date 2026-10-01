@@ -2,17 +2,18 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Minus, Plus, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
-import type { RouteId } from "@/config/site";
+import { courses, cruises } from "@/config/catalogue";
+
+/** A cruise or course slug, or "other" */
+type RequestRoute = string;
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/content";
-import { REQUEST_ROUTE_EVENT, type RequestRoute } from "@/lib/requestRoute";
 
 type Props = {
   locale: Locale;
   /** Digits only; empty means WhatsApp is not configured */
   number: string;
   maxGuests: number;
-  routes: RouteId[];
 };
 
 type Field = "from" | "to" | "guests";
@@ -26,12 +27,16 @@ const todayIso = () => {
 const input =
   "block w-full rounded-xl bg-limestone px-3 py-2 text-base text-aegean ring-1 ring-inset transition-[box-shadow] duration-160 ease-press hover:ring-aegean/40 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-teak-deep";
 
-export function RequestPanel({ locale, number, maxGuests, routes: routeIds }: Props) {
+export function RequestPanel({ locale, number, maxGuests }: Props) {
   // Read on the client: the dictionary holds the message builder, which cannot cross the server boundary
   const t = getDictionary(locale);
   const labels = { ...t.request, unavailable: t.whatsapp.unavailable };
   const buildMessage = t.request.message;
-  const routes = routeIds.map((id) => ({ id, name: t.routes.names[id] }));
+  // Every cruise and course, so the request names exactly what the visitor picked
+  const routes = [
+    ...cruises.map((c) => ({ id: c.slug as string, name: t.catalogue.cruises[c.slug].title })),
+    ...courses.map((c) => ({ id: c.slug as string, name: t.catalogue.courses[c.slug].title })),
+  ];
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [guests, setGuests] = useState("2");
@@ -47,11 +52,11 @@ export function RequestPanel({ locale, number, maxGuests, routes: routeIds }: Pr
   // Set on the client only, so server and client HTML match
   useEffect(() => setMinDate(todayIso()), []);
 
-  // "Ask about this route" elsewhere on the page preselects the route
+  // Cruise and course pages link here with ?cruise=<slug>
   useEffect(() => {
-    const onRoute = (e: Event) => setRoute((e as CustomEvent<RequestRoute>).detail);
-    window.addEventListener(REQUEST_ROUTE_EVENT, onRoute);
-    return () => window.removeEventListener(REQUEST_ROUTE_EVENT, onRoute);
+    const wanted = new URLSearchParams(window.location.search).get("cruise");
+    if (wanted && (wanted === "other" || routes.some((r) => r.id === wanted))) setRoute(wanted);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
