@@ -49,7 +49,8 @@ export function Hero({ t }: Props) {
               {t.hero.lead}
             </p>
 
-            <div style={step(2)} className="hero-rise mt-6">
+            {/* data-sticky-source: the floating contact button flies out from here (FloatingContact) */}
+            <div style={step(2)} className="hero-rise mt-6" data-sticky-source>
               <WhatsAppButton href={whatsappHref(t.whatsapp.message)} labels={t.whatsapp} />
             </div>
 

@@ -1,7 +1,7 @@
 import { getDictionary } from "@/content";
 import { site } from "@/config/site";
-import { cruises, courses, cruiseKinds, cruiseGallery, courseGallery, islandCruise } from "@/config/catalogue";
-import { resolveMedia } from "@/lib/media.server";
+import { cruises, courses, cruiseKinds, cruiseGalleries, courseGalleries, islandCruise } from "@/config/catalogue";
+import { cover } from "@/lib/photos";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
 import { PageHeader } from "@/components/PageHeader";
 import { LinkRows } from "@/components/LinkRows";
@@ -48,8 +48,7 @@ export default function CruisesPage({ params }: Params) {
                     meta: c.cruises[cr.slug].duration,
                     label: c.cruises[cr.slug].title,
                     detail: c.cruises[cr.slug].card,
-                    image: resolveMedia(cruiseGallery(cr.slug)[0]),
-                    alt: c.common.galleryAlt(c.cruises[cr.slug].title, 1),
+                    ...cover(cruiseGalleries[cr.slug], t),
                   }))}
               />
             </div>
@@ -67,8 +66,7 @@ export default function CruisesPage({ params }: Params) {
                 href: `/${locale}/courses/${co.slug}`,
                 label: c.courses[co.slug].title,
                 detail: c.courses[co.slug].card,
-                image: resolveMedia(courseGallery(co.slug)[0]),
-                alt: c.courseCommon.galleryAlt(c.courses[co.slug].title, 1),
+                ...cover(courseGalleries[co.slug], t),
               }))}
             />
           </div>

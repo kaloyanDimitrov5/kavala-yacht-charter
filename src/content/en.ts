@@ -1,3 +1,5 @@
+import type { PhotoKey } from "@/config/photos";
+import { photosEn } from "./photos.en";
 import { catalogueEn, type Catalogue } from "./catalogue.en";
 
 /**
@@ -81,7 +83,7 @@ export const en = {
     beachLabel: "Beach holiday",
     yachtLabel: "Yacht holiday",
     beachChip: "Same beach, same crowd",
-    beachAlt: "A crowded beach with rows of sunbeds",
+    beachAlt: "Swimmers crowded in shallow water off a busy beach",
     /** Captions say what each photo shows, not where it was taken. */
     moments: {
       cove: { chip: "Clear water in a sheltered bay", alt: "Turquoise water in a bay with pine covered hills, seen from the yacht" },
@@ -112,10 +114,10 @@ export const en = {
       lead: "Room for eight guests to sleep, shower on board and spend the day in the water.",
     },
     experiences: {
-      title: "Bachelor parties and pilates on board",
-      description: "Celebrate a bachelor party at sea or start the day with pilates on deck, on a private skippered yacht from Kavala.",
+      title: "Bachelor parties, yoga and pilates on board",
+      description: "Celebrate a bachelor party at sea or start the day with yoga or pilates on deck, on a private skippered yacht from Kavala.",
       heading: "Experiences on board",
-      lead: "The same private yacht and skipper, set up for a party or for a calm morning on deck.",
+      lead: "The same private yacht and skipper, set up for a party with your friends or for a calm morning on deck.",
     },
     book: {
       title: "Book your dates",
@@ -136,7 +138,7 @@ export const en = {
       cruises: { label: "Cruises", detail: "Day trips, island cruises and fishing trips, planned for you" },
       courses: { label: "Courses", detail: "Captain and yachting courses on our yacht" },
       boat: { label: "The boat", detail: "Four cabins, two bathrooms and the real deck plan" },
-      experiences: { label: "Experiences", detail: "Bachelor parties and pilates on deck" },
+      experiences: { label: "Experiences", detail: "Bachelor parties, yoga and pilates on deck" },
     },
     alts: {
       cruises: "The yacht under sail with an island ahead",
@@ -144,6 +146,69 @@ export const en = {
       boat: "View from the cockpit across a green bay",
       experiences: "The yacht at anchor in a pine lined bay with guests on deck",
     },
+  },
+  /** Home: cruises showcase (replaces the tagline and the comparison, owner request) */
+  showcase: {
+    titleA: "A beach gives you one view.",
+    titleB: "We give you six cruises.",
+    lead: "Day trips to the bays of Thasos, island cruises to the Sporades and Halkidiki, and tuna fishing. We plan the route, you enjoy it.",
+    filterLabel: "Show cruises",
+    filters: { all: "All", day: "Day trips", multi: "Island cruises", fishing: "Fishing" },
+    see: "See the cruise",
+    all: "See all cruises",
+    experienceLabel: "On every cruise",
+    experience: {
+      swim: "Swim straight off the boat",
+      sup: "SUP boards on board",
+      bay: "A new bay every day",
+      skipper: "Your skipper sails, you relax",
+    },
+  },
+  /** Home: the two accents (captain courses and fishing) */
+  accents: {
+    captain: {
+      badge: "Official Greek certificate",
+      title: "Captain courses",
+      // TODO(owner): confirm the exact name of the certificate and who issues it.
+      body: "Learn to skipper a sailing yacht on our boat, with an experienced captain beside you. At the end you receive an official Greek captain's certificate.",
+      points: [
+        "On a real yacht, in real conditions",
+        "Harbours, anchoring, sails and navigation",
+        "Captain course and yachting course for beginners",
+      ],
+      cta: "See the courses",
+      photoLabel: "Photos from the captain courses",
+    },
+    fishing: {
+      badge: "Fishing cruises",
+      title: "Tuna fishing on the open sea",
+      body: "Four to five days on the tuna route between Thasos and Samothraki, or longer on request. Your skipper takes you to the fishing grounds.",
+      points: ["4 to 5 days, longer on request", "Between Thasos and Samothraki", "Up to 8 guests on board"],
+      cta: "See the fishing trip",
+      photoLabel: "Photos from the fishing trips",
+    },
+  },
+  /** Home: experiences section (after the accents) */
+  experiencesHome: {
+    title: "More than a cruise",
+    lead: "Celebrate with your friends or slow down with a morning on deck. The same private yacht and skipper, set up for your group.",
+    learnMore: "Learn more",
+    whatsapp: "Ask on WhatsApp",
+    bachelor: {
+      badge: "Bachelor parties",
+      title: "A bachelor party at sea",
+      line: "Your group, a private yacht and a bay to yourselves.",
+    },
+    yoga: {
+      badge: "Yoga and pilates",
+      title: "Mornings on deck",
+      line: "A session on deck at anchor, then a swim straight off the boat.",
+    },
+  },
+  /** Floating contact button on every page */
+  floating: {
+    label: "Ask us on WhatsApp",
+    fallback: "Send us your dates",
   },
   guests: {
     title: "Shared by our guests",
@@ -162,6 +227,10 @@ export const en = {
       helm: { caption: "At the helm", alt: "The helm and the Greek flag above a green bay" },
       anchorage: { caption: "A calm anchorage", alt: "Calm water and green hills seen from the deck at anchor" },
       sunsetSea: { caption: "The sun goes down", alt: "The sun setting over the open sea" },
+      paddle: { caption: "Paddle boarding at anchor", alt: "A guest paddle boarding on calm water at anchor" },
+      tuna: { caption: "Catch of the day", alt: "A fisherman on deck holding up a tuna caught on the trip" },
+      villageSunset: { caption: "Evening in an island village", alt: "Red roofs and the sea at sunset from an island village" },
+      villageEvening: { caption: "Sunset ashore", alt: "A village square above the sea in the evening light" },
     },
   },
   routes: {
@@ -238,15 +307,16 @@ export const en = {
     playVideo: "Play video",
   },
   pilates: {
-    title: "Pilates on deck",
-    body: "Start the day with a pilates session on deck while the yacht is at anchor, then swim straight off the boat.",
-    stepsLabel: "A pilates morning on board",
-    steps: ["Anchor in a quiet bay", "Pilates on deck", "Swim straight off the boat"],
+    title: "Yoga and pilates on deck",
+    body: "Start the day with a yoga or pilates session on deck while the yacht is at anchor, then swim straight off the boat.",
+    stepsLabel: "A yoga morning on board",
+    steps: ["Anchor in a quiet bay", "Yoga or pilates on deck", "Swim straight off the boat"],
     // TODO(owner): confirm whether an instructor and mats are included and add them here.
-    points: ["Up to 8 guests on board"],
-    alt: "A pilates session on the deck of the yacht at anchor",
-    cta: "Ask about pilates on board",
-    message: "Hello, we would like to ask about pilates on the yacht from Kavala. Which dates are free?",
+    points: ["Calm mornings at anchor", "A swim straight after the session", "Up to 8 guests on board"],
+    // Describes the stand in clip until a pilates photo exists
+    alt: "A woman stretching in a pilates pose on the bow of a yacht at sunset",
+    cta: "Ask about yoga and pilates",
+    message: "Hello, we would like to ask about yoga and pilates on the yacht from Kavala. Which dates are free?",
   },
   how: {
     title: "How it works",
@@ -395,6 +465,8 @@ export const en = {
       ],
     },
   },
+  /** Alt text for the photo library (config/photos.ts) */
+  photos: photosEn,
   catalogue: catalogueEn,
   notFound: {
     title: "This bay is not on our chart",
@@ -413,4 +485,7 @@ type Widen<T> = T extends string
       : { [K in keyof T]: Widen<T[K]> };
 
 /** The catalogue keeps its own type (timeline steps have an optional note) */
-export type Dictionary = Omit<Widen<typeof en>, "catalogue"> & { catalogue: Catalogue };
+export type Dictionary = Omit<Widen<typeof en>, "catalogue" | "photos"> & {
+  catalogue: Catalogue;
+  photos: Record<PhotoKey, string>;
+};

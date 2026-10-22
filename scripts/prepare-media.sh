@@ -88,6 +88,66 @@ guest_clip IMG_3601.MOV guest-sup 6
 guest_clip IMG_8615.MOV guest-anchorage 1
 guest_clip IMG_8750.MOV guest-harbour 1
 
+echo "Cruise lead photos (slot 1: page gallery and list thumbnail)"
+# cruise_photo <source> <slug>: sRGB, metadata stripped, long edge capped at 1600 but never enlarged
+cruise_photo() {
+  local src="$SRC_IMG/$1" out="$OUT/cruise-$2-1.jpg"
+  local long; long=$(sips -g pixelWidth -g pixelHeight "$src" | awk '/pixel/{print $2}' | sort -n | tail -1)
+  local size=$(( long < 1600 ? long : 1600 ))
+  sips -s format jpeg -s formatOptions 82 -Z "$size" --matchTo "$SRGB" "$src" --out "$out" >/dev/null
+  exiftool -q -q -overwrite_original -all= "$out"
+  echo "  cruise-$2-1.jpg ($(sips -g pixelWidth -g pixelHeight "$out" | awk '/pixel/{printf $2"x"}' | sed 's/x$//'))"
+}
+cruise_photo 1-day-tasos.jpg thasos-bays-day-cruise
+cruise_photo kavala-trip.jpeg kavala-day-cruise
+cruise_photo tasos-2-3-days.jpg thasos-cruise
+cruise_photo sporades.jpg sporades-cruise
+cruise_photo halkidki.jpg halkidiki-cruise
+# TODO(owner): photos for tuna-fishing-trip and the two courses
+
+echo "Photo library, batch of 2026-10-08 (owner's trip photos)"
+BATCH="$SRC_IMG/batch-2026-10-08"
+SRC_IMG=$BATCH photo greece-1.jpg pic-green-bay.jpg 1600
+SRC_IMG=$BATCH photo greece-bay.jpg pic-turquoise-bay.jpg 1600
+SRC_IMG=$BATCH photo greece-bay-2.jpg pic-turquoise-deck.jpg 1600
+SRC_IMG=$BATCH photo greece-bay-3.jpg pic-beach-harbour.jpg 1600
+SRC_IMG=$BATCH photo greece-bay-4.jpg pic-green-cove.jpg 1600
+SRC_IMG=$BATCH photo greece-bay-5.jpg pic-bay-flag.jpg 1600
+SRC_IMG=$BATCH photo greece-bay-6.jpg pic-open-sea-deck.jpg 1600
+SRC_IMG=$BATCH photo greece-bay-thasos.jpg pic-thasos-bay.jpg 1600
+SRC_IMG=$BATCH photo greece-giola.jpg pic-giola.jpg 1600
+SRC_IMG=$BATCH photo greece-giola-2.jpg pic-giola-2.jpg 1600
+SRC_IMG=$BATCH photo greece-alonisos-island-view.jpg pic-alonissos-view.jpg 1600
+SRC_IMG=$BATCH photo greece-alonisos-island.jpg pic-alonissos-alley.jpg 1600
+SRC_IMG=$BATCH photo greece-alonisos-isalnd5.jpg pic-alonissos-sunset-alley.jpg 1600
+SRC_IMG=$BATCH photo greece-alonisos-island-2.jpg pic-alonissos-steps.jpg 1600
+SRC_IMG=$BATCH photo greece-alonisos-island-3.jpg pic-alonissos-church-lane.jpg 1600
+SRC_IMG=$BATCH photo greece-alonisos-island-4.jpg pic-alonissos-bougainvillea.jpg 1600
+SRC_IMG=$BATCH photo greece-skopelos.jpg pic-skopelos-harbour.jpg 1600
+SRC_IMG=$BATCH photo greece-skopelos-2.jpg pic-skopelos-church.jpg 1600
+SRC_IMG=$BATCH photo greece-kira-panagia.jpg pic-kyra-panagia.jpg 1600
+SRC_IMG=$BATCH photo greece-island.jpg pic-island-taverna.jpg 1600
+SRC_IMG=$BATCH photo greece-island-4.jpg pic-island-lane.jpg 1600
+SRC_IMG=$BATCH photo greece-island-white-house.jpg pic-island-white-house.jpg 1600
+SRC_IMG=$BATCH photo greece-view-from-island.jpg pic-island-sunset-view.jpg 1600
+SRC_IMG=$BATCH photo greece-view-island-2.jpg pic-village-evening.jpg 1600
+SRC_IMG=$BATCH photo greece-view-from-boat-athos-mountain.jpg pic-athos.jpg 1600
+SRC_IMG=$BATCH photo greece-fishing-tuna-2.jpg pic-tuna-catch.jpg 1600
+SRC_IMG=$BATCH photo greece-fishing-tuna.jpg pic-tuna-deck.jpg 1600
+# greece-bay-3.mp4 (portrait, 21 s): two clips. Paddle boarding at anchor (0 to 12 s) and life in the cockpit (16 s to the end).
+ffmpeg -loglevel error -y -t 12 -i "$BATCH/greece-bay-3.mp4" -vf "scale=540:-2,fps=30" -map_metadata -1 -an \
+  -c:v libx264 -preset slow -crf 29 -pix_fmt yuv420p -movflags +faststart "$OUT/pic-sup-paddle.mp4"
+ffmpeg -loglevel error -y -ss 3 -i "$OUT/pic-sup-paddle.mp4" -frames:v 1 -q:v 3 "$OUT/pic-sup-paddle.jpg"
+ffmpeg -loglevel error -y -ss 16 -i "$BATCH/greece-bay-3.mp4" -vf "scale=540:-2,fps=30" -map_metadata -1 -an \
+  -c:v libx264 -preset slow -crf 29 -pix_fmt yuv420p -movflags +faststart "$OUT/pic-cockpit-life.mp4"
+ffmpeg -loglevel error -y -ss 1.5 -i "$OUT/pic-cockpit-life.mp4" -frames:v 1 -q:v 3 "$OUT/pic-cockpit-life.jpg"
+echo "  pic-sup-paddle.mp4 ($(du -h "$OUT/pic-sup-paddle.mp4" | cut -f1)), pic-cockpit-life.mp4 ($(du -h "$OUT/pic-cockpit-life.mp4" | cut -f1))"
+
+echo "Yoga and pilates (batch of 2026-10-22)"
+# yoga-on-yacht is only 450 px wide: used as a small inset, never large
+SRC_IMG="$SRC_IMG/batch-2026-10-22" photo pilates-on-yacht.jpg pic-pilates.jpg 1440
+SRC_IMG="$SRC_IMG/batch-2026-10-22" photo yoga-on-yacht.jpg pic-yoga.jpg 450
+
 echo "Social sharing image"
 sips -s format jpeg -s formatOptions 80 --resampleWidth 1200 --matchTo "$SRGB" "$SRC_IMG/IMG_8679.jpg" --out "$OUT/og.jpg" >/dev/null
 sips --cropToHeightWidth 630 1200 "$OUT/og.jpg" >/dev/null

@@ -607,3 +607,59 @@ Photo slots (drop into `public/media/` with these exact names; until then flat p
 - Course `captain-course`: `course-captain-course-1.jpg`, `course-captain-course-2.jpg`, `course-captain-course-3.jpg`, `course-captain-course-4.jpg`, `course-captain-course-5.jpg`
 - Course `yachting-course`: `course-yachting-course-1.jpg`, `course-yachting-course-2.jpg`, `course-yachting-course-3.jpg`, `course-yachting-course-4.jpg`, `course-yachting-course-5.jpg`
 - The first photo of each is also its thumbnail in the cruise and course lists.
+
+#### Cruise photos, first batch
+
+- Owner's photos in `public/media/images/` mapped to slot 1 of each cruise (lead gallery photo and list thumbnail): `1-day-tasos.jpg` → Thasos bays day cruise, `kavala-trip.jpeg` → Kavala day cruise, `tasos-2-3-days.jpg` → Thasos cruise, `sporades.jpg` → Sporades cruise, `halkidki.jpg` → Halkidiki cruise. Built by `cruise_photo` in `scripts/prepare-media.sh` (sRGB, metadata stripped, long edge capped at 1600, never enlarged).
+- Each lead photo has its own alt text (`photoAlt` in the catalogue copy), describing what it shows.
+- List rows now show the thumbnail on phones too (96px), since the cruise list is where people choose.
+- Still placeholders: cruise slots 2 to 5, all tuna fishing slots, all course slots. Three sources are small (640 to 800 px) and look soft on high density screens as the large lead photo.
+
+#### Photo library (owner's batch of 2026-10-08) — no placeholders left
+
+- The owner's 27 photos and 1 video from Downloads are copied to `public/media/images/batch-2026-10-08/` (originals, not in git) and built by the "Photo library" step of `scripts/prepare-media.sh` into `pic-*.jpg` (1600 px long edge, sRGB, metadata stripped). The 21 s video is cut into two clips: paddle boarding at anchor and breakfast in the cockpit.
+- `config/photos.ts` defines every usable photo once; alt text per photo in `content/photos.{en,bg}.ts`. Galleries in `config/catalogue.ts` list photo keys, so one photo can appear on several pages (owner: reuse is fine, this is all we have for now).
+- Gallery sizes are 5, 9 or 13 so the grid (one large, then rows of four) never leaves a gap: Thasos cruise 9, Sporades cruise 13 (Kyra Panagia, Alonissos, Skopelos and island villages), the rest 5.
+- Covers: owner's cruise photos for the five cruises; the tuna catch for the fishing trip (owner request); the helm for the captain course; the cockpit for the yachting course.
+- Also filled: the beach side of the comparison (`pic-beach-harbour.jpg`, a busy beach with swimmers), the pilates porthole (paddle board clip as a stand in until there is a pilates photo, alt text describes the clip), four new prints in "Shared by our guests" (paddle board clip, tuna, two village evenings).
+- Places are named in alt text only where the owner's filename names them (Thasos, Giola, Alonissos, Skopelos, Kyra Panagia, Athos).
+- Check: 30 pages (15 per language) show zero placeholders and zero broken images.
+
+---
+
+## 15. Home refactor: cruises showcase and accents (owner request, web-design-engineer)
+
+The owner found the scroll driven comparison unintuitive and asked for simpler, photo led sections. Both the tagline reveal and the beach vs yacht comparison are removed from the home page.
+
+- **Rule exception, recorded:** landing-page-design B11 makes the word by word tagline reveal mandatory. The owner explicitly asked for these sections to be replaced, and that skill says the user's explicit prompt wins. The tagline's idea survives as the showcase heading ("A beach gives you one view. / We give you six cruises.").
+- **Design read:** extension of the existing system (Manrope, palette, radius, spacing scale); visual variance 5, motion 3, density 5, asset dependence 9 (real photos carry it), brand fidelity 8.
+
+**Cruises showcase** (`CruiseShowcase.tsx`, `SeaDecor.tsx`)
+- All six cruises as photo cards (cover photo, duration chip, title, one line, arrow), filterable by All / Day trips / Island cruises / Fishing (toggle buttons, `aria-pressed`).
+- Four "on every cruise" points with icons, and "See all cruises".
+- Background line drawings in the palette at low opacity: sun (turns, 90 s), yacht on swells (bobs, 6 s), beach umbrella, long swells. Hidden from assistive tech; still for reduced motion. Placed only in empty space (right of the heading, bottom padding).
+- Motion: each card fades up once when it enters (500 ms strong ease out, 60 ms stagger per row), and again after a filter change; photo zooms 5% on hover (pointer devices only). Nothing is tied to scroll position.
+
+**Accents** (`Accents.tsx`)
+- Two panels side by side (stacked on phones): **Captain courses** on aegean with the badge "Official Greek certificate", and **Tuna fishing** on white with the badge "Fishing cruises". Each: three photos that fan out once on first view (900 ms fluid curve), body, three points, button.
+- aegean now appears in two places (footer and the captain panel); both carry `data-surface="night"` for the white focus ring.
+- TODO(owner): the exact name and issuer of the Greek captain's certificate; until confirmed it reads "an official Greek captain's certificate".
+
+**Self check (web-design-engineer pre-delivery):** palette only (no new hues), spacing on the locked scale (named widths added for the drawings), nested radii follow the formula (24 → 8, 16 → 8), touch targets ≥ 40 px plus hit area, no scroll-driven motion, reduced motion respected, no hydration errors in either motion mode, no horizontal overflow at 375 and 1440, EN and BG checked.
+
+---
+
+## 16. Experiences section, experiences page and floating contact (owner request, web-design-engineer)
+
+**Home, "More than a cruise"** (after the accents, `ExperiencesHome.tsx`): two columns, bachelor parties and yoga / pilates. Each: a photo collage (main photo or muted loop plus an overlapping tilted print), a badge, title, one line, "Learn more" (to `/experiences#bachelor` or `#yoga`) and "Ask on WhatsApp" (new `outline` tone of the WhatsApp button, a secondary action on light ground).
+
+**Experiences page, rebuilt** (`/experiences`): the dark night section and the scrolling word banner are gone (owner: did not match the site, no scrolling words). Now: page header, then one white panel per experience (`ExperienceFeature.tsx`), photos and text on alternating sides, badge, title, body, points, for yoga the three step morning as small numbered tiles, then WhatsApp (names the experience) and "Send your dates". Background drawings (`ExperienceDecor.tsx`): moon and stars, lotus, swells, still, only in empty space.
+
+**Photos:** owner's `pilates-on-yacht.jpg` (1440 px, main yoga photo) and `yoga-on-yacht.jpg` (450 px, inset only). Pilates copy now reads "Yoga and pilates" in both languages.
+
+**Floating contact** (`FloatingContact.tsx`, every page, bottom right):
+- Home: hidden while the hero CTA is on screen; when it scrolls away, the button springs from where the hero CTA left the screen into the corner (FLIP, spring 0.9 s, bounce 0.22). Other pages: rises in with a small tilt shortly after load.
+- Arrival and hover send two water ripples outward (CSS, 1.1 s). The label shows for 2.8 s, then the pill folds to a 48 px circle; hover or focus unfolds it.
+- Steps aside while the footer (which has its own WhatsApp button) is on screen.
+- Without a WhatsApp number it falls back to "Send us your dates" (booking form) with a calendar icon.
+- aegean fill, white ring; z-index under the nav and menu. Reduced motion: fade only, no ripples.

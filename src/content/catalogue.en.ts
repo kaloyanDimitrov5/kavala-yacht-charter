@@ -36,7 +36,6 @@ export const catalogueEn = {
     timelineTitle: "Day by day",
     stepsTitle: "How the day goes",
     galleryTitle: "Photos",
-    galleryAlt: (title: string, n: number) => `Photo ${n} from the ${title}`,
     ask: "Ask about this cruise",
     askMessage: (title: string) =>
       `Hello, we would like to ask about the ${title} from Kavala. Which dates are free?`,
@@ -142,7 +141,6 @@ export const catalogueEn = {
     // TODO(owner): replace with real duration, group size and the certificate the course leads to.
     formatBody: "We agree the dates, the length of the course and the certificate it prepares you for with you. Ask us on WhatsApp.",
     galleryTitle: "Photos",
-    galleryAlt: (title: string, n: number) => `Photo ${n} from the ${title}`,
     ask: "Ask about this course",
     askMessage: (title: string) => `Hello, we would like to ask about the ${title} on the yacht from Kavala. Which dates are free?`,
     otherCourse: "The other course",

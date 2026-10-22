@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { CalendarBlank, Check } from "@phosphor-icons/react/dist/ssr";
 import { getDictionary } from "@/content";
 import { locales } from "@/i18n";
-import { courses, courseGallery, isCourse } from "@/config/catalogue";
-import { resolveMedia } from "@/lib/media.server";
+import { courses, courseGalleries, isCourse } from "@/config/catalogue";
+import { cover, photoItems } from "@/lib/photos";
 import { whatsappHref } from "@/lib/whatsapp";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
 import { PageHeader } from "@/components/PageHeader";
@@ -73,7 +73,8 @@ export default function CoursePage({ params }: Params) {
       <PhotoGrid
         id="photos-title"
         title={c.courseCommon.galleryTitle}
-        items={courseGallery(slug).map((file, i) => ({ file, alt: c.courseCommon.galleryAlt(course.title, i + 1) }))}
+        items={photoItems(courseGalleries[slug], t)}
+        videoLabels={{ play: t.gallery.playVideo, pause: t.gallery.pauseVideo }}
       />
 
       <section aria-labelledby="other-course" className="px-4 pb-24 sm:px-6 lg:px-8">
@@ -87,8 +88,7 @@ export default function CoursePage({ params }: Params) {
                   href: `/${locale}/courses/${other.slug}`,
                   label: c.courses[other.slug].title,
                   detail: c.courses[other.slug].card,
-                  image: resolveMedia(courseGallery(other.slug)[0]),
-                  alt: c.courseCommon.galleryAlt(c.courses[other.slug].title, 1),
+                  ...cover(courseGalleries[other.slug], t),
                 },
               ]}
             />

@@ -1,6 +1,6 @@
 import { getDictionary } from "@/content";
-import { courses, courseGallery } from "@/config/catalogue";
-import { resolveMedia } from "@/lib/media.server";
+import { courses, courseGalleries } from "@/config/catalogue";
+import { cover } from "@/lib/photos";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
 import { PageHeader } from "@/components/PageHeader";
 import { LinkRows } from "@/components/LinkRows";
@@ -12,7 +12,8 @@ export const generateMetadata = ({ params }: Params) =>
 
 export default function CoursesPage({ params }: Params) {
   const locale = toLocale(params.locale);
-  const c = getDictionary(locale).catalogue;
+  const t = getDictionary(locale);
+  const c = t.catalogue;
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
@@ -24,8 +25,7 @@ export default function CoursesPage({ params }: Params) {
               href: `/${locale}/courses/${co.slug}`,
               label: c.courses[co.slug].title,
               detail: c.courses[co.slug].card,
-              image: resolveMedia(courseGallery(co.slug)[0]),
-              alt: c.courseCommon.galleryAlt(c.courses[co.slug].title, 1),
+              ...cover(courseGalleries[co.slug], t),
             }))}
           />
         </div>

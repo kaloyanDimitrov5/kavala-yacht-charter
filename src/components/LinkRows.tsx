@@ -24,11 +24,11 @@ export function LinkRows({ rows, size = "lg" }: { rows: LinkRow[]; size?: "lg" |
         <li key={row.href}>
           <Link
             href={row.href}
-            className="group flex items-center gap-6 rounded-3xl p-4 transition-[background-color,transform] duration-200 ease-press hover:bg-white active:scale-[0.99] sm:p-6"
+            className="group flex items-center gap-4 rounded-3xl p-4 sm:gap-6 transition-[background-color,transform] duration-200 ease-press hover:bg-white active:scale-[0.99] sm:p-6"
           >
-            {/* 24px row radius − 16px gap = 8px thumbnail radius */}
-            <span className="relative hidden aspect-[4/3] w-thumb shrink-0 overflow-hidden rounded-lg bg-shoal/20 sm:block">
-              {row.image && <Image src={row.image} alt={row.alt} fill sizes="192px" className="object-cover" />}
+            {/* 24px row radius − 16px gap = 8px thumbnail radius. Smaller on phones, never hidden. */}
+            <span className="relative block aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-lg bg-shoal/20 sm:w-thumb">
+              {row.image && <Image src={row.image} alt={row.alt} fill sizes="(min-width: 640px) 192px, 96px" className="object-cover" />}
             </span>
             <span className="min-w-0 flex-1">
               {row.meta && <span className="mb-1 block text-sm font-semibold text-shoal-deep">{row.meta}</span>}

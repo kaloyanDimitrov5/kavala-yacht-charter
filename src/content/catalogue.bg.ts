@@ -37,7 +37,6 @@ export const catalogueBg: Catalogue = {
     timelineTitle: "Ден по ден",
     stepsTitle: "Как минава денят",
     galleryTitle: "Снимки",
-    galleryAlt: (title: string, n: number) => `Снимка ${n} от круиза ${title}`,
     ask: "Попитайте за този круиз",
     askMessage: (title: string) =>
       `Здравейте, искаме да попитаме за круиза „${title}“ от Кавала. Кои дати са свободни?`,
@@ -139,7 +138,6 @@ export const catalogueBg: Catalogue = {
     formatTitle: "Дати и формат",
     formatBody: "Датите, продължителността на курса и свидетелството, към което води, уговаряме с вас. Попитайте ни в WhatsApp.",
     galleryTitle: "Снимки",
-    galleryAlt: (title: string, n: number) => `Снимка ${n} от курса ${title}`,
     ask: "Попитайте за този курс",
     askMessage: (title: string) => `Здравейте, искаме да попитаме за курса „${title}“ на яхтата от Кавала. Кои дати са свободни?`,
     otherCourse: "Другият курс",

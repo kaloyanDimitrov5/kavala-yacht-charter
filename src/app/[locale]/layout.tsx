@@ -7,6 +7,7 @@ import { resolveMedia } from "@/lib/media.server";
 import { whatsappHref } from "@/lib/whatsapp";
 import { IslandNav } from "@/components/IslandNav";
 import { Footer } from "@/components/Footer";
+import { FloatingContact } from "@/components/FloatingContact";
 import { manrope } from "../fonts";
 
 type Params = { params: { locale: string } };
@@ -82,6 +83,7 @@ export default function LocaleLayout({ children, params }: Params & { children: 
         />
         {children}
         <Footer t={t} locale={locale} />
+        <FloatingContact locale={locale} whatsapp={whatsappHref(t.whatsapp.message)} labels={t.floating} />
       </body>
     </html>
   );

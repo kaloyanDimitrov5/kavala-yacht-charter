@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/content";
 import { locales } from "@/i18n";
-import { cruises, cruiseGallery, isCruise } from "@/config/catalogue";
-import { resolveMedia } from "@/lib/media.server";
+import { cruises, cruiseGalleries, isCruise } from "@/config/catalogue";
+import { cover, photoItems } from "@/lib/photos";
 import { whatsappHref } from "@/lib/whatsapp";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
 import { PageHeader } from "@/components/PageHeader";
@@ -68,7 +68,8 @@ export default function CruisePage({ params }: Params) {
         <PhotoGrid
           id="photos-title"
           title={c.common.galleryTitle}
-          items={cruiseGallery(slug).map((file, i) => ({ file, alt: c.common.galleryAlt(cruise.title, i + 1) }))}
+          items={photoItems(cruiseGalleries[slug], t)}
+          videoLabels={{ play: t.gallery.playVideo, pause: t.gallery.pauseVideo }}
         />
       </div>
 
@@ -85,8 +86,7 @@ export default function CruisePage({ params }: Params) {
                   meta: c.cruises[x.slug].duration,
                   label: c.cruises[x.slug].title,
                   detail: c.cruises[x.slug].card,
-                  image: resolveMedia(cruiseGallery(x.slug)[0]),
-                  alt: c.common.galleryAlt(c.cruises[x.slug].title, 1),
+                  ...cover(cruiseGalleries[x.slug], t),
                 }))}
             />
           </div>

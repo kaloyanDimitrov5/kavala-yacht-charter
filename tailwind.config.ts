@@ -63,6 +63,10 @@ const config: Config = {
         "story-lg": "18rem",
         // Thumbnail in the home "Plan your trip" rows
         thumb: "12rem",
+        // Background line drawings in the cruises showcase
+        "decor-sm": "10rem",
+        decor: "13rem",
+        "decor-lg": "16rem",
       },
       height: {
         5: "1.25rem",
