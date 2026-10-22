@@ -11,6 +11,8 @@ export function Boat({ t, showHeading = true }: { t: Dictionary; showHeading?: b
   const { facts, boat } = site;
   const b = t.boat;
   const plan = resolveMedia(media.deckPlan.file);
+  // Without its own h2, the section's feature titles are the h2s under the page h1
+  const Heading = showHeading ? "h3" : "h2";
 
   const features = [
     { icon: Bed, title: b.features.cabins.title(facts.cabins), body: b.features.cabins.body(facts.berthsPerCabin, facts.maxGuests) },
@@ -56,7 +58,7 @@ export function Boat({ t, showHeading = true }: { t: Dictionary; showHeading?: b
           {features.map(({ icon: Icon, title, body }) => (
             <li key={title}>
               <Icon size={24} aria-hidden className="text-aegean" />
-              <h3 className="mt-4 text-xl font-semibold tracking-tight text-aegean">{title}</h3>
+              <Heading className="mt-4 text-xl font-semibold tracking-tight text-aegean">{title}</Heading>
               <p className="mt-2 text-base text-aegean-soft">{body}</p>
             </li>
           ))}

@@ -663,3 +663,34 @@ The owner found the scroll driven comparison unintuitive and asked for simpler, 
 - Steps aside while the footer (which has its own WhatsApp button) is on screen.
 - Without a WhatsApp number it falls back to "Send us your dates" (booking form) with a calendar icon.
 - aegean fill, white ring; z-index under the nav and menu. Reduced motion: fade only, no ripples.
+
+---
+
+## 17. SEO (owner target: 95+)
+
+Measured with Lighthouse 12 (mobile, the same engine as PageSpeed Insights) on a production build.
+
+| | SEO | Performance | Accessibility | Best practices |
+|---|---|---|---|---|
+| Before (10 pages) | 85 to 92 | 76 to 98 (home 78) | 98 to 100 | 100 |
+| After (14 pages, EN and BG) | **100 on every page** | 90 to 98 (home 93) | 100 | 100 |
+
+**What was failing and is fixed**
+- `/robots.txt` and `/sitemap.xml` did not exist and fell through to the `[locale]` route (returned a copy of the home page). Now real files (`app/robots.ts`, `app/sitemap.ts`), and `dynamicParams = false` on `[locale]` so unknown first segments can never render a page.
+- Generic link text "Learn more" on the home page: now "See bachelor parties", "See yoga and pilates".
+- Boat page skipped a heading level (h1 → h3): feature titles are h2 when the page header owns the h1.
+
+**Added for Google (not all scored by Lighthouse)**
+- Sitemap: 34 URLs (every page in both languages) with hreflang alternates per entry.
+- Structured data (`lib/structuredData.ts`, `components/JsonLd.tsx`): TravelAgency and WebSite on every page; BreadcrumbList on inner pages; ItemList of cruises and of courses; TouristTrip with the day by day itinerary on each cruise; Course on each course; FAQPage on /faq. Facts only: no price, rating, street address or hours.
+- Every page: unique title and description, canonical, hreflang (en, bg, x-default), Open Graph and Twitter card with an image (cruise and course pages use their own cover photo). `lib/pageMetadata.ts` rebuilds Open Graph in full because Next replaces the layout's object.
+
+**Speed (Core Web Vitals feed Google ranking)**
+- Hero: the still is an optimised priority image (AVIF/WebP); the video loads only after the page has loaded and fades in when playing. Home LCP 6.5 s → much faster; performance 77 → 93.
+- Video tiles: no raw poster file, nothing downloads until in view. First experiences photo has priority.
+- `next.config.mjs`: AVIF then WebP.
+
+**Owner actions before launch (the code cannot do these)**
+1. Set `NEXT_PUBLIC_SITE_URL` to the real domain (e.g. `https://example.com`, no trailing slash) in the hosting settings. Until then canonical links, hreflang, the sitemap and structured data point at `http://localhost:3000`.
+2. Add the site to Google Search Console and submit `https://<domain>/sitemap.xml`.
+3. Optional but helpful: a Google Business Profile for the charter in Kavala, and real reviews in `site.reviews` (they would add review stars to structured data; never fabricate them).

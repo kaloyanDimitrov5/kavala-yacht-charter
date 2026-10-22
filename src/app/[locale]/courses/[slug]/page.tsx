@@ -6,6 +6,8 @@ import { courses, courseGalleries, isCourse } from "@/config/catalogue";
 import { cover, photoItems } from "@/lib/photos";
 import { whatsappHref } from "@/lib/whatsapp";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbs, course as courseLd } from "@/lib/structuredData";
 import { PageHeader } from "@/components/PageHeader";
 import { PhotoGrid } from "@/components/PhotoGrid";
 import { LinkRows } from "@/components/LinkRows";
@@ -23,10 +25,14 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Params) {
   if (!isCourse(params.slug)) return {};
   const slug = params.slug;
-  return pageMetadata(params.locale, `/courses/${slug}`, (t) => ({
-    title: t.catalogue.courses[slug].title,
-    description: t.catalogue.courses[slug].lead,
-  }));
+  const t = getDictionary(toLocale(params.locale));
+  const { image, alt } = cover(courseGalleries[slug], t);
+  return pageMetadata(
+    params.locale,
+    `/courses/${slug}`,
+    (d) => ({ title: d.catalogue.courses[slug].title, description: d.catalogue.courses[slug].lead }),
+    { src: image, alt },
+  );
 }
 
 export default function CoursePage({ params }: Params) {
@@ -40,6 +46,21 @@ export default function CoursePage({ params }: Params) {
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
+      <JsonLd
+        data={[
+          breadcrumbs(t, locale, [
+            { name: t.nav.links.courses, path: "/courses" },
+            { name: course.title, path: `/courses/${slug}` },
+          ]),
+          courseLd({
+            locale,
+            path: `/courses/${slug}`,
+            name: course.title,
+            description: course.lead,
+            image: cover(courseGalleries[slug], t).image,
+          }),
+        ]}
+      />
       <PageHeader title={course.title} lead={course.lead} />
 
       <section aria-labelledby="practise-title" className="px-4 sm:px-6 lg:px-8">

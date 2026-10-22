@@ -3,6 +3,8 @@ import { site } from "@/config/site";
 import { cruises, courses, cruiseKinds, cruiseGalleries, courseGalleries, islandCruise } from "@/config/catalogue";
 import { cover } from "@/lib/photos";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbs, itemList } from "@/lib/structuredData";
 import { PageHeader } from "@/components/PageHeader";
 import { LinkRows } from "@/components/LinkRows";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -22,6 +24,12 @@ export default function CruisesPage({ params }: Params) {
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
+      <JsonLd
+        data={[
+          breadcrumbs(t, locale, [{ name: t.nav.links.cruises, path: "/cruises" }]),
+          itemList(locale, cruises.map((cr) => ({ name: c.cruises[cr.slug].title, path: `/cruises/${cr.slug}` }))),
+        ]}
+      />
       <PageHeader title={c.index.heading} lead={c.index.lead} />
 
       {/* We plan it: the proposal note sits right under the promise */}

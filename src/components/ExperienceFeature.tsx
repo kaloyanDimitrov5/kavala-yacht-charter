@@ -23,6 +23,8 @@ type Props = {
   videoLabels: { play: string; pause: string };
   whatsapp: { href: string | null; labels: WhatsAppLabels };
   book: { href: string; label: string };
+  /** The first feature on the page: its main photo is the largest content on first screen */
+  priority?: boolean;
 };
 
 /**
@@ -30,12 +32,12 @@ type Props = {
  * alternating sides down the page. Stacks on phones with the photos first.
  */
 export function ExperienceFeature(props: Props) {
-  const { id, icon: Icon, badge, title, body, points, steps, main, inset, flip, videoLabels, whatsapp, book } = props;
+  const { id, icon: Icon, badge, title, body, points, steps, main, inset, flip, videoLabels, whatsapp, book, priority } = props;
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="relative px-4 pb-12 sm:px-6 lg:px-8 lg:pb-16">
       <div className="mx-auto grid max-w-7xl items-center gap-10 rounded-3xl bg-white p-6 sm:p-10 lg:grid-cols-12 lg:gap-16 lg:p-12">
         <div className={`lg:col-span-6 ${flip ? "lg:order-2" : ""}`}>
-          <PhotoCollage main={main} inset={inset} side={flip ? "left" : "right"} shape="portrait" labels={videoLabels} />
+          <PhotoCollage main={main} inset={inset} side={flip ? "left" : "right"} shape="portrait" labels={videoLabels} priority={priority} />
         </div>
 
         <div className={`lg:col-span-6 ${flip ? "lg:order-1" : ""}`}>

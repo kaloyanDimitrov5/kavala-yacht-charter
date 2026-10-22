@@ -18,17 +18,22 @@ type Props = {
   labels: { play: string; pause: string };
   /** Extra classes for media layers, e.g. an object-position */
   mediaClassName?: string;
+  /** Load the still with high priority (only for the largest image on first screen) */
+  priority?: boolean;
 };
 
 /**
  * Fills its positioned parent with a muted loop that plays only while in view,
  * the still image, or a flat placeholder. Reduced motion shows the still.
+ * The still is an optimised image underneath; the loop downloads only once in view and
+ * fades in over it when playing (no raw poster file).
  * Visitors can pause the loop (WCAG 2.2.2).
  */
-export function InViewVideo({ image, video, alt, sizes, file, placeholder = "bg-shoal", labels, mediaClassName = "" }: Props) {
+export function InViewVideo({ image, video, alt, sizes, file, placeholder = "bg-shoal", labels, mediaClassName = "", priority }: Props) {
   const reduce = useReducedMotionSafe();
   const ref = useRef<HTMLVideoElement>(null);
   const [paused, setPaused] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const inView = useInView(ref, { amount: 0.25 });
   const showVideo = !!video && !reduce;
 
@@ -55,20 +60,20 @@ export function InViewVideo({ image, video, alt, sizes, file, placeholder = "bg-
   return (
     <>
       {image && (
-        <Image src={image} alt={showVideo ? "" : alt} fill sizes={sizes} className={`object-cover ${mediaClassName}`} />
+        <Image src={image} alt={showVideo ? "" : alt} fill sizes={sizes} priority={priority} className={`object-cover ${mediaClassName}`} />
       )}
       {showVideo && (
         <>
           <video
             ref={ref}
             src={video}
-            poster={image ?? undefined}
             aria-label={alt}
             muted
             loop
             playsInline
-            preload="metadata"
-            className={`absolute inset-0 h-full w-full object-cover ${mediaClassName}`}
+            preload="none"
+            onPlaying={() => setPlaying(true)}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-fluid ${playing ? "opacity-100" : "opacity-0"} ${mediaClassName}`}
           />
           <button
             type="button"

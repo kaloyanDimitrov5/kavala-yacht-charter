@@ -17,14 +17,27 @@ type Props = {
 /**
  * Photo, muted loop or flat placeholder.
  * - No files yet: flat shoal block at the configured aspect ratio, alt text via role="img".
- * - Photo: fades in over the flat colour once decoded (the flat colour is the loading state).
- * - Video: only when motion is allowed; reduced motion shows the photo as a still.
+ * - Photo: optimised priority image, painted at once (it is the page's largest content).
+ * - Video: only when motion is allowed; fades in over the photo once playing.
+ *   Reduced motion shows the photo as a still.
  *   Visitors can pause the loop (WCAG 2.2.2).
  */
 export function HeroMedia({ image, video, alt, caption, placeholderNote, labels }: Props) {
   const reduce = useReducedMotionSafe();
-  const [loaded, setLoaded] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  // The loop starts downloading only after the page has loaded, so it never competes with the
+  // still (the page's largest content) for bandwidth
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    // Safari has no requestIdleCallback; a short timeout after load does the same job there
+    const go = () =>
+      typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(() => setReady(true), { timeout: 2000 })
+        : setTimeout(() => setReady(true), 200);
+    if (document.readyState === "complete") go();
+    else window.addEventListener("load", go, { once: true });
+  }, []);
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasVideo = !!(video.mp4 || video.webm) && !reduce;
 
@@ -32,9 +45,10 @@ export function HeroMedia({ image, video, alt, caption, placeholderNote, labels 
     const el = videoRef.current;
     if (!el) return;
     // Played from here rather than autoPlay, so reduced motion visitors never see it start
+    if (!ready) return;
     if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) el.pause();
     else el.play().catch(() => setPaused(true));
-  }, [paused, hasVideo]);
+  }, [paused, hasVideo, ready]);
 
   const empty = !image && !hasVideo;
 
@@ -52,32 +66,36 @@ export function HeroMedia({ image, video, alt, caption, placeholderNote, labels 
 
       {!empty && <div aria-hidden className="absolute inset-0 bg-shoal" />}
 
-      {image && !hasVideo && (
+      {/*
+        The still is always an optimised, high priority image (AVIF/WebP, sized per screen):
+        it is the largest thing on screen, so it must paint first. No fade, so it counts at once.
+      */}
+      {image && (
         <Image
           src={image}
-          alt={alt}
+          alt={hasVideo ? "" : alt}
           fill
           priority
           sizes="(min-width: 1280px) 1280px, 100vw"
-          onLoad={() => setLoaded(true)}
-          className={`object-cover transition-opacity duration-700 ease-fluid ${loaded ? "opacity-100" : "opacity-0"}`}
+          className="object-cover"
         />
       )}
 
       {hasVideo && (
         <>
+          {/* The loop fades in over the still once it is actually playing */}
           <video
             ref={videoRef}
             aria-label={alt}
-            className="absolute inset-0 h-full w-full object-cover"
-            poster={image ?? undefined}
+            onPlaying={() => setPlaying(true)}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-fluid ${playing ? "opacity-100" : "opacity-0"}`}
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
           >
-            {video.webm && <source src={video.webm} type="video/webm" />}
-            {video.mp4 && <source src={video.mp4} type="video/mp4" />}
+            {ready && video.webm && <source src={video.webm} type="video/webm" />}
+            {ready && video.mp4 && <source src={video.mp4} type="video/mp4" />}
           </video>
           <button
             type="button"

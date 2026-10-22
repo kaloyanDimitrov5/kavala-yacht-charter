@@ -8,11 +8,16 @@ import { whatsappHref } from "@/lib/whatsapp";
 import { IslandNav } from "@/components/IslandNav";
 import { Footer } from "@/components/Footer";
 import { FloatingContact } from "@/components/FloatingContact";
+import { JsonLd } from "@/components/JsonLd";
+import { organization, website } from "@/lib/structuredData";
 import { manrope } from "../fonts";
 
 type Params = { params: { locale: string } };
 
 const toLocale = (value: string): Locale => (isLocale(value) ? value : defaultLocale);
+
+/** Only /en and /bg exist; anything else under the root is a 404 (not a copy of the home page). */
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -54,6 +59,7 @@ export function generateMetadata({ params }: Params): Metadata {
       card: ogImage ? "summary_large_image" : "summary",
       title,
       description: t.meta.description,
+      ...(ogImage ? { images: [ogImage] } : {}),
     },
   };
 }
@@ -65,6 +71,7 @@ export default function LocaleLayout({ children, params }: Params & { children: 
   return (
     <html lang={locale} className={manrope.variable}>
       <body className="font-sans">
+        <JsonLd data={[organization(t, locale), website(t, locale)]} />
         <a
           href="#main"
           className="sr-only rounded-xl bg-aegean text-base font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:px-3 focus:py-2"

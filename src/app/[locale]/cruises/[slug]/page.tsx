@@ -5,6 +5,8 @@ import { cruises, cruiseGalleries, isCruise } from "@/config/catalogue";
 import { cover, photoItems } from "@/lib/photos";
 import { whatsappHref } from "@/lib/whatsapp";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbs, touristTrip } from "@/lib/structuredData";
 import { PageHeader } from "@/components/PageHeader";
 import { FactsStrip } from "@/components/FactsStrip";
 import { Timeline } from "@/components/Timeline";
@@ -23,10 +25,14 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Params) {
   if (!isCruise(params.slug)) return {};
   const slug = params.slug;
-  return pageMetadata(params.locale, `/cruises/${slug}`, (t) => ({
-    title: t.catalogue.cruises[slug].title,
-    description: t.catalogue.cruises[slug].lead,
-  }));
+  const t = getDictionary(toLocale(params.locale));
+  const { image, alt } = cover(cruiseGalleries[slug], t);
+  return pageMetadata(
+    params.locale,
+    `/cruises/${slug}`,
+    (d) => ({ title: d.catalogue.cruises[slug].title, description: d.catalogue.cruises[slug].lead }),
+    { src: image, alt },
+  );
 }
 
 export default function CruisePage({ params }: Params) {
@@ -40,6 +46,22 @@ export default function CruisePage({ params }: Params) {
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
+      <JsonLd
+        data={[
+          breadcrumbs(t, locale, [
+            { name: t.nav.links.cruises, path: "/cruises" },
+            { name: cruise.title, path: `/cruises/${slug}` },
+          ]),
+          touristTrip({
+            locale,
+            path: `/cruises/${slug}`,
+            name: cruise.title,
+            description: cruise.lead,
+            image: cover(cruiseGalleries[slug], t).image,
+            steps: cruise.timeline,
+          }),
+        ]}
+      />
       <PageHeader title={cruise.title} lead={cruise.lead} />
 
       <FactsStrip

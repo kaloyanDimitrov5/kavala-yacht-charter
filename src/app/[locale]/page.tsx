@@ -71,7 +71,6 @@ export default function Home({ params }: { params: { locale: string } }) {
       <ExperiencesHome
         title={t.experiencesHome.title}
         lead={t.experiencesHome.lead}
-        learnMore={t.experiencesHome.learnMore}
         videoLabels={{ play: t.bachelor.playVideo, pause: t.bachelor.pauseVideo }}
         cards={[
           {

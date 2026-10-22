@@ -2,6 +2,8 @@ import { getDictionary } from "@/content";
 import { courses, courseGalleries } from "@/config/catalogue";
 import { cover } from "@/lib/photos";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbs, itemList } from "@/lib/structuredData";
 import { PageHeader } from "@/components/PageHeader";
 import { LinkRows } from "@/components/LinkRows";
 
@@ -17,6 +19,12 @@ export default function CoursesPage({ params }: Params) {
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
+      <JsonLd
+        data={[
+          breadcrumbs(t, locale, [{ name: t.nav.links.courses, path: "/courses" }]),
+          itemList(locale, courses.map((co) => ({ name: c.courses[co.slug].title, path: `/courses/${co.slug}` }))),
+        ]}
+      />
       <PageHeader title={c.coursesIndex.heading} lead={c.coursesIndex.lead} />
       <section aria-label={c.coursesIndex.heading} className="px-4 pb-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">

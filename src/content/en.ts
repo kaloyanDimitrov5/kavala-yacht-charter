@@ -192,17 +192,18 @@ export const en = {
   experiencesHome: {
     title: "More than a cruise",
     lead: "Celebrate with your friends or slow down with a morning on deck. The same private yacht and skipper, set up for your group.",
-    learnMore: "Learn more",
     whatsapp: "Ask on WhatsApp",
     bachelor: {
       badge: "Bachelor parties",
       title: "A bachelor party at sea",
       line: "Your group, a private yacht and a bay to yourselves.",
+      more: "See bachelor parties",
     },
     yoga: {
       badge: "Yoga and pilates",
       title: "Mornings on deck",
       line: "A session on deck at anchor, then a swim straight off the boat.",
+      more: "See yoga and pilates",
     },
   },
   /** Floating contact button on every page */

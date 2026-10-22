@@ -4,6 +4,8 @@ import { photoLibrary, type PhotoKey } from "@/config/photos";
 import { resolveMedia } from "@/lib/media.server";
 import { whatsappHref } from "@/lib/whatsapp";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbs } from "@/lib/structuredData";
 import { PageHeader } from "@/components/PageHeader";
 import { ExperienceDecor } from "@/components/ExperienceDecor";
 import { ExperienceFeature } from "@/components/ExperienceFeature";
@@ -30,12 +32,14 @@ export default function ExperiencesPage({ params }: Params) {
 
   return (
     <main id="main" tabIndex={-1} className="relative overflow-hidden outline-none">
+      <JsonLd data={breadcrumbs(t, toLocale(params.locale), [{ name: t.nav.links.experiences, path: "/experiences" }])} />
       <ExperienceDecor />
       <div className="relative">
         <PageHeader title={t.pages.experiences.heading} lead={t.pages.experiences.lead} />
 
         <ExperienceFeature
           id="bachelor"
+          priority
           icon={Champagne}
           badge={eh.bachelor.badge}
           title={t.bachelor.title}

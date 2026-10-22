@@ -9,6 +9,8 @@ export type ExperienceCard = {
   badge: string;
   title: string;
   line: string;
+  /** Link text naming the destination (Google flags generic "Learn more") */
+  more: string;
   href: string;
   main: CollagePhoto;
   inset: CollagePhoto;
@@ -18,7 +20,6 @@ export type ExperienceCard = {
 type Props = {
   title: string;
   lead: string;
-  learnMore: string;
   cards: ExperienceCard[];
   videoLabels: { play: string; pause: string };
 };
@@ -26,9 +27,9 @@ type Props = {
 /**
  * Home: bachelor parties and yoga / pilates, after the accents.
  * Two columns, each a photo collage, a badge, a title, one line, then "Learn more" (to the
- * experiences page section) and WhatsApp. Only motion: the collages settle in once.
+ * experiences page section, named in the link text) and WhatsApp. Only motion: the collages settle in once.
  */
-export function ExperiencesHome({ title, lead, learnMore, cards, videoLabels }: Props) {
+export function ExperiencesHome({ title, lead, cards, videoLabels }: Props) {
   return (
     <section aria-labelledby="experiences-home" className="relative overflow-hidden px-4 pb-24 pt-12 sm:px-6 lg:px-8">
       <ExperienceDecor />
@@ -65,7 +66,7 @@ export function ExperiencesHome({ title, lead, learnMore, cards, videoLabels }: 
                     href={card.href}
                     className="inline-flex items-center gap-2 rounded-xl bg-aegean px-3 py-2 text-base font-semibold text-white transition-[background-color,transform] duration-160 ease-press hover:bg-aegean/90 active:scale-[0.98]"
                   >
-                    {learnMore}
+                    {card.more}
                     <ArrowRight size={20} aria-hidden />
                   </Link>
                   <WhatsAppButton tone="outline" href={card.whatsapp.href} labels={card.whatsapp.labels} />

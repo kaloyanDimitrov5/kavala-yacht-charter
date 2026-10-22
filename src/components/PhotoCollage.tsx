@@ -15,6 +15,8 @@ type Props = {
   /** Portrait (4:5) or landscape (4:3) main photo */
   shape?: "portrait" | "landscape";
   labels?: { play: string; pause: string };
+  /** First screen only: load the main photo with high priority */
+  priority?: boolean;
 };
 
 const EASE_FLUID = [0.32, 0.72, 0, 1] as const;
@@ -24,7 +26,7 @@ const EASE_FLUID = [0.32, 0.72, 0, 1] as const;
  * Motion, once on first view: the main photo rises 24px, the inset follows 120ms later and
  * settles into a slight tilt. Reduced motion: fade only.
  */
-export function PhotoCollage({ main, inset, side = "right", shape = "landscape", labels }: Props) {
+export function PhotoCollage({ main, inset, side = "right", shape = "landscape", labels, priority }: Props) {
   const reduce = useReducedMotionSafe();
   const tilt = side === "right" ? 3 : -3;
   const show = (delay: number, rotate = 0) => ({
@@ -54,10 +56,13 @@ export function PhotoCollage({ main, inset, side = "right", shape = "landscape",
             alt={main.alt}
             file={main.file ?? ""}
             sizes="(min-width: 1024px) 40vw, 100vw"
+            priority={priority}
             labels={labels ?? { play: "Play", pause: "Pause" }}
           />
         ) : (
-          main.src && <Image src={main.src} alt={main.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+          main.src && (
+            <Image src={main.src} alt={main.alt} fill priority={priority} sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+          )
         )}
       </motion.div>
 

@@ -1,6 +1,8 @@
 import { getDictionary } from "@/content";
 import { site } from "@/config/site";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbs } from "@/lib/structuredData";
 import { PageHeader } from "@/components/PageHeader";
 import { Boat } from "@/components/Boat";
 import { Gallery } from "@/components/Gallery";
@@ -15,6 +17,7 @@ export default function BoatPage({ params }: Params) {
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
+      <JsonLd data={breadcrumbs(t, toLocale(params.locale), [{ name: t.nav.links.boat, path: "/boat" }])} />
       <PageHeader title={site.boat.name || t.pages.boat.heading} lead={t.pages.boat.lead} />
       <Boat t={t} showHeading={false} />
       <Gallery t={t} />
