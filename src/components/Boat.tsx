@@ -58,7 +58,7 @@ export function Boat({ t, showHeading = true }: { t: Dictionary; showHeading?: b
           {features.map(({ icon: Icon, title, body }) => (
             <li key={title}>
               <Icon size={24} aria-hidden className="text-aegean" />
-              <Heading className="mt-4 text-xl font-semibold tracking-tight text-aegean">{title}</Heading>
+              <Heading className="mt-4 text-xl font-medium tracking-tight text-aegean">{title}</Heading>
               <p className="mt-2 text-base text-aegean-soft">{body}</p>
             </li>
           ))}

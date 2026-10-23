@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Champagne, FlowerLotus } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { PhotoCollage, type CollagePhoto } from "./PhotoCollage";
 import { WhatsAppButton, type WhatsAppLabels } from "./WhatsAppButton";
 import { ExperienceDecor } from "./ExperienceDecor";
@@ -26,7 +26,7 @@ type Props = {
 
 /**
  * Home: bachelor parties and yoga / pilates, after the accents.
- * Two columns, each a photo collage, a badge, a title, one line, then "Learn more" (to the
+ * Two columns, each a photo collage, a title, one line, then "Learn more" (to the
  * experiences page section, named in the link text) and WhatsApp. Only motion: the collages settle in once.
  */
 export function ExperiencesHome({ title, lead, cards, videoLabels }: Props) {
@@ -35,7 +35,7 @@ export function ExperiencesHome({ title, lead, cards, videoLabels }: Props) {
       <ExperienceDecor />
       <div className="relative mx-auto max-w-7xl">
         <div className="max-w-measure">
-          <h2 id="experiences-home" className="text-4xl font-semibold tracking-tight text-aegean lg:text-6xl">
+          <h2 id="experiences-home" className="text-4xl font-medium tracking-tight text-aegean lg:text-6xl">
             {title}
           </h2>
           <p className="mt-6 text-lg text-aegean-soft lg:text-xl">{lead}</p>
@@ -43,7 +43,6 @@ export function ExperiencesHome({ title, lead, cards, videoLabels }: Props) {
 
         <div className="mt-12 grid gap-16 lg:mt-16 lg:grid-cols-2 lg:gap-12">
           {cards.map((card, i) => {
-            const Icon = card.key === "bachelor" ? Champagne : FlowerLotus;
             return (
               <article key={card.key} aria-labelledby={`exp-${card.key}`} className="flex flex-col">
                 <PhotoCollage
@@ -53,11 +52,7 @@ export function ExperiencesHome({ title, lead, cards, videoLabels }: Props) {
                   shape="landscape"
                   labels={videoLabels}
                 />
-                <p className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1 text-sm font-semibold text-shoal-deep">
-                  <Icon size={20} aria-hidden />
-                  {card.badge}
-                </p>
-                <h3 id={`exp-${card.key}`} className="mt-4 text-3xl font-semibold tracking-tight text-aegean lg:text-4xl">
+                <h3 id={`exp-${card.key}`} className="mt-8 text-3xl font-medium tracking-tight text-aegean lg:text-4xl">
                   {card.title}
                 </h3>
                 <p className="mt-3 max-w-measure text-lg text-aegean-soft">{card.line}</p>

@@ -38,7 +38,7 @@ export function Timeline({ id, title, steps, proposal }: Props) {
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-24">
-            <h2 id={id} className="text-3xl font-semibold tracking-tight text-aegean lg:text-5xl">
+            <h2 id={id} className="text-3xl font-medium tracking-tight text-aegean lg:text-5xl">
               {title}
             </h2>
             <aside className="mt-8 rounded-2xl bg-white p-6">
@@ -66,7 +66,7 @@ export function Timeline({ id, title, steps, proposal }: Props) {
                   }`}
                 />
                 <p className="text-sm font-semibold text-shoal-deep">{step.label}</p>
-                <h3 className="mt-1 text-2xl font-semibold tracking-tight text-aegean lg:text-3xl">{step.title}</h3>
+                <h3 className="mt-1 text-2xl font-medium tracking-tight text-aegean lg:text-3xl">{step.title}</h3>
                 <p className="mt-3 max-w-measure text-lg text-aegean-soft">{step.body}</p>
                 {step.note && (
                   <p className="mt-4 inline-flex items-start gap-2 rounded-xl bg-white px-3 py-2 text-sm font-medium text-aegean">

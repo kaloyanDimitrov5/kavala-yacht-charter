@@ -9,7 +9,7 @@ export function NotFoundContent({ locale, t }: { locale: Locale; t: Dictionary }
     <main id="main" tabIndex={-1} className="flex min-h-screen items-center px-4 py-24 outline-none sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-7xl">
         <Compass size={48} aria-hidden className="text-shoal" />
-        <h1 className="text-hero-gradient mt-8 w-fit max-w-measure pb-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="text-hero-gradient mt-8 w-fit max-w-measure pb-3 text-4xl font-medium tracking-tight sm:text-5xl">
           {t.notFound.title}
         </h1>
         <p className="mt-6 max-w-measure text-lg text-aegean-soft">{t.notFound.body}</p>

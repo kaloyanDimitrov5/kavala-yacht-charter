@@ -16,6 +16,13 @@
   --mist: 163 184 196; /* #A3B8C4, secondary text on the aegean footer (7.23:1) */
   --shoal-light: 95 192 204; /* #5FC0CC, accent on the aegean footer (7.01:1) */
   --white: 255 255 255;
+  /* WhatsApp brand green (owner request: the button in WhatsApp's colour). Label is aegean (7.3:1);
+     white on this green is only 2:1, so never white text on it. */
+  --whatsapp: 37 211 102; /* #25D366 */
+  --whatsapp-deep: 31 184 85; /* #1FB855, hover */
+  /* Viber purple, a touch deeper than the brand #7360F2 (4.48:1) so the white label passes AA */
+  --viber: 112 89 236; /* #7059EC, white label 4.85:1 */
+  --viber-deep: 106 85 236; /* #6A55EC, hover */
 
   --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-press: cubic-bezier(0.23, 1, 0.32, 1);
@@ -70,7 +77,16 @@
     color: transparent;
   }
 
+  /* B5 dark theme variant: headings set on photos and video */
+  .text-hero-gradient-dark {
+    background-image: linear-gradient(to right, #ffffff, #9b9b9b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   @media (forced-colors: active) {
+    .text-hero-gradient-dark,
     .text-hero-gradient {
       background-image: none;
       color: CanvasText;
@@ -88,11 +104,24 @@
     animation-delay: 320ms;
   }
 
+  /*
+   * Photo headers (the one signature moment per page): the frame opens from a slight inset
+   * while the photo settles from a gentle zoom. CSS, so it runs before hydration.
+   */
+  .photo-unveil {
+    animation: photo-unveil 1400ms var(--ease-fluid) both;
+  }
+  .photo-settle {
+    animation: photo-settle 2000ms var(--ease-fluid) both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
     }
 
+    .photo-unveil,
+    .photo-settle,
     .hero-rise,
     .hero-unveil {
       animation: hero-fade 400ms ease both;
@@ -122,6 +151,24 @@
   to {
     clip-path: inset(0 0 0 0 round var(--frame-radius, 24px));
     transform: translateY(0);
+  }
+}
+
+@keyframes photo-unveil {
+  from {
+    clip-path: inset(4% 3% 4% 3% round var(--frame-radius, 24px));
+  }
+  to {
+    clip-path: inset(0 0 0 0 round var(--frame-radius, 24px));
+  }
+}
+
+@keyframes photo-settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
   }
 }
 

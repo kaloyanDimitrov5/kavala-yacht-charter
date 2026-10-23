@@ -113,8 +113,10 @@ export function IslandNav({ locale, brand, labels, whatsapp }: Props) {
               const current = l === locale;
               return (
                 <li key={l}>
+                  {/* scroll={false}: switching language keeps the visitor where they are on the page */}
                   <Link
                     href={localized(l)}
+                    scroll={false}
                     hrefLang={l}
                     lang={l}
                     aria-label={labels.languages[l]}

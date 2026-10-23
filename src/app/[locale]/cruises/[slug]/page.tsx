@@ -73,7 +73,11 @@ export default function CruisePage({ params }: Params) {
           }),
         ]}
       />
-      <PageHeader title={cruise.title} lead={cruise.lead} />
+      <PageHeader
+        title={cruise.title}
+        lead={cruise.lead}
+        image={{ src: cover(cruiseGalleries[slug], t).image, alt: cover(cruiseGalleries[slug], t).alt }}
+      />
 
       <FactsStrip
         label={c.common.factsLabel}

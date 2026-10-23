@@ -711,3 +711,22 @@ Measured with Lighthouse 12 (mobile, the same engine as PageSpeed Insights) on a
 - Right: numbered list (white cards, aegean number, teak tinted icon tile: umbrella for beaches, house for villages, church for the monastery). Pins are numbered clockwise from Limenas.
 - Pointing at a list item or a pin highlights both (shoal-deep) and shows the name in a chip in the map corner, never next to the pin, so it cannot cover another pin. The map is aria-hidden; the list carries the content.
 - Motion: coast draws (1.2s), crossing fades in, pins pop in 70ms apart. Reduced motion: all drawn at once.
+
+## 20. Premium pass: quiet luxury editorial (owner request, web-design-engineer + frontend-design)
+
+Mode: redesign, preserve (content, routes, SEO, accessibility and the WhatsApp flow untouched). Step 1 of 2: foundations, home, cruise detail.
+
+- Type: display headings drop from semibold to medium (500) with tight tracking; section headings `text-4xl → lg:text-6xl`, page titles `text-5xl → lg:text-8xl`, leads `lg:text-xl`.
+- Hero: full screen (`h-svh`) inset frame (8px / 12px gutter, like the nav pill), video behind, a flat `aegean/40` veil (no gradient scrim, B4), words bottom left in the B5 dark theme heading gradient (`#FFFFFF → #9B9B9B`, `.text-hero-gradient-dark`).
+- Photo headers (`PageHeader` with `image`): same inset frame at `72svh`, title and lead over the photo. Signature motion: `.photo-unveil` (frame opens from a slight inset, 1.4s fluid) plus `.photo-settle` (photo scales 1.08 → 1, 2s). Reduced motion: fade only. Pages without a photo get the large type header.
+- Fewer boxes: home cruise cards are open photo tiles (no white base, no chips; duration and price in the meta line); facts strip is open columns under one hairline; link rows are separated by hairlines with an outlined arrow that fills on hover.
+- Badges removed from the home accents and experiences columns (the B11/frontend-design "template chrome" tell).
+
+## 21. WhatsApp button and phone (owner request)
+
+- Every WhatsApp button uses the WhatsApp green `whatsapp` `#25D366` (hover `whatsapp-deep` `#1FB855`) with an aegean label (7.3:1). Never white text on it (2:1). The floating contact button is green too.
+- A phone link sits directly beside each WhatsApp button (`tel:` to the same number, shown as `+359 87 805 0450`), for visitors without WhatsApp: white with a hairline on light grounds, a white/30 ring on dark ones.
+- Messages follow the page language (each page builds its message from its own dictionary); switching language swaps them.
+- Viber button between WhatsApp and the phone link: `viber` `#7059EC` (hover `viber-deep` `#6A55EC`), a touch deeper than Viber's `#7360F2` so the white label passes AA (4.85:1). Logo from Simple Icons (CC0) in `ViberLogo.tsx`. Link `viber://chat?number=%2B…` (Viber links cannot carry a prefilled message).
+- Floating contact (supersedes the WhatsApp only pill): a round aegean launcher with an up arrow. Pressing it raises three pills above it, right aligned: WhatsApp (green), Viber (purple), call (white, the number). Each rises out of the launcher with a spring (50ms apart, nearest first) and drops back in reverse, faster, ease out; the arrow turns 180° to point down (close). Escape (focus returns to the launcher) or a press elsewhere closes it. Arrival behaviour, footer hiding and the "Contact us" hint that folds after 2.8s are unchanged. Reduced motion: fades only.
+- Request form (book page): two submit buttons plus the call link, in the same colours. WhatsApp opens wa.me with the request filled in. Viber links cannot carry text, so the Viber button copies the request to the clipboard, opens the Viber chat with the number and shows "Your request is copied. Paste it into the Viber chat" (or, if copying is blocked, asks them to write their dates there). Validation runs the same for both.

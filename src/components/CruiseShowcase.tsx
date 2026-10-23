@@ -84,7 +84,7 @@ export function CruiseShowcase(props: Props) {
       <div className="relative mx-auto max-w-7xl">
         <h2
           id="showcase-title"
-          className="max-w-measure text-4xl font-semibold tracking-tight lg:text-6xl"
+          className="max-w-measure text-4xl font-medium tracking-tight lg:text-6xl"
         >
           <span className="block text-aegean-soft">{titleA}</span>
           <span className="block text-aegean">{titleB}</span>
@@ -123,7 +123,7 @@ export function CruiseShowcase(props: Props) {
         <motion.ul
           id="showcase-list"
           key={filter}
-          className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-12 grid gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-3"
         >
           {shown.map((c, i) => {
             // A card left alone on the last row spans the row and lays out side by side
@@ -132,7 +132,7 @@ export function CruiseShowcase(props: Props) {
             const wideLg = last && shown.length % 3 === 1;
             const liSpan = `${wideSm ? "sm:col-span-2" : ""} ${wideLg ? "lg:col-span-3" : wideSm ? "lg:col-span-1" : ""}`;
             const linkGrid = `${wideSm ? "sm:grid sm:grid-cols-2" : ""} ${wideLg ? "lg:grid lg:grid-cols-3" : wideSm ? "lg:block" : ""}`;
-            const textWide = `${wideSm ? "sm:self-center sm:p-10" : ""} ${wideLg ? "lg:col-span-2 lg:self-center lg:p-10" : wideSm ? "lg:p-6" : ""}`;
+            const textWide = `${wideSm ? "sm:self-center sm:pl-10 sm:pt-0" : ""} ${wideLg ? "lg:col-span-2 lg:self-center lg:pl-12 lg:pt-0" : wideSm ? "lg:pl-0 lg:pt-6" : ""}`;
             return (
               // Each card triggers on its own, so a tall list on a phone still reveals card by card
               <motion.li
@@ -157,45 +157,41 @@ export function CruiseShowcase(props: Props) {
                   },
                 }}
               >
+                {/* No card: a large photo on the page ground, then the words. Price stays in the meta line. */}
                 <Link
                   href={c.href}
-                  className={`group block h-full overflow-hidden rounded-3xl bg-white transition-transform duration-200 ease-press active:scale-[0.99] ${linkGrid}`}
+                  className={`group block h-full transition-transform duration-200 ease-press active:scale-[0.99] ${linkGrid}`}
                 >
-                  <span className="relative block aspect-[4/3] overflow-hidden bg-shoal/20">
+                  <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-shoal/20">
                     {c.image && (
                       <Image
                         src={c.image}
                         alt={c.alt}
                         fill
                         sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-700 ease-fluid group-hover:scale-105"
+                        className="object-cover transition-transform duration-1000 ease-fluid group-hover:scale-[1.03]"
                       />
                     )}
-                    {/* 24px card radius − 16px inset = 8px chip radius */}
-                    <span className="absolute left-4 top-4 rounded-lg bg-white/90 px-2 py-1 text-sm font-semibold text-aegean backdrop-blur-xl">
-                      {c.duration}
-                    </span>
-                    {c.price && (
-                      <span className="absolute right-4 top-4 rounded-lg bg-aegean px-2 py-1 text-sm font-semibold tabular-nums text-white">
-                        {c.price}
-                      </span>
-                    )}
                   </span>
-                  <span className={`flex items-end justify-between gap-4 p-6 ${textWide}`}>
-                    <span className="min-w-0">
-                      <span className="block text-xl font-semibold tracking-tight text-aegean lg:text-2xl">
-                        {c.title}
-                      </span>
-                      <span className="mt-2 block text-base text-aegean-soft">
-                        {c.line}
-                      </span>
+                  <span className={`block pt-6 ${textWide}`}>
+                    <span className="block text-sm text-aegean-soft">
+                      {c.duration}
+                      {c.price && (
+                        <>
+                          <span aria-hidden className="px-2 text-aegean/30">/</span>
+                          <span className="font-semibold tabular-nums text-aegean">{c.price}</span>
+                        </>
+                      )}
                     </span>
-                    <span
-                      aria-hidden
-                      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-limestone text-aegean transition-[background-color,color,transform] duration-200 ease-press group-hover:translate-x-1 group-hover:bg-aegean group-hover:text-white"
-                    >
-                      <ArrowRight size={20} weight="bold" />
+                    <span className="mt-2 flex items-center gap-2 text-2xl font-medium tracking-tight text-aegean lg:text-3xl">
+                      {c.title}
+                      <ArrowRight
+                        size={20}
+                        aria-hidden
+                        className="shrink-0 transition-transform duration-200 ease-press group-hover:translate-x-1"
+                      />
                     </span>
+                    <span className="mt-2 block max-w-measure text-base text-aegean-soft">{c.line}</span>
                   </span>
                 </Link>
               </motion.li>

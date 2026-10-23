@@ -11,20 +11,21 @@ type Props = {
   book?: { href: string; label: string };
 };
 
-/** Detail page opener: key facts and the two ways to ask. White panel on the page ground. */
+/** Detail page opener: key facts and the two ways to ask. Open columns on the page ground, set off
+ *  by one hairline rule, no card. */
 export function FactsStrip({ label, facts, whatsapp, book }: Props) {
   return (
-    <section aria-label={label} className="px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl rounded-3xl bg-white p-6 lg:p-8">
-        <dl className={`grid grid-cols-2 gap-6 ${facts.length > 4 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
+    <section aria-label={label} className="px-4 pt-16 sm:px-6 lg:px-8 lg:pt-20">
+      <div className="mx-auto max-w-7xl">
+        <dl className={`grid grid-cols-2 gap-x-6 gap-y-8 border-t border-aegean/10 pt-8 ${facts.length > 4 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
           {facts.map((f) => (
             <div key={f.label}>
               <dt className="text-sm text-aegean-soft">{f.label}</dt>
-              <dd className="mt-1 text-lg font-semibold text-aegean lg:text-xl">{f.value}</dd>
+              <dd className="mt-2 text-2xl font-medium tracking-tight text-aegean lg:text-3xl">{f.value}</dd>
             </div>
           ))}
         </dl>
-        <div className="mt-8 flex flex-wrap items-start gap-x-6 gap-y-4">
+        <div className="mt-12 flex flex-wrap items-start gap-x-6 gap-y-4">
           <WhatsAppButton href={whatsapp.href} labels={whatsapp.labels} />
           {book && (
             <Link

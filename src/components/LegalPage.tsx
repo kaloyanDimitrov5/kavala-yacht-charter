@@ -15,7 +15,7 @@ export function LegalPage({ locale, t, page }: { locale: Locale; t: Dictionary; 
           <ArrowLeft size={16} aria-hidden />
           {t.legal.back}
         </Link>
-        <h1 className="text-hero-gradient mt-8 w-fit max-w-measure pb-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="text-hero-gradient mt-8 w-fit max-w-measure pb-3 text-4xl font-medium tracking-tight sm:text-5xl">
           {content.title}
         </h1>
         <div className="mt-8 flex max-w-measure flex-col gap-4 text-lg text-aegean-soft">

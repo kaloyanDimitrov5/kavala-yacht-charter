@@ -1,13 +1,20 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
+import { Phone, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
+import { phoneDisplay, phoneHref, viberHref } from "@/lib/whatsapp";
+import { ViberLogo } from "./ViberLogo";
 
 export type WhatsAppLabels = {
   cta: string;
   opening: string;
   opensInNewTab: string;
   unavailable: string;
+  /** "Call": the phone link beside the button, for visitors without WhatsApp */
+  call: string;
+  /** Visible "Viber" and its accessible name */
+  viber: string;
+  viberLabel: string;
 };
 
 type Props = {
@@ -15,7 +22,9 @@ type Props = {
   href: string | null;
   labels: WhatsAppLabels;
   className?: string;
-  /** "night": bachelor section (teak fill, night label 5.60:1). "light": aegean footer (white fill, aegean label 14.86:1) */
+  /** Which surface the button sits on. Every tone uses the WhatsApp green with an aegean label (7.3:1);
+   *  the tone sets the call link and the disabled state: "default" and "outline" on light grounds,
+   *  "light" on aegean (hero, footer, prices), "night" on the night section. */
   tone?: "default" | "night" | "light" | "outline";
 };
 
@@ -24,28 +33,20 @@ const base =
   // Invisible 2px hit area extension so the 40px button meets the 44px touch target
   "before:absolute before:-inset-0.5 before:content-['']";
 
+const green = "bg-whatsapp text-aegean hover:bg-whatsapp-deep data-[state=opening]:bg-whatsapp-deep";
+const callOnLight = "bg-white text-aegean ring-1 ring-inset ring-aegean/15 hover:bg-limestone";
+const callOnDark = "text-white ring-1 ring-inset ring-white/30 hover:bg-white/10";
+
 const tones = {
-  default: {
-    idle: "bg-aegean text-white hover:bg-aegean/90 data-[state=opening]:bg-aegean/80",
-    disabled: "bg-aegean/40 text-white",
-    note: "text-aegean-soft",
-  },
-  night: {
-    idle: "bg-teak text-night hover:bg-teak/90 data-[state=opening]:bg-teak/80",
-    disabled: "bg-white/10 text-driftwood",
-    note: "text-driftwood",
-  },
-  /** Secondary action on light backgrounds: white fill, hairline ring, aegean label */
+  default: { idle: green, call: callOnLight, disabled: "bg-aegean/40 text-white", note: "text-aegean-soft" },
+  night: { idle: green, call: callOnDark, disabled: "bg-white/10 text-driftwood", note: "text-driftwood" },
   outline: {
-    idle: "bg-white text-aegean ring-1 ring-inset ring-aegean/15 hover:bg-limestone data-[state=opening]:bg-limestone",
+    idle: green,
+    call: callOnLight,
     disabled: "bg-white text-aegean-soft ring-1 ring-inset ring-aegean/10",
     note: "text-aegean-soft",
   },
-  light: {
-    idle: "bg-white text-aegean hover:bg-limestone data-[state=opening]:bg-limestone",
-    disabled: "bg-white/10 text-mist",
-    note: "text-mist",
-  },
+  light: { idle: green, call: callOnDark, disabled: "bg-white/10 text-mist", note: "text-mist" },
 };
 
 /**
@@ -92,8 +93,12 @@ export function WhatsAppButton({ href, labels, className = "", tone = "default" 
     );
   }
 
+  const tel = phoneHref();
+  const viber = viberHref();
+  const number = phoneDisplay();
+
   return (
-    <div className={className}>
+    <div className={`flex flex-wrap items-center gap-3 ${className}`}>
       <a
         href={href}
         target="_blank"
@@ -111,6 +116,28 @@ export function WhatsAppButton({ href, labels, className = "", tone = "default" 
           <span className={`[grid-area:1/1] ${opening ? "" : "invisible"}`}>{labels.opening}</span>
         </span>
       </a>
+      {/* Same number on Viber, in Viber's purple */}
+      {viber && (
+        <a
+          href={viber}
+          aria-label={labels.viberLabel}
+          className={`${base} bg-viber text-white transition-[background-color,transform] duration-160 ease-press hover:bg-viber-deep active:scale-[0.98]`}
+        >
+          <ViberLogo size={24} />
+          {labels.viber}
+        </a>
+      )}
+      {/* Same number as a phone call, for visitors without WhatsApp */}
+      {tel && (
+        <a
+          href={tel}
+          aria-label={`${labels.call} ${number}`}
+          className={`${base} ${t.call} tabular-nums transition-[background-color,transform] duration-160 ease-press active:scale-[0.98]`}
+        >
+          <Phone size={24} aria-hidden />
+          {number}
+        </a>
+      )}
       <span id={noteId} className="sr-only">
         {labels.opensInNewTab}
       </span>

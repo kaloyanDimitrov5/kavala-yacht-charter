@@ -4,10 +4,10 @@ type Props = { id: string; title: string; lead?: string; className?: string };
 export function SectionHeading({ id, title, lead, className = "" }: Props) {
   return (
     <div className={`max-w-measure ${className}`}>
-      <h2 id={id} className="text-3xl font-semibold tracking-tight text-aegean lg:text-5xl">
+      <h2 id={id} className="text-4xl font-medium tracking-tight text-aegean lg:text-6xl">
         {title}
       </h2>
-      {lead && <p className="mt-6 text-lg text-aegean-soft">{lead}</p>}
+      {lead && <p className="mt-6 text-lg text-aegean-soft lg:text-xl">{lead}</p>}
     </div>
   );
 }

@@ -8,7 +8,6 @@ import { InViewVideo } from "./InViewVideo";
 
 export type GuestItem = {
   id: string;
-  caption: string;
   alt: string;
   image: string | null;
   video: string | null;
@@ -84,7 +83,7 @@ export function GuestGallery({ title, lead, items, labels }: Props) {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8">
           <div className="max-w-measure">
-            <h2 id="guests-title" className="text-4xl font-semibold tracking-tight text-white lg:text-6xl">
+            <h2 id="guests-title" className="text-4xl font-medium tracking-tight text-white lg:text-6xl">
               {title}
             </h2>
             <p className="mt-6 text-lg text-white">{lead}</p>
@@ -145,7 +144,6 @@ export function GuestGallery({ title, lead, items, labels }: Props) {
                   labels={{ play: labels.play, pause: labels.pause }}
                 />
               </div>
-              <figcaption className="px-2 pb-1 pt-3 text-sm font-medium text-aegean">{item.caption}</figcaption>
             </motion.figure>
           </li>
         ))}

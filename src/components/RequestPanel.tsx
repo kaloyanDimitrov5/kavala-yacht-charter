@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { Minus, Plus, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
+import { CheckCircle, Minus, Phone, Plus, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
+import { phoneDisplay, phoneHref, viberHref } from "@/lib/whatsapp";
+import { ViberLogo } from "./ViberLogo";
 import { courses, cruises } from "@/config/catalogue";
 
 /** A cruise or course slug, or "other" */
@@ -24,13 +26,20 @@ const todayIso = () => {
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 };
 
+/** Send buttons and the call link share one shape (main button rules: 8px by 12px, 12px radius) */
+const send =
+  "relative inline-flex items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold transition-[background-color,transform] duration-160 ease-press " +
+  "before:absolute before:-inset-0.5 before:content-[''] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40";
+
 const input =
   "block w-full rounded-xl bg-limestone px-3 py-2 text-base text-aegean ring-1 ring-inset transition-[box-shadow] duration-160 ease-press hover:ring-aegean/40 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-teak-deep";
 
 export function RequestPanel({ locale, number, maxGuests }: Props) {
   // Read on the client: the dictionary holds the message builder, which cannot cross the server boundary
   const t = getDictionary(locale);
-  const labels = { ...t.request, unavailable: t.whatsapp.unavailable };
+  const labels = { ...t.request, unavailable: t.whatsapp.unavailable, call: t.whatsapp.call };
+  const viber = viberHref();
+  const tel = phoneHref();
   const buildMessage = t.request.message;
   // Every cruise and course, so the request names exactly what the visitor picked
   const routes = [
@@ -43,7 +52,10 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
   const [route, setRoute] = useState<RequestRoute>("other");
   const [errors, setErrors] = useState<Errors>({});
   const [attempted, setAttempted] = useState(false);
-  const [opening, setOpening] = useState(false);
+  /** Which app is opening after a send, for the button label */
+  const [opening, setOpening] = useState<false | "whatsapp" | "viber">(false);
+  /** After a Viber send: whether the request reached the clipboard */
+  const [viberNote, setViberNote] = useState<null | "copied" | "notCopied">(null);
   const [minDate, setMinDate] = useState<string>();
   const formRef = useRef<HTMLFormElement>(null);
   const uid = useId();
@@ -108,9 +120,13 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
     }).format(new Date(y, m - 1, d));
   };
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // Two submit buttons: which one was pressed decides the app
+    const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const channel = submitter?.value === "viber" ? "viber" : "whatsapp";
     setAttempted(true);
+    setViberNote(null);
     const found = validate();
     setErrors(found);
     const first = (["from", "to", "guests"] as Field[]).find((f) => found[f]);
@@ -121,8 +137,21 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
     if (!number) return;
     const routeName = route === "other" ? labels.routeOther : routes.find((r) => r.id === route)?.name ?? labels.routeOther;
     const text = buildMessage({ from: formatDate(from), to: formatDate(to), guests: Number(guests), route: routeName });
-    setOpening(true);
-    window.open(`https://wa.me/${number}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+    setOpening(channel);
+    if (channel === "whatsapp") {
+      window.open(`https://wa.me/${number}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+      return;
+    }
+    // Viber links cannot carry a message, so the request goes to the clipboard for the visitor to paste
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      copied = true;
+    } catch {
+      copied = false;
+    }
+    setViberNote(copied ? "copied" : "notCopied");
+    if (viber) window.location.href = viber;
   }
 
   const hasErrors = Object.values(errors).some(Boolean);
@@ -139,7 +168,7 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
 
   return (
     <div id="request" className="rounded-3xl bg-white p-6 lg:p-8">
-      <h3 className="text-2xl font-semibold tracking-tight text-aegean">{labels.title}</h3>
+      <h3 className="text-2xl font-medium tracking-tight text-aegean">{labels.title}</h3>
       <p className="mt-2 text-base text-aegean-soft">{labels.lead}</p>
 
       <form ref={formRef} noValidate onSubmit={onSubmit} className="mt-8">
@@ -251,27 +280,63 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
         </div>
 
         <div className="mt-8">
-          <button
-            type="submit"
-            disabled={!number}
-            aria-describedby={!number ? `${uid}unavailable` : undefined}
-            data-state={opening ? "opening" : "idle"}
-            className="relative inline-flex items-center gap-2 rounded-xl bg-aegean px-3 py-2 text-base font-semibold text-white transition-[background-color,transform] duration-160 ease-press before:absolute before:-inset-0.5 before:content-[''] hover:bg-aegean/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-aegean/40 data-[state=opening]:bg-aegean/80"
-          >
-            <WhatsappLogo size={24} aria-hidden weight={opening ? "fill" : "regular"} />
-            <span className="grid">
-              <span className={`[grid-area:1/1] ${opening ? "invisible" : ""}`}>{labels.submit}</span>
-              <span className={`[grid-area:1/1] ${opening ? "" : "invisible"}`}>{labels.opening}</span>
-            </span>
-          </button>
+          <div role="group" aria-label={labels.sendLabel} className="flex flex-wrap items-center gap-3">
+            <button
+              type="submit"
+              name="channel"
+              value="whatsapp"
+              disabled={!number}
+              aria-describedby={!number ? `${uid}unavailable` : undefined}
+              data-state={opening === "whatsapp" ? "opening" : "idle"}
+              className={`${send} bg-whatsapp text-aegean hover:bg-whatsapp-deep data-[state=opening]:bg-whatsapp-deep`}
+            >
+              <WhatsappLogo size={24} aria-hidden weight={opening === "whatsapp" ? "fill" : "regular"} />
+              <span className="grid">
+                <span className={`[grid-area:1/1] ${opening === "whatsapp" ? "invisible" : ""}`}>{labels.submit}</span>
+                <span className={`[grid-area:1/1] ${opening === "whatsapp" ? "" : "invisible"}`}>{labels.opening}</span>
+              </span>
+            </button>
+            {viber && (
+              <button
+                type="submit"
+                name="channel"
+                value="viber"
+                data-state={opening === "viber" ? "opening" : "idle"}
+                className={`${send} bg-viber text-white hover:bg-viber-deep data-[state=opening]:bg-viber-deep`}
+              >
+                <ViberLogo size={24} />
+                <span className="grid">
+                  <span className={`[grid-area:1/1] ${opening === "viber" ? "invisible" : ""}`}>{labels.submitViber}</span>
+                  <span className={`[grid-area:1/1] ${opening === "viber" ? "" : "invisible"}`}>{labels.openingViber}</span>
+                </span>
+              </button>
+            )}
+            {tel && (
+              <a
+                href={tel}
+                aria-label={`${labels.call} ${phoneDisplay()}`}
+                className={`${send} bg-white tabular-nums text-aegean ring-1 ring-inset ring-aegean/15 hover:bg-limestone`}
+              >
+                <Phone size={24} aria-hidden />
+                {phoneDisplay()}
+              </a>
+            )}
+          </div>
           {!number && (
             <p id={`${uid}unavailable`} className="mt-3 flex items-start gap-2 text-sm text-aegean-soft">
               <WarningCircle size={20} aria-hidden className="shrink-0" />
               {labels.unavailable}
             </p>
           )}
+          {viberNote && (
+            <p className="mt-4 flex items-start gap-2 rounded-xl bg-viber/10 px-3 py-2 text-sm font-medium text-aegean">
+              <CheckCircle size={20} aria-hidden className="shrink-0 text-viber" />
+              {viberNote === "copied" ? labels.viberCopied : labels.viberNotCopied}
+            </p>
+          )}
           <span className="sr-only" aria-live="polite">
-            {opening ? labels.opening : ""}
+            {opening === "whatsapp" ? labels.opening : opening === "viber" ? labels.openingViber : ""}
+            {viberNote === "copied" ? ` ${labels.viberCopied}` : viberNote === "notCopied" ? ` ${labels.viberNotCopied}` : ""}
           </span>
         </div>
       </form>

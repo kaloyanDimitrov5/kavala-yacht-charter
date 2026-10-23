@@ -49,7 +49,7 @@ export function CruisePrices({ view, labels, whatsapp }: Props) {
     <section id="prices" aria-labelledby="prices-title" className="scroll-mt-24 px-4 pt-24 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-12">
         <div className="rounded-3xl bg-white p-6 sm:p-10 lg:col-span-7">
-          <h2 id="prices-title" className="text-3xl font-semibold tracking-tight text-aegean lg:text-5xl">
+          <h2 id="prices-title" className="text-3xl font-medium tracking-tight text-aegean lg:text-5xl">
             {labels.title}
           </h2>
           <p className="mt-4 max-w-measure text-lg text-aegean-soft">{labels.lead}</p>
@@ -114,7 +114,7 @@ export function CruisePrices({ view, labels, whatsapp }: Props) {
           data-surface="night"
           className="flex flex-col rounded-3xl bg-aegean p-6 text-white sm:p-10 lg:col-span-5"
         >
-          <h3 className="text-xl font-semibold tracking-tight lg:text-2xl">{labels.includedTitle}</h3>
+          <h3 className="text-xl font-medium tracking-tight lg:text-2xl">{labels.includedTitle}</h3>
           <ul className="mt-4 flex flex-col gap-3">
             {labels.included.map((item) => (
               <li key={item} className="flex items-start gap-3 text-base font-medium">
@@ -124,7 +124,7 @@ export function CruisePrices({ view, labels, whatsapp }: Props) {
             ))}
           </ul>
 
-          <h3 className="mt-10 text-xl font-semibold tracking-tight lg:text-2xl">{labels.excludedTitle}</h3>
+          <h3 className="mt-10 text-xl font-medium tracking-tight lg:text-2xl">{labels.excludedTitle}</h3>
           <ul className="mt-4 flex flex-col gap-3">
             {labels.excluded.map((item) => (
               <li key={item} className="flex items-start gap-3 text-base text-mist">

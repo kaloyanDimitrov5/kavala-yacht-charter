@@ -45,7 +45,7 @@ export function ExperienceFeature(props: Props) {
             <Icon size={20} aria-hidden />
             {badge}
           </p>
-          <h2 id={`${id}-title`} className="mt-4 text-4xl font-semibold tracking-tight text-aegean lg:text-5xl">
+          <h2 id={`${id}-title`} className="mt-4 text-4xl font-medium tracking-tight text-aegean lg:text-5xl">
             {title}
           </h2>
           <p className="mt-6 max-w-measure text-lg text-aegean-soft">{body}</p>

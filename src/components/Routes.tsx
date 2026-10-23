@@ -188,7 +188,7 @@ export function Routes({ locale, routes, cruiseFor, labels }: Props) {
                     aria-expanded={open}
                     aria-controls={panelId}
                     onClick={() => setSelected(id)}
-                    className={`flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 text-left text-xl font-semibold tracking-tight text-aegean transition-colors duration-160 ease-press ${
+                    className={`flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 text-left text-xl font-medium tracking-tight text-aegean transition-colors duration-160 ease-press ${
                       open ? "" : "hover:bg-white/60 active:bg-white"
                     }`}
                   >
@@ -216,7 +216,7 @@ export function Routes({ locale, routes, cruiseFor, labels }: Props) {
         </ul>
 
         <div className="mt-6 rounded-2xl bg-white/60 p-4 ring-1 ring-inset ring-aegean/10">
-          <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-aegean">
+          <h3 className="flex items-center gap-2 text-xl font-medium tracking-tight text-aegean">
             <PencilSimpleLine size={20} aria-hidden className="text-aegean-soft" />
             {labels.customTitle}
           </h3>

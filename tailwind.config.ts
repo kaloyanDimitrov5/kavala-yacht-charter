@@ -45,6 +45,14 @@ const config: Config = {
           light: "rgb(var(--shoal-light) / <alpha-value>)",
         },
         mist: "rgb(var(--mist) / <alpha-value>)",
+        viber: {
+          DEFAULT: "rgb(var(--viber) / <alpha-value>)",
+          deep: "rgb(var(--viber-deep) / <alpha-value>)",
+        },
+        whatsapp: {
+          DEFAULT: "rgb(var(--whatsapp) / <alpha-value>)",
+          deep: "rgb(var(--whatsapp-deep) / <alpha-value>)",
+        },
         teak: {
           DEFAULT: "rgb(var(--teak) / <alpha-value>)",
           deep: "rgb(var(--teak-deep) / <alpha-value>)",

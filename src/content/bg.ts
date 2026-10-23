@@ -37,7 +37,7 @@ export const bg: Dictionary = {
   },
   hero: {
     headline: ["Всяка сутрин", "се събуждате", "в друг залив"],
-    lead: "Частна яхта със собствен шкипер, която отплава от Кавала към Тасос, Самотраки и Спорадите.",
+    lead: "Частна яхта със собствен шкипер, която отплава от Кавала.",
     facts: {
       cabins: (cabins: number, berths: number) => `${cabins} каюти, ${berths} места за спане`,
       bathrooms: (count: number) => `${count} бани с душ`,
@@ -53,6 +53,9 @@ export const bg: Dictionary = {
   },
   whatsapp: {
     cta: "Вижте свободни дати в WhatsApp",
+    viber: "Viber",
+    viberLabel: "Пишете ни във Viber",
+    call: "Обадете се на",
     opening: "Отваряме WhatsApp",
     opensInNewTab: "Отваря WhatsApp в нов раздел",
     unavailable: "Резервациите през WhatsApp още не са свързани. Опитайте отново след малко.",
@@ -139,7 +142,7 @@ export const bg: Dictionary = {
   },
   showcase: {
     titleA: "Плажът ви дава една гледка.",
-    titleB: "Ние ви даваме шест круиза.",
+    titleB: "Ние ви даваме седем круиза.",
     lead: "Еднодневни круизи до заливите на Тасос, круизи до Спорадите и Халкидики и риболов на риба тон. Ние планираме маршрута, вие се наслаждавате.",
     filterLabel: "Покажи круизи",
     filters: { all: "Всички", day: "Еднодневни", multi: "До островите", fishing: "Риболов" },
@@ -193,7 +196,10 @@ export const bg: Dictionary = {
     },
   },
   floating: {
-    label: "Пишете ни в WhatsApp",
+    label: "Свържете се с нас",
+    close: "Затворете опциите за връзка",
+    menu: "Начини за връзка с нас",
+    whatsapp: "WhatsApp",
     fallback: "Изпратете ни датите си",
   },
   guests: {
@@ -318,7 +324,7 @@ export const bg: Dictionary = {
   },
   request: {
     title: "Изпратете ни датите си",
-    lead: "Отваряме WhatsApp с попълнени данни. Нищо не се изпраща, докато не натиснете „Изпрати“ там.",
+    lead: "Изпратете я в WhatsApp или Viber или ни се обадете. WhatsApp се отваря с попълнени данни, а за Viber ги копираме, за да ги поставите. Нищо не се изпраща, докато не натиснете „Изпрати“.",
     from: "От",
     to: "До",
     guests: "Гости",
@@ -327,8 +333,13 @@ export const bg: Dictionary = {
     increase: "Увеличете броя гости",
     route: "Круиз",
     routeOther: "Друг или още не сме решили",
-    submit: "Изпратете запитване в WhatsApp",
+    submit: "Изпратете в WhatsApp",
     opening: "Отваряме WhatsApp",
+    submitViber: "Изпратете във Viber",
+    openingViber: "Отваряме Viber",
+    viberCopied: "Запитването ви е копирано. Поставете го в чата във Viber и натиснете „Изпрати“.",
+    viberNotCopied: "Отваряме Viber. Напишете ни датите си там.",
+    sendLabel: "Изпратете запитването",
     errorSummary: "Проверете отбелязаните полета.",
     errors: {
       fromRequired: "Изберете начална дата.",

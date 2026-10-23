@@ -21,7 +21,7 @@ export function HowItWorks({ t, locale }: { t: Dictionary; locale: Locale }) {
                   {i + 1}
                 </span>
                 <div>
-                  <h3 className="text-xl font-semibold tracking-tight text-aegean">{step.title}</h3>
+                  <h3 className="text-xl font-medium tracking-tight text-aegean">{step.title}</h3>
                   <p className="mt-2 text-base text-aegean-soft">{step.body}</p>
                 </div>
               </li>

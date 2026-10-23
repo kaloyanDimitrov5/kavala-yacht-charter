@@ -42,7 +42,7 @@ export const en = {
      * Below lg the lines flow together and text-wrap: balance picks the breaks.
      */
     headline: ["Wake up", "in a different bay", "every morning"],
-    lead: "A private yacht with your own skipper, sailing out of Kavala to Thasos, Samothraki and the Sporades.",
+    lead: "A private yacht with your own skipper, sailing out of Kavala.",
     facts: {
       cabins: (cabins: number, berths: number) => `${cabins} cabins, ${berths} berths`,
       bathrooms: (count: number) => `${count} bathrooms with showers`,
@@ -59,6 +59,9 @@ export const en = {
   },
   whatsapp: {
     cta: "Check free dates on WhatsApp",
+    viber: "Viber",
+    viberLabel: "Message us on Viber",
+    call: "Call",
     opening: "Opening WhatsApp",
     opensInNewTab: "Opens WhatsApp in a new tab",
     unavailable: "WhatsApp booking is not connected yet. Please try again later.",
@@ -150,7 +153,7 @@ export const en = {
   /** Home: cruises showcase (replaces the tagline and the comparison, owner request) */
   showcase: {
     titleA: "A beach gives you one view.",
-    titleB: "We give you six cruises.",
+    titleB: "We give you seven cruises.",
     lead: "Day trips to the bays of Thasos, island cruises to the Sporades and Halkidiki, and tuna fishing. We plan the route, you enjoy it.",
     filterLabel: "Show cruises",
     filters: { all: "All", day: "Day trips", multi: "Island cruises", fishing: "Fishing" },
@@ -208,7 +211,10 @@ export const en = {
   },
   /** Floating contact button on every page */
   floating: {
-    label: "Ask us on WhatsApp",
+    label: "Contact us",
+    close: "Close contact options",
+    menu: "Ways to contact us",
+    whatsapp: "WhatsApp",
     fallback: "Send us your dates",
   },
   guests: {
@@ -338,7 +344,7 @@ export const en = {
   },
   request: {
     title: "Send us your dates",
-    lead: "We open WhatsApp with your details filled in. Nothing is sent until you press send there.",
+    lead: "Send it on WhatsApp or Viber, or call us. WhatsApp opens with your details filled in; for Viber we copy them so you can paste them. Nothing is sent until you press send.",
     from: "From",
     to: "To",
     guests: "Guests",
@@ -347,8 +353,13 @@ export const en = {
     increase: "One guest more",
     route: "Cruise",
     routeOther: "Other or not sure yet",
-    submit: "Send request on WhatsApp",
+    submit: "Send on WhatsApp",
     opening: "Opening WhatsApp",
+    submitViber: "Send on Viber",
+    openingViber: "Opening Viber",
+    viberCopied: "Your request is copied. Paste it into the Viber chat and press send.",
+    viberNotCopied: "Viber is opening. Write your dates to us there.",
+    sendLabel: "Send your request",
     errorSummary: "Check the fields marked below.",
     errors: {
       fromRequired: "Choose a start date.",

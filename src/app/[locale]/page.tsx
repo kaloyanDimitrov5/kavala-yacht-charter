@@ -112,7 +112,6 @@ export default function Home({ params }: { params: { locale: string } }) {
         }}
         items={media.guests.map((g) => ({
           id: g.key,
-          caption: t.guests.items[g.key].caption,
           alt: t.guests.items[g.key].alt,
           image: resolveMedia(g.file),
           video: "video" in g && g.video ? resolveMedia(g.video) : null,

@@ -90,7 +90,11 @@ export default function LocaleLayout({ children, params }: Params & { children: 
         />
         {children}
         <Footer t={t} locale={locale} />
-        <FloatingContact locale={locale} whatsapp={whatsappHref(t.whatsapp.message)} labels={t.floating} />
+        <FloatingContact
+          locale={locale}
+          whatsapp={whatsappHref(t.whatsapp.message)}
+          labels={{ ...t.floating, viber: t.whatsapp.viber, viberLabel: t.whatsapp.viberLabel, call: t.whatsapp.call }}
+        />
       </body>
     </html>
   );

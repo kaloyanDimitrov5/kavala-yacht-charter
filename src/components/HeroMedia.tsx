@@ -76,7 +76,7 @@ export function HeroMedia({ image, video, alt, caption, placeholderNote, labels 
           alt={hasVideo ? "" : alt}
           fill
           priority
-          sizes="(min-width: 1280px) 1280px, 100vw"
+          sizes="100vw"
           className="object-cover"
         />
       )}
@@ -102,7 +102,7 @@ export function HeroMedia({ image, video, alt, caption, placeholderNote, labels 
             onClick={() => setPaused((p) => !p)}
             aria-label={paused ? labels.play : labels.pause}
             aria-pressed={paused}
-            className="absolute bottom-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-aegean backdrop-blur-xl transition-[background-color,transform] duration-160 ease-press hover:bg-white active:scale-[0.98]"
+            className="absolute bottom-4 right-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-aegean backdrop-blur-xl transition-[background-color,transform] duration-160 ease-press hover:bg-white active:scale-[0.98]"
           >
             {paused ? <Play size={20} weight="fill" aria-hidden /> : <Pause size={20} weight="fill" aria-hidden />}
           </button>

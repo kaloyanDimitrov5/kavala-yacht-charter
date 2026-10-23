@@ -32,7 +32,7 @@ export function Footer({ t, locale }: { t: Dictionary; locale: Locale }) {
       <div className="px-4 pt-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {/* Closing CTA: every page ends on the primary action */}
-          <h2 className="max-w-measure text-4xl font-semibold tracking-tight text-white lg:text-6xl">
+          <h2 className="max-w-measure text-4xl font-medium tracking-tight text-white lg:text-6xl">
             {t.finalCta.title}
           </h2>
           <p className="mt-6 max-w-measure text-lg text-mist">
