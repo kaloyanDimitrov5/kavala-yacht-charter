@@ -703,3 +703,11 @@ Measured with Lighthouse 12 (mobile, the same engine as PageSpeed Insights) on a
 - Prices section: white card (heading, "From" price, the sailing year bar May to October with each season to scale, season list) beside an aegean card (included, not included, cleaning fee, WhatsApp). Season colours: early/late `shoal-light`, low `shoal-deep`, high `teak`. The bar is decorative; the list carries the facts.
 - Structured data: `TouristTrip.offers` is an `AggregateOffer` (low and high season price, EUR).
 - Home cruise grid: a card left alone on the last row spans the row and lays out side by side.
+
+## 19. Places you can visit (Thasos cruises)
+
+- Own band between the timeline and the photos: teak tint (`bg-teak/15` over white) so it reads as sand, the one warm band on the page.
+- Left: schematic SVG of Thasos (white card, sand island, teak coastline, dotted crossing from Kavala into Limenas, north arrow). Coastline and pins are projected from approximate real coordinates in `src/config/places.ts`; the caption says it is schematic and not for navigation.
+- Right: numbered list (white cards, aegean number, teak tinted icon tile: umbrella for beaches, house for villages, church for the monastery). Pins are numbered clockwise from Limenas.
+- Pointing at a list item or a pin highlights both (shoal-deep) and shows the name in a chip in the map corner, never next to the pin, so it cannot cover another pin. The map is aria-hidden; the list carries the content.
+- Motion: coast draws (1.2s), crossing fades in, pins pop in 70ms apart. Reduced motion: all drawn at once.

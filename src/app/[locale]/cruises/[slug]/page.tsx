@@ -14,6 +14,8 @@ import { PhotoGrid } from "@/components/PhotoGrid";
 import { LinkRows } from "@/components/LinkRows";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CruisePrices } from "@/components/CruisePrices";
+import { PlacesMap } from "@/components/PlacesMap";
+import { cruisePlaces, thasosPlaces } from "@/config/places";
 import { cruisePrices, highestPrice, lowestPrice } from "@/config/pricing";
 import { durationWithPrice, priceView } from "@/lib/price";
 
@@ -49,6 +51,7 @@ export default function CruisePage({ params }: Params) {
   const price = cruisePrices[slug];
   const prices = priceView(locale, slug);
   const pl = c.common.prices;
+  const places = cruisePlaces[slug];
   const ask = whatsappHref(c.common.askMessage(cruise.title));
 
   return (
@@ -112,8 +115,14 @@ export default function CruisePage({ params }: Params) {
         title={kind === "day" ? c.common.stepsTitle : c.common.timelineTitle}
         steps={cruise.timeline}
         proposal={{ title: c.common.proposalTitle, body: cruise.proposal ?? c.common.proposalBody }}
-        places={cruise.places && { title: c.common.placesTitle, items: cruise.places }}
       />
+
+      {places && (
+        <PlacesMap
+          places={thasosPlaces.filter((p) => places.includes(p.key)).map((p) => ({ ...p, name: c.common.places.names[p.key] }))}
+          labels={c.common.places}
+        />
+      )}
 
       <div className="bg-white">
         <PhotoGrid

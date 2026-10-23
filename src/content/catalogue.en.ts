@@ -43,7 +43,27 @@ export const catalogueEn = {
     book: "Send your dates",
     otherCruises: "Other cruises",
     kindLabels: { day: "Day cruise", multi: "Cruise", fishing: "Fishing trip" },
-    placesTitle: "Places you can visit",
+    places: {
+      title: "Places you can visit",
+      lead: "The best known places on Thasos. Tell us which ones you would like to see and we plan the route around them.",
+      note: "Schematic map, positions are approximate. Not for navigation.",
+      island: "Thasos",
+      kavala: "From Kavala",
+      limenas: "Limenas",
+      photos: "See photos",
+      opensInNewTab: "(opens Google Images in a new tab)",
+      types: { beach: "Beach", village: "Village", monastery: "Monastery" },
+      names: {
+        "marble-beach": "Marble Beach",
+        "golden-beach": "Golden Beach",
+        "paradise-beach": "Paradise Beach",
+        "aliki-beach": "Aliki Beach",
+        "archangel-michael": "St. Archangel Michael Monastery",
+        "tripiti-beach": "Tripiti Beach",
+        limenaria: "Limenaria",
+        "skala-marion": "Skala Marion",
+      },
+    },
     priceFact: "Price from",
     fromPrice: (price: string) => `From ${price}`,
     prices: {
@@ -89,16 +109,6 @@ export const catalogueEn = {
       duration: "3 days",
       card: "Friday to Sunday around Thasos, with nights in island harbours",
       lead: "Three days sailing around Thasos, Friday to Sunday. Swim in quiet bays by day and spend the nights in the island's harbours, with dinner at a fish taverna.",
-      places: [
-        "Skala Marion",
-        "Tripiti Beach",
-        "Limenaria",
-        "Aliki Beach",
-        "Marble Beach",
-        "Golden Beach",
-        "St. Archangel Michael Monastery",
-        "Paradise Beach",
-      ],
       timeline: [
         {
           label: "Thursday, after 22:00",
@@ -128,16 +138,6 @@ export const catalogueEn = {
       duration: "4 days",
       card: "Monday to Thursday around Thasos: Limenas, Vahti and Golden Beach",
       lead: "Four days around Thasos, Monday to Thursday. More time for fun and for the sights, with nights on board in the island's harbours.",
-      places: [
-        "Skala Marion",
-        "Tripiti Beach",
-        "Limenaria",
-        "Aliki Beach",
-        "Marble Beach",
-        "Golden Beach",
-        "St. Archangel Michael Monastery",
-        "Paradise Beach",
-      ],
       timeline: [
         {
           label: "Sunday, after 22:00",
@@ -282,6 +282,6 @@ type Base = Widen<typeof catalogueEn>;
 type CruiseCopy = { title: string; duration: string; card: string; lead: string; timeline: TimelineStep[] };
 
 export type Catalogue = Omit<Base, "cruises"> & {
-  /** Every cruise has the core copy. Optional: places worth a visit, and its own route note. */
-  cruises: { [K in keyof Base["cruises"]]: CruiseCopy & { places?: string[]; proposal?: string } };
+  /** Every cruise has the core copy, and optionally its own route note. */
+  cruises: { [K in keyof Base["cruises"]]: CruiseCopy & { proposal?: string } };
 };
