@@ -4,7 +4,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useAnimate } from "framer-motion";
 import { ArrowUp, CalendarCheck, Phone, WhatsappLogo } from "@phosphor-icons/react";
-import { phoneDisplay, phoneHref, viberHref } from "@/lib/whatsapp";
+import { phones, viberHref } from "@/lib/whatsapp";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { ViberLogo } from "./ViberLogo";
 
@@ -29,7 +29,7 @@ const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 /*
  * Contact launcher fixed in the bottom right corner of every page.
  * - A round aegean button with an arrow. Pressing it opens three ways to reach us, stacked above
- *   it: WhatsApp (green), Viber (purple) and a phone call (white). The arrow turns to point down,
+ *   it: WhatsApp (green), Viber (purple) and a call to each phone (white). The arrow turns to point down,
  *   which is how you close it again. Escape or a click elsewhere also closes it.
  * - The options rise out of the button one after another (spring, 50ms apart, nearest first) and
  *   drop back into it in reverse when closed (faster, ease out).
@@ -56,7 +56,7 @@ export function FloatingContact({ locale, whatsapp, labels }: Props) {
   const menuId = useId();
 
   const viber = viberHref();
-  const tel = phoneHref();
+  const calls = phones();
 
   // When should it show?
   useEffect(() => {
@@ -203,19 +203,15 @@ export function FloatingContact({ locale, whatsapp, labels }: Props) {
           },
         ]
       : []),
-    ...(tel
-      ? [
-          {
-            key: "call",
-            href: tel,
-            newTab: false,
-            label: phoneDisplay(),
-            aria: `${labels.call} ${phoneDisplay()}`,
-            icon: <Phone size={24} weight="fill" aria-hidden />,
-            tone: "bg-white text-aegean hover:bg-limestone",
-          },
-        ]
-      : []),
+    ...calls.map((c) => ({
+      key: c.href,
+      href: c.href,
+      newTab: false,
+      label: c.display,
+      aria: `${labels.call} ${c.display}`,
+      icon: <Phone size={24} weight="fill" aria-hidden />,
+      tone: "bg-white text-aegean hover:bg-limestone",
+    })),
   ];
   const n = options.length;
 

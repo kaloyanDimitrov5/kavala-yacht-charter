@@ -47,7 +47,6 @@ export default function CruisePage({ params }: Params) {
   const t = getDictionary(locale);
   const c = t.catalogue;
   const cruise = c.cruises[slug];
-  const kind = cruises.find((x) => x.slug === slug)!.kind;
   const price = cruisePrices[slug];
   const prices = priceView(locale, slug);
   const pl = c.common.prices;
@@ -116,7 +115,7 @@ export default function CruisePage({ params }: Params) {
 
       <Timeline
         id="plan-title"
-        title={kind === "day" ? c.common.stepsTitle : c.common.timelineTitle}
+        title={c.common.timelineTitle}
         steps={cruise.timeline}
         proposal={{ title: c.common.proposalTitle, body: cruise.proposal ?? c.common.proposalBody }}
       />

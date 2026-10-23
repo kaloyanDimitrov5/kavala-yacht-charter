@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { CalendarBlank, Check } from "@phosphor-icons/react/dist/ssr";
 import { getDictionary } from "@/content";
 import { locales } from "@/i18n";
-import { courses, courseGalleries, isCourse } from "@/config/catalogue";
+import { courses, courseGalleries, courseHeaders, isCourse } from "@/config/catalogue";
 import { cover, photoItems } from "@/lib/photos";
 import { whatsappHref } from "@/lib/whatsapp";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
@@ -43,6 +43,7 @@ export default function CoursePage({ params }: Params) {
   const c = t.catalogue;
   const course = c.courses[slug];
   const other = courses.find((x) => x.slug !== slug)!;
+  const header = cover([courseHeaders[slug]], t);
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
@@ -61,7 +62,7 @@ export default function CoursePage({ params }: Params) {
           }),
         ]}
       />
-      <PageHeader title={course.title} lead={course.lead} />
+      <PageHeader title={course.title} lead={course.lead} image={{ src: header.image, alt: header.alt }} />
 
       <section aria-labelledby="practise-title" className="px-4 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12">
@@ -96,6 +97,7 @@ export default function CoursePage({ params }: Params) {
         title={c.courseCommon.galleryTitle}
         items={photoItems(courseGalleries[slug], t)}
         videoLabels={{ play: t.gallery.playVideo, pause: t.gallery.pauseVideo }}
+        autoplay
       />
 
       <section aria-labelledby="other-course" className="px-4 pb-24 sm:px-6 lg:px-8">

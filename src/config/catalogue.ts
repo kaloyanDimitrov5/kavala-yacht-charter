@@ -7,8 +7,6 @@ import type { PhotoKey } from "./photos";
  */
 
 export const cruises = [
-  { slug: "thasos-bays-day-cruise", kind: "day" },
-  { slug: "kavala-day-cruise", kind: "day" },
   { slug: "thasos-weekend-cruise", kind: "multi" },
   { slug: "thasos-cruise", kind: "multi" },
   { slug: "sporades-cruise", kind: "multi" },
@@ -22,12 +20,10 @@ export type CruiseSlug = (typeof cruises)[number]["slug"];
 export type CruiseKind = (typeof cruises)[number]["kind"];
 export type CourseSlug = (typeof courses)[number]["slug"];
 
-export const cruiseKinds: CruiseKind[] = ["day", "multi", "fishing"];
+export const cruiseKinds: CruiseKind[] = ["multi", "fishing"];
 
 /** Gallery sizes the photo grid lays out cleanly: 5, 9 or 13 (one large, then rows of four). */
 export const cruiseGalleries: Record<CruiseSlug, PhotoKey[]> = {
-  "thasos-bays-day-cruise": ["cover-thasos-bays", "pic-thasos-bay", "pic-giola", "pic-turquoise-deck", "pic-sup-paddle"],
-  "kavala-day-cruise": ["cover-kavala", "pic-beach-harbour", "pic-open-sea-deck", "pic-green-cove", "yacht-sunset"],
   "thasos-weekend-cruise": [
     "pic-turquoise-bay",
     "pic-thasos-bay",
@@ -67,12 +63,22 @@ export const cruiseGalleries: Record<CruiseSlug, PhotoKey[]> = {
   ],
   "halkidiki-cruise": ["cover-halkidiki", "pic-athos", "pic-bay-flag", "pic-green-cove", "yacht-anchorage"],
   // Owner: the fish photo is the cover
-  "tuna-fishing-trip": ["pic-tuna-catch", "pic-tuna-deck", "guest-dolphins", "pic-open-sea-deck", "guest-sunset-sea"],
+  "tuna-fishing-trip": ["pic-tuna-catch", "pic-tuna-deck", "yacht-sail", "pic-open-sea-deck", "guest-sunset-sea"],
+};
+
+/**
+ * Photo header of each training page. The owner's action media is portrait, so the wide header
+ * uses the sharp full size photos, framed where the action sits; the clips stay in the galleries.
+ */
+export const courseHeaders: Record<CourseSlug, PhotoKey> = {
+  "captain-course": "train-heeling",
+  "yachting-course": "train-flag",
 };
 
 export const courseGalleries: Record<CourseSlug, PhotoKey[]> = {
-  "captain-course": ["guest-helm", "gallery-helm", "yacht-sail", "hero", "pic-bay-flag"],
-  "yachting-course": ["gallery-cockpit", "pic-cockpit-life", "guest-sup", "yacht-swim", "yacht-cove"],
+  // Owner: action clips and photos only (2026-10-23). Reused across both trainings on purpose.
+  "captain-course": ["train-heeling", "train-heel", "train-waves", "train-helm", "train-flag"],
+  "yachting-course": ["train-sails", "train-heeling", "train-bow", "train-waves", "train-flag"],
 };
 
 /** Which cruise each island on the map belongs to (the map links to it). */

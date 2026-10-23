@@ -28,7 +28,7 @@ export const en = {
     links: {
       home: "Home",
       cruises: "Cruises",
-      courses: "Courses",
+      courses: "Trainings",
       boat: "The boat",
       experiences: "Experiences",
       book: "Book",
@@ -138,14 +138,14 @@ export const en = {
   explore: {
     title: "Plan your trip",
     items: {
-      cruises: { label: "Cruises", detail: "Day trips, island cruises and fishing trips, planned for you" },
-      courses: { label: "Courses", detail: "Captain and yachting courses on our yacht" },
+      cruises: { label: "Cruises", detail: "Island cruises and fishing trips, planned for you" },
+      courses: { label: "Trainings", detail: "Captain and yachting trainings on our yacht" },
       boat: { label: "The boat", detail: "Four cabins, two bathrooms and the real deck plan" },
       experiences: { label: "Experiences", detail: "Bachelor parties, yoga and pilates on deck" },
     },
     alts: {
       cruises: "The yacht under sail with an island ahead",
-      courses: "The helm and the Greek flag above a green bay",
+      courses: "The yacht heeling with the sails full and the sea rushing past",
       boat: "View from the cockpit across a green bay",
       experiences: "The yacht at anchor in a pine lined bay with guests on deck",
     },
@@ -153,10 +153,10 @@ export const en = {
   /** Home: cruises showcase (replaces the tagline and the comparison, owner request) */
   showcase: {
     titleA: "A beach gives you one view.",
-    titleB: "We give you seven cruises.",
-    lead: "Day trips to the bays of Thasos, island cruises to the Sporades and Halkidiki, and tuna fishing. We plan the route, you enjoy it.",
+    titleB: "We give you five cruises.",
+    lead: "Island cruises to Thasos, the Sporades and Halkidiki, and tuna fishing. We plan the route, you enjoy it.",
     filterLabel: "Show cruises",
-    filters: { all: "All", day: "Day trips", multi: "Island cruises", fishing: "Fishing" },
+    filters: { all: "All", multi: "Island cruises", fishing: "Fishing" },
     see: "See the cruise",
     all: "See all cruises",
     experienceLabel: "On every cruise",
@@ -171,16 +171,16 @@ export const en = {
   accents: {
     captain: {
       badge: "Official Greek certificate",
-      title: "Captain courses",
+      title: "Captain trainings",
       // TODO(owner): confirm the exact name of the certificate and who issues it.
       body: "Learn to skipper a sailing yacht on our boat, with an experienced captain beside you. At the end you receive an official Greek captain's certificate.",
       points: [
         "On a real yacht, in real conditions",
         "Harbours, anchoring, sails and navigation",
-        "Captain course and yachting course for beginners",
+        "Captain training and yachting training for beginners",
       ],
-      cta: "See the courses",
-      photoLabel: "Photos from the captain courses",
+      cta: "See the trainings",
+      photoLabel: "Photos from the captain trainings",
     },
     fishing: {
       badge: "Fishing cruises",
@@ -227,7 +227,6 @@ export const en = {
     pauseVideo: "Pause video",
     items: {
       dive: { caption: "Diving off the bow", alt: "A guest diving into the sea from the bow of the yacht" },
-      dolphins: { caption: "Dolphins at the bow", alt: "Guests at the bow watching dolphins swim alongside the yacht" },
       sup: { caption: "SUP in a turquoise cove", alt: "A paddle board on deck at anchor in a turquoise cove below pine trees" },
       sunsetAnchor: { caption: "Sunset at anchor", alt: "The sun setting over the hills, seen from the deck at anchor" },
       harbour: { caption: "Morning in the harbour", alt: "The yacht moored in a harbour below a hillside town" },
@@ -271,6 +270,16 @@ export const en = {
   boat: {
     title: "The boat",
     lead: "Room for eight guests to sleep, shower on board and spend the day in the water.",
+    tour: {
+      title: "Inside the yacht",
+      lead: "Real photos of our yacht: where you eat, sleep, cook and shower, and the deck you sail from.",
+      groups: {
+        saloon: { title: "Saloon", line: "Where the group eats and gathers below deck." },
+        cabins: { title: "Cabins", line: "Four cabins with two berths each, so up to 8 guests sleep on board." },
+        galley: { title: "Galley and bathrooms", line: "A galley with a stove and oven, and two bathrooms, each with a shower." },
+        deck: { title: "On deck", line: "The cockpit, the deck and the yacht in the harbour." },
+      },
+    },
     diagramLabel: "Deck plan of the yacht: four cabins with two berths each, two bathrooms with showers, the saloon and the galley.",
     diagramNote: "The real cabin layout of the yacht.",
     bow: "Bow",
@@ -413,7 +422,7 @@ export const en = {
       },
       {
         q: "Where can we sail?",
-        a: "We run day cruises to the bays of Thasos and along the Kavala coast, cruises of several days to Thasos, the Sporades and Halkidiki, and tuna fishing trips between Thasos and Samothraki. See them all on the Cruises page.",
+        a: "We run cruises of several days to Thasos, the Sporades and Halkidiki, and tuna fishing trips between Thasos and Samothraki. See them all on the Cruises page.",
       },
       {
         q: "Do we have to plan the route ourselves?",

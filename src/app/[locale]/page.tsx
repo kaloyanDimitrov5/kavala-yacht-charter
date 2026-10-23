@@ -61,12 +61,12 @@ export default function Home({ params }: { params: { locale: string } }) {
         captain={{
           ...t.accents.captain,
           href: `/${locale}/courses`,
-          photos: photos(["guest-helm", "yacht-sail", "gallery-helm"]),
+          photos: photos(["train-flag", "train-heel", "train-heeling"]),
         }}
         fishing={{
           ...t.accents.fishing,
           href: `/${locale}/cruises/tuna-fishing-trip`,
-          photos: photos(["pic-tuna-deck", "guest-dolphins", "pic-tuna-catch"]),
+          photos: photos(["pic-tuna-deck", "pic-open-sea-deck", "pic-tuna-catch"]),
         }}
       />
 

@@ -21,7 +21,6 @@ export const photoLibrary = {
   "gallery-cove": { file: "gallery-cove.jpg" },
   "gallery-cockpit": { file: "gallery-cockpit.jpg" },
   "gallery-helm": { file: "gallery-helm.jpg" },
-  "guest-dolphins": { file: "guest-dolphins.jpg" },
   "guest-sunset-anchor": { file: "guest-sunset-anchor.jpg" },
   "guest-sunset-sea": { file: "guest-sunset-sea.jpg" },
   "guest-helm": { file: "guest-helm.jpg" },
@@ -63,6 +62,29 @@ export const photoLibrary = {
   "pic-pilates": { file: "pic-pilates.jpg" },
   /** Only 450 px wide: small inset use only */
   "pic-yoga": { file: "pic-yoga.jpg" },
+  // The boat: owner photos of the yacht (2026-10-23). Several are small: grid tiles only.
+  "boat-moored": { file: "boat-moored.jpg" },
+  "boat-marina": { file: "boat-marina.jpg" },
+  "boat-stern": { file: "boat-stern.jpg" },
+  "boat-deck": { file: "boat-deck.jpg" },
+  "boat-saloon": { file: "boat-saloon.jpg" },
+  "boat-saloon-wide": { file: "boat-saloon-wide.jpg" },
+  "boat-saloon-table": { file: "boat-saloon-table.jpg" },
+  "boat-cabin-forward": { file: "boat-cabin-forward.jpg" },
+  "boat-cabin-double": { file: "boat-cabin-double.jpg" },
+  "boat-cabin-bunks": { file: "boat-cabin-bunks.jpg" },
+  "boat-cabin-bunks-2": { file: "boat-cabin-bunks-2.jpg" },
+  "boat-galley": { file: "boat-galley.jpg" },
+  "boat-bathroom": { file: "boat-bathroom.jpg" },
+  "boat-bathroom-2": { file: "boat-bathroom-2.jpg" },
+  // Trainings: owner clips and photos with action (2026-10-23)
+  "train-heel": { file: "train-heel.jpg", video: "train-heel.mp4" },
+  "train-waves": { file: "train-waves.jpg", video: "train-waves.mp4" },
+  "train-bow": { file: "train-bow.jpg", video: "train-bow.mp4" },
+  "train-helm": { file: "train-helm.jpg", video: "train-helm.mp4" },
+  "train-sails": { file: "train-sails.jpg", video: "train-sails.mp4" },
+  "train-flag": { file: "train-flag.jpg" },
+  "train-heeling": { file: "train-heeling.jpg" },
 } satisfies Record<string, { file: string; video?: string }>;
 
 export type PhotoKey = keyof typeof photoLibrary;

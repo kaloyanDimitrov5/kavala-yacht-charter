@@ -14,7 +14,7 @@ import {
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { SeaDecor } from "./SeaDecor";
 
-type Kind = "day" | "multi" | "fishing";
+type Kind = "multi" | "fishing";
 type Filter = "all" | Kind;
 
 export type ShowcaseCruise = {

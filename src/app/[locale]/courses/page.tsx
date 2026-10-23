@@ -25,8 +25,12 @@ export default function CoursesPage({ params }: Params) {
           itemList(locale, courses.map((co) => ({ name: c.courses[co.slug].title, path: `/courses/${co.slug}` }))),
         ]}
       />
-      <PageHeader title={c.coursesIndex.heading} lead={c.coursesIndex.lead} />
-      <section aria-label={c.coursesIndex.heading} className="px-4 pb-24 sm:px-6 lg:px-8">
+      <PageHeader
+        title={c.coursesIndex.heading}
+        lead={c.coursesIndex.lead}
+        image={(({ image, alt }) => ({ src: image, alt }))(cover(["train-waves"], t))}
+      />
+      <section aria-label={c.coursesIndex.heading} className="px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pt-20">
         <div className="mx-auto max-w-7xl">
           <LinkRows
             rows={courses.map((co) => ({

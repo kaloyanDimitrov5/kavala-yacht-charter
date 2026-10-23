@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Phone, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
-import { phoneDisplay, phoneHref, viberHref } from "@/lib/whatsapp";
+import { phones, viberHref } from "@/lib/whatsapp";
 import { ViberLogo } from "./ViberLogo";
 
 export type WhatsAppLabels = {
@@ -93,9 +93,8 @@ export function WhatsAppButton({ href, labels, className = "", tone = "default" 
     );
   }
 
-  const tel = phoneHref();
+  const calls = phones();
   const viber = viberHref();
-  const number = phoneDisplay();
 
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
@@ -127,17 +126,18 @@ export function WhatsAppButton({ href, labels, className = "", tone = "default" 
           {labels.viber}
         </a>
       )}
-      {/* Same number as a phone call, for visitors without WhatsApp */}
-      {tel && (
+      {/* Direct calls, for visitors without WhatsApp: the main number, then the second phone */}
+      {calls.map((c) => (
         <a
-          href={tel}
-          aria-label={`${labels.call} ${number}`}
+          key={c.href}
+          href={c.href}
+          aria-label={`${labels.call} ${c.display}`}
           className={`${base} ${t.call} tabular-nums transition-[background-color,transform] duration-160 ease-press active:scale-[0.98]`}
         >
           <Phone size={24} aria-hidden />
-          {number}
+          {c.display}
         </a>
-      )}
+      ))}
       <span id={noteId} className="sr-only">
         {labels.opensInNewTab}
       </span>

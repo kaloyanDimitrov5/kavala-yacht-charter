@@ -32,6 +32,9 @@ export const site = {
   /** Digits only, from NEXT_PUBLIC_WHATSAPP_NUMBER. Never hardcode. */
   whatsappNumber: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, ""),
 
+  /** Owner's second phone, for calls only (shown after the main number). Digits only. Empty hides it. */
+  secondPhone: "359888796006",
+
   /** Confirmed facts from the brief. */
   facts: {
     cabins: 4,

@@ -1,5 +1,6 @@
 import { resolveMedia } from "@/lib/media.server";
 import { GalleryVideo } from "./GalleryVideo";
+import { InViewVideo } from "./InViewVideo";
 import { MediaSlot } from "./MediaSlot";
 import { SectionHeading } from "./SectionHeading";
 
@@ -11,6 +12,8 @@ type Props = {
   items: PhotoItem[];
   /** Video tile labels, needed only when an item has a video */
   videoLabels?: { play: string; pause: string };
+  /** Clips loop muted while in view (action galleries, e.g. trainings) instead of waiting for a tap */
+  autoplay?: boolean;
 };
 
 /** Flat placeholder tints so empty slots read as separate photos. */
@@ -20,7 +23,7 @@ const tints = ["bg-shoal", "bg-aegean/70", "bg-teak/60", "bg-shoal/70", "bg-aege
  * Five slot photo grid: one large lead photo and four smaller ones. Still, no hover effects.
  * Missing files show flat placeholders (filename visible in development only).
  */
-export function PhotoGrid({ id, title, items, videoLabels }: Props) {
+export function PhotoGrid({ id, title, items, videoLabels, autoplay = false }: Props) {
   return (
     <section aria-labelledby={id} className="px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -37,7 +40,9 @@ export function PhotoGrid({ id, title, items, videoLabels }: Props) {
                   i === 0 ? "col-span-2 aspect-[4/3] lg:row-span-2 lg:aspect-auto" : "aspect-square"
                 }`}
               >
-                {poster && video && videoLabels ? (
+                {poster && video && videoLabels && autoplay ? (
+                  <InViewVideo image={poster} video={video} alt={item.alt} file={item.file} sizes={sizes} labels={videoLabels} />
+                ) : poster && video && videoLabels ? (
                   <GalleryVideo poster={poster} src={video} alt={item.alt} sizes={sizes} labels={videoLabels} />
                 ) : (
                   <MediaSlot src={poster} alt={item.alt} file={item.file} placeholder={tints[i % tints.length]} sizes={sizes} />

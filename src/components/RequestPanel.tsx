@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { CheckCircle, Minus, Phone, Plus, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
-import { phoneDisplay, phoneHref, viberHref } from "@/lib/whatsapp";
+import { phones, viberHref } from "@/lib/whatsapp";
 import { ViberLogo } from "./ViberLogo";
 import { courses, cruises } from "@/config/catalogue";
 
@@ -39,7 +39,7 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
   const t = getDictionary(locale);
   const labels = { ...t.request, unavailable: t.whatsapp.unavailable, call: t.whatsapp.call };
   const viber = viberHref();
-  const tel = phoneHref();
+  const calls = phones();
   const buildMessage = t.request.message;
   // Every cruise and course, so the request names exactly what the visitor picked
   const routes = [
@@ -311,16 +311,17 @@ export function RequestPanel({ locale, number, maxGuests }: Props) {
                 </span>
               </button>
             )}
-            {tel && (
+            {calls.map((c) => (
               <a
-                href={tel}
-                aria-label={`${labels.call} ${phoneDisplay()}`}
+                key={c.href}
+                href={c.href}
+                aria-label={`${labels.call} ${c.display}`}
                 className={`${send} bg-white tabular-nums text-aegean ring-1 ring-inset ring-aegean/15 hover:bg-limestone`}
               >
                 <Phone size={24} aria-hidden />
-                {phoneDisplay()}
+                {c.display}
               </a>
-            )}
+            ))}
           </div>
           {!number && (
             <p id={`${uid}unavailable`} className="mt-3 flex items-start gap-2 text-sm text-aegean-soft">

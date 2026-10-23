@@ -23,7 +23,6 @@ export type MomentKey = "cove" | "swim" | "anchorage" | "sail" | "sunset" | "nig
 export type GalleryKey = "cove" | "cockpit" | "helm" | "dinner" | "dolphins";
 export type GuestKey =
   | "dive"
-  | "dolphins"
   | "sup"
   | "sunsetAnchor"
   | "harbour"
@@ -100,7 +99,6 @@ export const media = {
   /** "Shared by our guests": guest photos and clips, portrait. Display order alternates clips and stills. */
   guests: [
     { key: "dive", file: "guest-dive.jpg", video: "guest-dive.mp4" },
-    { key: "dolphins", file: "guest-dolphins.jpg" },
     { key: "sup", file: "guest-sup.jpg", video: "guest-sup.mp4" },
     { key: "sunsetAnchor", file: "guest-sunset-anchor.jpg" },
     { key: "harbour", file: "guest-harbour.jpg", video: "guest-harbour.mp4" },
@@ -117,7 +115,7 @@ export const media = {
   /** Thumbnails for the home "Plan your trip" rows (reuse existing web sized files) */
   explore: {
     cruises: "yacht-sail.jpg",
-    courses: "guest-helm.jpg",
+    courses: "train-heeling.jpg",
     boat: "gallery-cockpit.jpg",
     experiences: "occasion-bachelor.jpg",
   },

@@ -8,16 +8,15 @@ export const catalogueEn = {
   index: {
     title: "Cruises from Kavala",
     description:
-      "Day cruises to the bays of Thasos and along the Kavala coast, island cruises to Thasos, the Sporades and Halkidiki, and tuna fishing trips. We plan the route, you enjoy it.",
+      "Island cruises from Kavala to Thasos, the Sporades and Halkidiki, and tuna fishing trips. We plan the route, you enjoy it.",
     heading: "Cruises from Kavala",
     lead: "Never been on a boat? You do not have to plan anything. Pick a cruise and we plan the route, the stops and the days.",
     kinds: {
-      day: { title: "Day cruises", lead: "One day at sea, back in Kavala by the evening." },
       multi: { title: "Cruises of several days", lead: "Sleep on board and wake up somewhere new." },
       fishing: { title: "Fishing trips", lead: "Days at sea on the tuna route." },
     },
     coursesTitle: "Learn to sail",
-    coursesLead: "Courses on our yacht, with an experienced captain.",
+    coursesLead: "Trainings on our yacht, with an experienced captain.",
     mapTitle: "The waters we sail",
     mapLead: "Pick an island to see the cruise that goes there.",
     seeCruise: "See the cruise",
@@ -35,14 +34,13 @@ export const catalogueEn = {
     proposalBody:
       "This is how we would plan it. We change any cruise on request, and the skipper adjusts the plan to the wind and the weather.",
     timelineTitle: "Day by day",
-    stepsTitle: "How the day goes",
     galleryTitle: "Photos",
     ask: "Ask about this cruise",
     askMessage: (title: string) =>
       `Hello, we would like to ask about the ${title} from Kavala. Which dates are free?`,
     book: "Send your dates",
     otherCruises: "Other cruises",
-    kindLabels: { day: "Day cruise", multi: "Cruise", fishing: "Fishing trip" },
+    kindLabels: { multi: "Cruise", fishing: "Fishing trip" },
     places: {
       title: "Places you can visit",
       lead: "The best known places on Thasos. Tell us which ones you would like to see and we plan the route around them.",
@@ -80,30 +78,6 @@ export const catalogueEn = {
     },
   },
   cruises: {
-    "thasos-bays-day-cruise": {
-      title: "Thasos bays day cruise",
-      duration: "1 day",
-      card: "Across to Thasos for a day of swimming in its bays",
-      lead: "A full day at sea. We sail from Kavala across to Thasos, stop in quiet bays to swim and paddle, and sail back.",
-      timeline: [
-        { label: "Step 1", title: "Board in Kavala", body: "Meet your skipper in Kavala harbour, stow your bags and get a short safety talk before we leave." },
-        { label: "Step 2", title: "Across to Thasos", body: "The crossing to Thasos. Sit back on deck and watch Kavala get smaller behind you." },
-        { label: "Step 3", title: "Swim in the bays", body: "We anchor in quiet bays along the coast of Thasos. Swim straight off the boat and take out the SUP boards." },
-        { label: "Step 4", title: "Back to Kavala", body: "We sail back across and arrive in Kavala at the end of the day." },
-      ],
-    },
-    "kavala-day-cruise": {
-      title: "Kavala day cruise",
-      duration: "1 day",
-      card: "A first day on a boat, along the coast near Kavala",
-      lead: "A day along the coast near Kavala. A good first time on a boat, with no long crossing.",
-      timeline: [
-        { label: "Step 1", title: "Board in Kavala", body: "Meet your skipper in Kavala harbour and get a short safety talk before we leave." },
-        { label: "Step 2", title: "Kavala from the sea", body: "We leave the harbour with the old town and its castle behind us." },
-        { label: "Step 3", title: "Bays along the coast", body: "Swim stops in bays along the coast, chosen on the day for calm water. SUP boards are on board." },
-        { label: "Step 4", title: "Back in Kavala", body: "We sail back into Kavala harbour at the end of the day." },
-      ],
-    },
     "thasos-weekend-cruise": {
       title: "Thasos weekend cruise",
       duration: "3 days",
@@ -223,24 +197,24 @@ export const catalogueEn = {
     },
   },
   coursesIndex: {
-    title: "Captain and yachting courses",
-    description: "Learn to sail on our yacht out of Kavala: captain courses and yachting courses with an experienced captain.",
-    heading: "Captain and yachting courses",
+    title: "Captain and yachting trainings",
+    description: "Learn to sail on our yacht out of Kavala: captain trainings and yachting trainings with an experienced captain.",
+    heading: "Captain and yachting trainings",
     lead: "Learn on a real yacht, in real conditions, with an experienced captain beside you.",
   },
   courseCommon: {
     practiseTitle: "What you practise",
     formatTitle: "Dates and format",
     // TODO(owner): replace with real duration, group size and the certificate the course leads to.
-    formatBody: "We agree the dates, the length of the course and the certificate it prepares you for with you. Ask us on WhatsApp.",
+    formatBody: "We agree the dates, the length of the training and the certificate it prepares you for with you. Ask us on WhatsApp.",
     galleryTitle: "Photos",
-    ask: "Ask about this course",
+    ask: "Ask about this training",
     askMessage: (title: string) => `Hello, we would like to ask about the ${title} on the yacht from Kavala. Which dates are free?`,
-    otherCourse: "The other course",
+    otherCourse: "The other training",
   },
   courses: {
     "captain-course": {
-      title: "Captain course",
+      title: "Captain training",
       card: "Learn to skipper a sailing yacht yourself",
       lead: "Learn to skipper a sailing yacht yourself, on our boat and in real conditions, with an experienced captain beside you.",
       // TODO(owner): confirm the syllabus.
@@ -254,9 +228,9 @@ export const catalogueEn = {
       ],
     },
     "yachting-course": {
-      title: "Yachting course",
-      card: "A first course for people who have never sailed",
-      lead: "A first course for people who have never sailed: how a yacht works, how to help on board and how to feel at home at sea.",
+      title: "Yachting training",
+      card: "A first training for people who have never sailed",
+      lead: "A first training for people who have never sailed: how a yacht works, how to help on board and how to feel at home at sea.",
       // TODO(owner): confirm the syllabus.
       practise: [
         "How a sailing yacht works",

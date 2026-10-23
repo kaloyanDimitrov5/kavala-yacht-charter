@@ -14,7 +14,13 @@ OUT=public/media
 # others carry the same tag over pixels that are already upright (do not rotate).
 photo() {
   # Convert iPhone Display P3 to sRGB first, so colours stay right once the profile is stripped
-  sips -s format jpeg -s formatOptions 78 -Z "${3:-2000}" --matchTo "$SRGB" "$SRC_IMG/$1" --out "$OUT/$2" >/dev/null
+  # Never upscale: cap the long edge at the source's own size (some owner photos are small)
+  local w h edge="${3:-2000}"
+  w=$(sips -g pixelWidth "$SRC_IMG/$1" | awk '/pixelWidth/{print $2}')
+  h=$(sips -g pixelHeight "$SRC_IMG/$1" | awk '/pixelHeight/{print $2}')
+  [ "$w" -gt "$h" ] && long=$w || long=$h
+  [ "$long" -lt "$edge" ] && edge=$long
+  sips -s format jpeg -s formatOptions 78 -Z "$edge" --matchTo "$SRGB" "$SRC_IMG/$1" --out "$OUT/$2" >/dev/null
   if [ -n "${4:-}" ]; then sips -r "$4" "$OUT/$2" >/dev/null; fi
   # Strip all metadata: removes GPS location and camera data before publishing, and drops
   # stale orientation tags (IMG_8363 is stored upright but tagged "rotate 90", which browsers obey).
@@ -65,6 +71,41 @@ echo "Deck plan (real layout, Bavaria 46)"
 sips --cropOffset 209 138 --cropToHeightWidth 182 524 "$OUT/bavaria-46-cabins.jpg" --out "$OUT/deck-plan.jpg" >/dev/null
 exiftool -q -q -overwrite_original -all= "$OUT/deck-plan.jpg"
 echo "  deck-plan.jpg"
+
+echo "The boat (owner photos of the Bavaria 46, 2026-10-23; pixels upright, no rotation)"
+photo boat-lesvos-mitilini.jpg boat-moored.jpg 2400
+photo boat-P1140712.jpg boat-marina.jpg 1600
+photo boat-IMG_20190429_170900.jpg boat-stern.jpg 1600
+photo boat-IMG_2448.jpg boat-deck.jpg 1600
+photo boat-20220516_140904.jpg boat-saloon.jpg 1600
+photo boat-P_20180617_171555.jpg boat-saloon-wide.jpg 1600
+photo boat-received_10210748209439120.jpg boat-saloon-table.jpg 1600
+photo boat-P_20170423_150334.jpg boat-cabin-forward.jpg 1600
+photo boat-P_20170423_152918.jpg boat-cabin-double.jpg 1600
+photo boat-P_20170423_190025.jpg boat-cabin-bunks.jpg 1600
+photo boat-P_20170423_190046.jpg boat-cabin-bunks-2.jpg 1600
+photo boat-P_20170423_192757.jpg boat-galley.jpg 1600
+photo boat-P_20170423_193716.jpg boat-bathroom.jpg 1600
+photo boat-P_20170423_195107.jpg boat-bathroom-2.jpg 1600
+
+echo "Trainings (owner clips and photos with action, 2026-10-23)"
+# train_clip <source> <name> <start s> <length s> <poster time s, within the trimmed clip>
+# Portrait phone clips: ffmpeg applies the rotation flag. 720 wide, 30 fps, muted, no metadata.
+train_clip() {
+  ffmpeg -loglevel error -y -ss "$3" -t "$4" -i "$SRC_VID/$1" \
+    -vf "scale=720:-2,fps=30" -map_metadata -1 -an -c:v libx264 -preset slow -crf 29 -pix_fmt yuv420p -movflags +faststart \
+    "$OUT/$2.mp4"
+  ffmpeg -loglevel error -y -ss "$5" -i "$OUT/$2.mp4" -frames:v 1 -q:v 3 "$OUT/$2.jpg"
+  echo "  $2.mp4 ($(du -h "$OUT/$2.mp4" | cut -f1)), $2.jpg"
+}
+train_clip train-IMG_7674.MOV train-heel 0 21 13.5
+train_clip train-IMG_6087.MOV train-waves 0 14 2.5
+train_clip train-IMG_7675.MOV train-bow 0 12.5 1.5
+train_clip train-IMG_7677.MOV train-helm 0 14 3
+train_clip train-IMG_2730.MOV train-sails 0 12 2
+# These HEICs are tagged "rotate 90 CW" over landscape pixels
+photo train-IMG_5920.HEIC train-flag.jpg 1600 90
+photo train-IMG_7676.HEIC train-heeling.jpg 1600 90
 
 echo "Shared by our guests"
 # Guest photos (second batch, dropped straight into public/media)
