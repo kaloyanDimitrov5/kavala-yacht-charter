@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { CloudSun, Compass } from "@phosphor-icons/react";
+import { CloudSun, Compass, MapPin } from "@phosphor-icons/react";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 
 export type TimelineStep = { label: string; title: string; body: string; note?: string };
@@ -12,6 +12,8 @@ type Props = {
   title: string;
   steps: TimelineStep[];
   proposal: { title: string; body: string };
+  /** Optional: places worth a visit on this route, shown under the proposal note */
+  places?: { title: string; items: string[] };
 };
 
 /*
@@ -21,7 +23,7 @@ type Props = {
  * Reduced motion: fully drawn and filled.
  * Desktop: the heading and the "proposal, not a fixed route" note stay pinned beside the days.
  */
-export function Timeline({ id, title, steps, proposal }: Props) {
+export function Timeline({ id, title, steps, proposal, places }: Props) {
   const listRef = useRef<HTMLOListElement>(null);
   const reduce = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 0.7", "end 0.6"] });
@@ -48,6 +50,24 @@ export function Timeline({ id, title, steps, proposal }: Props) {
               </p>
               <p className="mt-2 text-base text-aegean-soft">{proposal.body}</p>
             </aside>
+            {places && (
+              <div className="mt-6">
+                <h3 className="flex items-center gap-2 text-base font-semibold text-aegean">
+                  <MapPin size={20} aria-hidden className="shrink-0 text-shoal-deep" />
+                  {places.title}
+                </h3>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {places.items.map((place) => (
+                    <li
+                      key={place}
+                      className="rounded-full bg-white px-3 py-1 text-sm font-medium text-aegean ring-1 ring-inset ring-aegean/10"
+                    >
+                      {place}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 

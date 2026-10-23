@@ -23,6 +23,8 @@ export type ShowcaseCruise = {
   title: string;
   duration: string;
   line: string;
+  /** "From €1,580", only for cruises with an owner price */
+  price?: string;
   image: string | null;
   alt: string;
 };
@@ -123,67 +125,82 @@ export function CruiseShowcase(props: Props) {
           key={filter}
           className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {shown.map((c, i) => (
-            // Each card triggers on its own, so a tall list on a phone still reveals card by card
-            <motion.li
-              key={c.href}
-              initial="hidden"
-              whileInView="shown"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  transform: reduce ? "none" : "translateY(16px)",
-                },
-                shown: {
-                  opacity: 1,
-                  transform: "translateY(0px)",
-                  transition: {
-                    duration: reduce ? 0.2 : 0.5,
-                    delay: reduce ? 0 : (i % 3) * 0.06,
-                    ease: EASE_OUT,
+          {shown.map((c, i) => {
+            // A card left alone on the last row spans the row and lays out side by side
+            const last = i === shown.length - 1;
+            const wideSm = last && shown.length % 2 === 1;
+            const wideLg = last && shown.length % 3 === 1;
+            const liSpan = `${wideSm ? "sm:col-span-2" : ""} ${wideLg ? "lg:col-span-3" : wideSm ? "lg:col-span-1" : ""}`;
+            const linkGrid = `${wideSm ? "sm:grid sm:grid-cols-2" : ""} ${wideLg ? "lg:grid lg:grid-cols-3" : wideSm ? "lg:block" : ""}`;
+            const textWide = `${wideSm ? "sm:self-center sm:p-10" : ""} ${wideLg ? "lg:col-span-2 lg:self-center lg:p-10" : wideSm ? "lg:p-6" : ""}`;
+            return (
+              // Each card triggers on its own, so a tall list on a phone still reveals card by card
+              <motion.li
+                key={c.href}
+                className={liSpan}
+                initial="hidden"
+                whileInView="shown"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    transform: reduce ? "none" : "translateY(16px)",
                   },
-                },
-              }}
-            >
-              <Link
-                href={c.href}
-                className="group block h-full overflow-hidden rounded-3xl bg-white transition-transform duration-200 ease-press active:scale-[0.99]"
+                  shown: {
+                    opacity: 1,
+                    transform: "translateY(0px)",
+                    transition: {
+                      duration: reduce ? 0.2 : 0.5,
+                      delay: reduce ? 0 : (i % 3) * 0.06,
+                      ease: EASE_OUT,
+                    },
+                  },
+                }}
               >
-                <span className="relative block aspect-[4/3] overflow-hidden bg-shoal/20">
-                  {c.image && (
-                    <Image
-                      src={c.image}
-                      alt={c.alt}
-                      fill
-                      sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-fluid group-hover:scale-105"
-                    />
-                  )}
-                  {/* 24px card radius − 16px inset = 8px chip radius */}
-                  <span className="absolute left-4 top-4 rounded-lg bg-white/90 px-2 py-1 text-sm font-semibold text-aegean backdrop-blur-xl">
-                    {c.duration}
-                  </span>
-                </span>
-                <span className="flex items-end justify-between gap-4 p-6">
-                  <span className="min-w-0">
-                    <span className="block text-xl font-semibold tracking-tight text-aegean lg:text-2xl">
-                      {c.title}
+                <Link
+                  href={c.href}
+                  className={`group block h-full overflow-hidden rounded-3xl bg-white transition-transform duration-200 ease-press active:scale-[0.99] ${linkGrid}`}
+                >
+                  <span className="relative block aspect-[4/3] overflow-hidden bg-shoal/20">
+                    {c.image && (
+                      <Image
+                        src={c.image}
+                        alt={c.alt}
+                        fill
+                        sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-700 ease-fluid group-hover:scale-105"
+                      />
+                    )}
+                    {/* 24px card radius − 16px inset = 8px chip radius */}
+                    <span className="absolute left-4 top-4 rounded-lg bg-white/90 px-2 py-1 text-sm font-semibold text-aegean backdrop-blur-xl">
+                      {c.duration}
                     </span>
-                    <span className="mt-2 block text-base text-aegean-soft">
-                      {c.line}
+                    {c.price && (
+                      <span className="absolute right-4 top-4 rounded-lg bg-aegean px-2 py-1 text-sm font-semibold tabular-nums text-white">
+                        {c.price}
+                      </span>
+                    )}
+                  </span>
+                  <span className={`flex items-end justify-between gap-4 p-6 ${textWide}`}>
+                    <span className="min-w-0">
+                      <span className="block text-xl font-semibold tracking-tight text-aegean lg:text-2xl">
+                        {c.title}
+                      </span>
+                      <span className="mt-2 block text-base text-aegean-soft">
+                        {c.line}
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden
+                      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-limestone text-aegean transition-[background-color,color,transform] duration-200 ease-press group-hover:translate-x-1 group-hover:bg-aegean group-hover:text-white"
+                    >
+                      <ArrowRight size={20} weight="bold" />
                     </span>
                   </span>
-                  <span
-                    aria-hidden
-                    className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-limestone text-aegean transition-[background-color,color,transform] duration-200 ease-press group-hover:translate-x-1 group-hover:bg-aegean group-hover:text-white"
-                  >
-                    <ArrowRight size={20} weight="bold" />
-                  </span>
-                </span>
-              </Link>
-            </motion.li>
-          ))}
+                </Link>
+              </motion.li>
+            );
+          })}
         </motion.ul>
 
         <div className="mt-12 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">

@@ -1,7 +1,8 @@
 /**
  * Cruises and courses copy (English). This file defines the shape; catalogue.bg.ts must match it.
  * Itineraries come from the owner. Where the owner listed more stops than days, the day mapping
- * is our proposal (marked TODO). No clock times, prices or distances: none were given.
+ * is our proposal (marked TODO). Clock times and prices are the owner's; prices live in
+ * src/config/pricing.ts. No distances: none were given.
  */
 export const catalogueEn = {
   index: {
@@ -42,6 +43,21 @@ export const catalogueEn = {
     book: "Send your dates",
     otherCruises: "Other cruises",
     kindLabels: { day: "Day cruise", multi: "Cruise", fishing: "Fishing trip" },
+    placesTitle: "Places you can visit",
+    priceFact: "Price from",
+    fromPrice: (price: string) => `From ${price}`,
+    prices: {
+      title: "Prices",
+      lead: "For the whole yacht and up to 8 guests. The price depends on the season you sail in.",
+      from: "From",
+      seasonsLabel: "Seasons from May to October",
+      seasons: { high: "High season", low: "Low season", pre: "Early and late season" },
+      includedTitle: "Included",
+      included: { skipper: "An experienced Bulgarian skipper", linen: "Bed linen", insurance: "Insurance" },
+      excludedTitle: "Not included",
+      excluded: ["Food", "Fuel", "Port fees and harbour costs (electricity and water)"],
+      cleaning: (fee: string) => `Cleaning when you return the yacht: ${fee}`,
+    },
   },
   cruises: {
     "thasos-bays-day-cruise": {
@@ -68,51 +84,128 @@ export const catalogueEn = {
         { label: "Step 4", title: "Back in Kavala", body: "We sail back into Kavala harbour at the end of the day." },
       ],
     },
-    "thasos-cruise": {
-      title: "Thasos cruise",
-      duration: "2 to 4 days",
-      card: "Limenas, Vahti and Golden Beach, sleeping on board",
-      lead: "Two to four days around Thasos. Below is our plan for four days; for a shorter cruise we drop or shorten days.",
+    "thasos-weekend-cruise": {
+      title: "Thasos weekend cruise",
+      duration: "3 days",
+      card: "Friday to Sunday around Thasos, with nights in island harbours",
+      lead: "Three days sailing around Thasos, Friday to Sunday. Swim in quiet bays by day and spend the nights in the island's harbours, with dinner at a fish taverna.",
+      places: [
+        "Skala Marion",
+        "Tripiti Beach",
+        "Limenaria",
+        "Aliki Beach",
+        "Marble Beach",
+        "Golden Beach",
+        "St. Archangel Michael Monastery",
+        "Paradise Beach",
+      ],
       timeline: [
         {
-          label: "Day 1",
+          label: "Thursday, after 22:00",
+          title: "Board in Kavala",
+          body: "Settle in on board in Kavala harbour. Your skipper gives you a safety briefing and shows you around the yacht.",
+        },
+        {
+          label: "Day 1 · Friday",
+          title: "Kavala → Thasos",
+          body: "We sail from Kavala across to Thasos and stop in picturesque bays to swim and enjoy the beach.",
+        },
+        {
+          label: "Day 2 · Saturday",
+          title: "Around the island",
+          body: "We carry on around Thasos. In the evening we stop in one of the island's harbours for the night, close to authentic fish tavernas with long menus.",
+          note: "Which way we sail round depends on the weather and on what you would like. The skipper has the last word, for the safety of the crew.",
+        },
+        {
+          label: "Day 3 · Sunday",
+          title: "Back to Kavala",
+          body: "We sail back to Kavala. You leave the yacht by 17:00.",
+        },
+      ],
+    },
+    "thasos-cruise": {
+      title: "Thasos cruise",
+      duration: "4 days",
+      card: "Monday to Thursday around Thasos: Limenas, Vahti and Golden Beach",
+      lead: "Four days around Thasos, Monday to Thursday. More time for fun and for the sights, with nights on board in the island's harbours.",
+      places: [
+        "Skala Marion",
+        "Tripiti Beach",
+        "Limenaria",
+        "Aliki Beach",
+        "Marble Beach",
+        "Golden Beach",
+        "St. Archangel Michael Monastery",
+        "Paradise Beach",
+      ],
+      timeline: [
+        {
+          label: "Sunday, after 22:00",
+          title: "Board in Kavala",
+          body: "Settle in on board in Kavala harbour. Your skipper gives you a safety briefing and shows you around the yacht.",
+        },
+        {
+          label: "Day 1 · Monday",
           title: "Kavala → Limenas",
           body: "We sail from Kavala to Limenas, the main town of Thasos, and spend the night in its harbour.",
           note: "We stop in a bay on the way for a swim if the weather and the time allow.",
         },
         // TODO(owner): confirm the spelling of Vahti in English and Bulgarian.
-        { label: "Day 2", title: "Vahti", body: "On to Vahti for a day of swimming and paddling." },
-        { label: "Day 3", title: "Golden Beach", body: "A day at Golden Beach, swimming from the boat at anchor off the long sandy bay." },
-        { label: "Day 4", title: "Back to Kavala", body: "We sail back across to Kavala." },
+        {
+          label: "Day 2 · Tuesday",
+          title: "Vahti",
+          body: "On to Vahti for a day of swimming and paddling. Each evening we stop in one of the island's harbours, close to authentic fish tavernas.",
+          note: "Which way we sail round depends on the weather and on what you would like.",
+        },
+        { label: "Day 3 · Wednesday", title: "Golden Beach", body: "A day at Golden Beach, swimming from the boat at anchor off the long sandy bay." },
+        { label: "Day 4 · Thursday", title: "Back to Kavala", body: "We sail back across to Kavala. You leave the yacht by 17:00." },
       ],
     },
     "sporades-cruise": {
       title: "Sporades cruise",
-      duration: "6 days",
+      duration: "7 days",
       card: "Thasos, Kyra Panagia, Alonissos, Skopelos and Skiathos",
-      lead: "Six days from Kavala down to the Northern Sporades and back, through the National Marine Park of Alonissos and the Northern Sporades.",
-      // TODO(owner): the owner listed eight places over six days; confirm this day mapping.
+      lead: "A week from Kavala down to the Northern Sporades and back, Monday to Sunday, through the National Marine Park of Alonissos and the Northern Sporades.",
+      proposal:
+        "You set the final route with us, once we have seen the forecast. Spend the days on the beach in quiet, exotic bays you can only reach by sea, or walk inland to the islands' sights and classic tavernas with Greek ouzo and fine meze. It is up to you.",
+      // TODO(owner): confirm this day mapping of the eight places over the week.
       timeline: [
-        { label: "Day 1", title: "Kavala → Thasos", body: "We cross to Thasos for the first night on board." },
-        { label: "Day 2", title: "Thasos → Kyra Panagia", body: "The longest leg of the trip, south to Kyra Panagia, a quiet island inside the marine park." },
-        { label: "Day 3", title: "Alonissos", body: "On to Alonissos, at the heart of the marine park, known for its very clear water." },
-        { label: "Day 4", title: "Skopelos", body: "Pine forest running down to the sea and a harbour town of white houses." },
-        { label: "Day 5", title: "Skiathos", body: "The liveliest of the Sporades, with sandy beaches along its south coast." },
-        { label: "Day 6", title: "Thasos → Kavala", body: "We sail north again, by way of Thasos, back to Kavala." },
+        { label: "Sunday, from 22:00", title: "Board in Kavala", body: "Settle in on board in Kavala harbour the evening before we sail." },
+        {
+          label: "Day 1 · Monday",
+          title: "Kavala → Thasos",
+          body: "We leave Kavala at 08:00 and cross to Thasos for the first night at sea.",
+          note: "We can leave earlier or later if we agree it together.",
+        },
+        { label: "Day 2 · Tuesday", title: "Thasos → Kyra Panagia", body: "The longest leg of the trip, south to Kyra Panagia, a quiet island inside the marine park." },
+        { label: "Day 3 · Wednesday", title: "Alonissos", body: "On to Alonissos, at the heart of the marine park, known for its very clear water." },
+        { label: "Day 4 · Thursday", title: "Skopelos", body: "Pine forest running down to the sea and a harbour town of white houses." },
+        { label: "Day 5 · Friday", title: "Skiathos", body: "The liveliest of the Sporades, with sandy beaches along its south coast." },
+        { label: "Day 6 · Saturday", title: "Skiathos → Thasos", body: "We sail north again, back to Thasos for the last night." },
+        { label: "Day 7 · Sunday", title: "Thasos → Kavala", body: "The last crossing, back to Kavala. You leave the yacht by 17:00." },
       ],
     },
     "halkidiki-cruise": {
       title: "Halkidiki cruise",
-      duration: "6 days",
+      duration: "7 days",
       card: "Thasos, then the bays of Halkidiki",
-      lead: "Six days from Kavala to Halkidiki and its bays, with a night on Thasos on the way out and on the way back.",
+      lead: "A week from Kavala to Halkidiki and its bays, Monday to Sunday, with a night on Thasos on the way out and on the way back.",
+      proposal:
+        "You set the final route with us, once we have seen the forecast. Spend the days on the beach in quiet, exotic bays you can only reach by sea, or walk inland to the sights and classic tavernas with Greek ouzo and fine meze. It is up to you.",
       timeline: [
-        { label: "Day 1", title: "Kavala → Thasos", body: "We cross to Thasos for the first night on board." },
-        { label: "Day 2", title: "Thasos → Halkidiki", body: "We sail west to Halkidiki." },
-        { label: "Day 3", title: "Bays of Halkidiki", body: "A different bay or anchorage on Halkidiki, chosen with you and with the weather." },
-        { label: "Day 4", title: "More of Halkidiki", body: "Another stretch of the Halkidiki coast and another quiet bay for the night." },
-        { label: "Day 5", title: "Halkidiki → Thasos", body: "We head back east to Thasos." },
-        { label: "Day 6", title: "Thasos → Kavala", body: "The last crossing, back to Kavala." },
+        { label: "Sunday, from 22:00", title: "Board in Kavala", body: "Settle in on board in Kavala harbour the evening before we sail." },
+        {
+          label: "Day 1 · Monday",
+          title: "Kavala → Thasos",
+          body: "We leave Kavala at 08:00 and cross to Thasos for the first night at sea.",
+          note: "We can leave earlier or later if we agree it together.",
+        },
+        { label: "Day 2 · Tuesday", title: "Thasos → Halkidiki", body: "We sail west to Halkidiki." },
+        { label: "Day 3 · Wednesday", title: "Bays of Halkidiki", body: "A different bay or anchorage on Halkidiki, chosen with you and with the weather." },
+        { label: "Day 4 · Thursday", title: "More of Halkidiki", body: "Another stretch of the Halkidiki coast and another quiet bay for the night." },
+        { label: "Day 5 · Friday", title: "Beach or village", body: "A lazy day in a bay you can only reach by sea, or a walk inland to a village and its taverna." },
+        { label: "Day 6 · Saturday", title: "Halkidiki → Thasos", body: "We head back east to Thasos for the last night." },
+        { label: "Day 7 · Sunday", title: "Thasos → Kavala", body: "The last crossing, back to Kavala. You leave the yacht by 17:00." },
       ],
     },
     "tuna-fishing-trip": {
@@ -186,7 +279,9 @@ type Widen<T> = T extends string
 
 type TimelineStep = { label: string; title: string; body: string; note?: string };
 type Base = Widen<typeof catalogueEn>;
+type CruiseCopy = { title: string; duration: string; card: string; lead: string; timeline: TimelineStep[] };
 
 export type Catalogue = Omit<Base, "cruises"> & {
-  cruises: { [K in keyof Base["cruises"]]: Omit<Base["cruises"][K], "timeline"> & { timeline: TimelineStep[] } };
+  /** Every cruise has the core copy. Optional: places worth a visit, and its own route note. */
+  cruises: { [K in keyof Base["cruises"]]: CruiseCopy & { places?: string[]; proposal?: string } };
 };

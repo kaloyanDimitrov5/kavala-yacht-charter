@@ -9,6 +9,7 @@ import type { PhotoKey } from "./photos";
 export const cruises = [
   { slug: "thasos-bays-day-cruise", kind: "day" },
   { slug: "kavala-day-cruise", kind: "day" },
+  { slug: "thasos-weekend-cruise", kind: "multi" },
   { slug: "thasos-cruise", kind: "multi" },
   { slug: "sporades-cruise", kind: "multi" },
   { slug: "halkidiki-cruise", kind: "multi" },
@@ -27,6 +28,17 @@ export const cruiseKinds: CruiseKind[] = ["day", "multi", "fishing"];
 export const cruiseGalleries: Record<CruiseSlug, PhotoKey[]> = {
   "thasos-bays-day-cruise": ["cover-thasos-bays", "pic-thasos-bay", "pic-giola", "pic-turquoise-deck", "pic-sup-paddle"],
   "kavala-day-cruise": ["cover-kavala", "pic-beach-harbour", "pic-open-sea-deck", "pic-green-cove", "yacht-sunset"],
+  "thasos-weekend-cruise": [
+    "pic-turquoise-bay",
+    "pic-thasos-bay",
+    "pic-giola-2",
+    "pic-island-taverna",
+    "guest-sunset-anchor",
+    "pic-green-bay",
+    "pic-sup-paddle",
+    "yacht-swim",
+    "pic-village-evening",
+  ],
   "thasos-cruise": [
     "cover-thasos",
     "pic-giola-2",

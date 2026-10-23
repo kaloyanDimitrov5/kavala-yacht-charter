@@ -2,6 +2,7 @@ import { getDictionary } from "@/content";
 import { site } from "@/config/site";
 import { cruises, courses, cruiseKinds, cruiseGalleries, courseGalleries, islandCruise } from "@/config/catalogue";
 import { cover } from "@/lib/photos";
+import { durationWithPrice } from "@/lib/price";
 import { pageMetadata, toLocale } from "@/lib/pageMetadata";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbs, itemList } from "@/lib/structuredData";
@@ -53,7 +54,7 @@ export default function CruisesPage({ params }: Params) {
                   .filter((cr) => cr.kind === kind)
                   .map((cr) => ({
                     href: `/${locale}/cruises/${cr.slug}`,
-                    meta: c.cruises[cr.slug].duration,
+                    meta: durationWithPrice(locale, cr.slug, c.cruises[cr.slug].duration, c.common.fromPrice),
                     label: c.cruises[cr.slug].title,
                     detail: c.cruises[cr.slug].card,
                     ...cover(cruiseGalleries[cr.slug], t),

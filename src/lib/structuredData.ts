@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n";
 import { absolute } from "./siteUrl";
 
 /*
- * schema.org builders. Only facts the site already states: no prices, ratings,
+ * schema.org builders. Only facts the site already states (prices only where the owner set them): no ratings,
  * street address or opening hours (none were provided).
  */
 
@@ -68,6 +68,8 @@ export function touristTrip(opts: {
   description: string;
   image: string | null;
   steps: { label: string; title: string }[];
+  /** Owner's lowest and highest season price, euro */
+  price?: { low: number; high: number };
 }) {
   return {
     "@context": "https://schema.org",
@@ -78,6 +80,17 @@ export function touristTrip(opts: {
     inLanguage: opts.locale,
     ...(opts.image ? { image: absolute(opts.image) } : {}),
     provider: { "@id": orgId },
+    ...(opts.price
+      ? {
+          offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: "EUR",
+            lowPrice: opts.price.low,
+            highPrice: opts.price.high,
+            url: absolute(`/${opts.locale}${opts.path}`),
+          },
+        }
+      : {}),
     itinerary: {
       "@type": "ItemList",
       numberOfItems: opts.steps.length,

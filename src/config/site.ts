@@ -61,7 +61,7 @@ export const site = {
   },
 
   pricing: {
-    /** TODO(owner): starting price. null hides every price element. */
+    /** Unused: cruise prices live in src/config/pricing.ts. */
     from: null as number | null,
     currency: "EUR",
     /** TODO(owner): what the price covers, e.g. per week or per day */

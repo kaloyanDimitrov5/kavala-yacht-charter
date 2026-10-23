@@ -13,6 +13,9 @@ import { Timeline } from "@/components/Timeline";
 import { PhotoGrid } from "@/components/PhotoGrid";
 import { LinkRows } from "@/components/LinkRows";
 import { SectionHeading } from "@/components/SectionHeading";
+import { CruisePrices } from "@/components/CruisePrices";
+import { cruisePrices, highestPrice, lowestPrice } from "@/config/pricing";
+import { durationWithPrice, priceView } from "@/lib/price";
 
 type Params = { params: { locale: string; slug: string } };
 
@@ -43,6 +46,10 @@ export default function CruisePage({ params }: Params) {
   const c = t.catalogue;
   const cruise = c.cruises[slug];
   const kind = cruises.find((x) => x.slug === slug)!.kind;
+  const price = cruisePrices[slug];
+  const prices = priceView(locale, slug);
+  const pl = c.common.prices;
+  const ask = whatsappHref(c.common.askMessage(cruise.title));
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
@@ -59,6 +66,7 @@ export default function CruisePage({ params }: Params) {
             description: cruise.lead,
             image: cover(cruiseGalleries[slug], t).image,
             steps: cruise.timeline,
+            price: price && { low: lowestPrice(price), high: highestPrice(price) },
           }),
         ]}
       />
@@ -67,23 +75,44 @@ export default function CruisePage({ params }: Params) {
       <FactsStrip
         label={c.common.factsLabel}
         facts={[
+          ...(prices ? [{ label: c.common.priceFact, value: prices.from }] : []),
           { label: c.common.duration, value: cruise.duration },
           { label: c.common.departs, value: c.common.departsValue },
           { label: c.common.guests, value: c.common.guestsValue },
           { label: c.common.skipper, value: c.common.skipperValue },
         ]}
         whatsapp={{
-          href: whatsappHref(c.common.askMessage(cruise.title)),
+          href: ask,
           labels: { ...t.whatsapp, cta: c.common.ask },
         }}
         book={{ href: `/${locale}/book?cruise=${slug}#request`, label: c.common.book }}
       />
 
+      {prices && (
+        <CruisePrices
+          view={prices}
+          labels={{
+            title: pl.title,
+            lead: pl.lead,
+            from: pl.from,
+            seasonsLabel: pl.seasonsLabel,
+            seasons: pl.seasons,
+            includedTitle: pl.includedTitle,
+            included: [pl.included.skipper, pl.included.linen, ...(prices.insurance ? [pl.included.insurance] : [])],
+            excludedTitle: pl.excludedTitle,
+            excluded: pl.excluded,
+            cleaning: pl.cleaning(prices.cleaning),
+          }}
+          whatsapp={{ href: ask, labels: t.whatsapp }}
+        />
+      )}
+
       <Timeline
         id="plan-title"
         title={kind === "day" ? c.common.stepsTitle : c.common.timelineTitle}
         steps={cruise.timeline}
-        proposal={{ title: c.common.proposalTitle, body: c.common.proposalBody }}
+        proposal={{ title: c.common.proposalTitle, body: cruise.proposal ?? c.common.proposalBody }}
+        places={cruise.places && { title: c.common.placesTitle, items: cruise.places }}
       />
 
       <div className="bg-white">
@@ -105,7 +134,7 @@ export default function CruisePage({ params }: Params) {
                 .filter((x) => x.slug !== slug)
                 .map((x) => ({
                   href: `/${locale}/cruises/${x.slug}`,
-                  meta: c.cruises[x.slug].duration,
+                  meta: durationWithPrice(locale, x.slug, c.cruises[x.slug].duration, c.common.fromPrice),
                   label: c.cruises[x.slug].title,
                   detail: c.cruises[x.slug].card,
                   ...cover(cruiseGalleries[x.slug], t),

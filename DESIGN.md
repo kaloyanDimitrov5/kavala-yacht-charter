@@ -694,3 +694,12 @@ Measured with Lighthouse 12 (mobile, the same engine as PageSpeed Insights) on a
 1. Set `NEXT_PUBLIC_SITE_URL` to the real domain (e.g. `https://example.com`, no trailing slash) in the hosting settings. Until then canonical links, hreflang, the sitemap and structured data point at `http://localhost:3000`.
 2. Add the site to Google Search Console and submit `https://<domain>/sitemap.xml`.
 3. Optional but helpful: a Google Business Profile for the charter in Kavala, and real reviews in `site.reviews` (they would add review stars to structured data; never fabricate them).
+
+## 18. Prices
+
+- Owner prices live in `src/config/pricing.ts` (per cruise, three seasons, same season dates for all). Cruises without an entry show no price anywhere.
+- Formatting happens on the server in `src/lib/price.ts` (en `€1,580`, bg `1580 €`; Bulgarian months abbreviated from the long name, because ICU's short form is digits).
+- Where prices show: a "From" chip on home cruise cards (aegean chip, top right, opposite the duration), "· From €X" in list rows, a "Price from" fact in the detail facts strip, and the prices section on the detail page.
+- Prices section: white card (heading, "From" price, the sailing year bar May to October with each season to scale, season list) beside an aegean card (included, not included, cleaning fee, WhatsApp). Season colours: early/late `shoal-light`, low `shoal-deep`, high `teak`. The bar is decorative; the list carries the facts.
+- Structured data: `TouristTrip.offers` is an `AggregateOffer` (low and high season price, EUR).
+- Home cruise grid: a card left alone on the last row spans the row and lays out side by side.

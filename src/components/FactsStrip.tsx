@@ -16,7 +16,7 @@ export function FactsStrip({ label, facts, whatsapp, book }: Props) {
   return (
     <section aria-label={label} className="px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl rounded-3xl bg-white p-6 lg:p-8">
-        <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        <dl className={`grid grid-cols-2 gap-6 ${facts.length > 4 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
           {facts.map((f) => (
             <div key={f.label}>
               <dt className="text-sm text-aegean-soft">{f.label}</dt>

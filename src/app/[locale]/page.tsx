@@ -8,6 +8,7 @@ import { Accents } from "@/components/Accents";
 import { ExperiencesHome } from "@/components/ExperiencesHome";
 import { whatsappHref } from "@/lib/whatsapp";
 import { cruises, cruiseGalleries } from "@/config/catalogue";
+import { priceFrom } from "@/lib/price";
 import { photoLibrary, type PhotoKey } from "@/config/photos";
 import { cover } from "@/lib/photos";
 import { GuestGallery } from "@/components/GuestGallery";
@@ -51,6 +52,7 @@ export default function Home({ params }: { params: { locale: string } }) {
           title: cat.cruises[cr.slug].title,
           duration: cat.cruises[cr.slug].duration,
           line: cat.cruises[cr.slug].card,
+          price: priceFrom(locale, cr.slug) && cat.common.fromPrice(priceFrom(locale, cr.slug)!),
           ...cover(cruiseGalleries[cr.slug], t),
         }))}
       />
